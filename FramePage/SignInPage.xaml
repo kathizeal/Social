@@ -8,18 +8,21 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="LightGray">
+    <Grid Background="White" >
+         <Image Source="/Assets/Frontcover.jpg" Stretch="Fill"/>
+
+        <Grid Margin="100" Background="LightGray" CornerRadius="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <Grid HorizontalAlignment="Center" Margin="50,150,50,50"  Height="400" Width="400" VerticalAlignment="Center" >
+            <Grid HorizontalAlignment="Center" Margin="50,130,50,70"  Height="400" Width="400" VerticalAlignment="Top" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" VerticalAlignment="Center">
+                <StackPanel Grid.Row="0" VerticalAlignment="Top">
                     <TextBlock  
                                Text="SocioTalk" 
                                FontSize="40" 
@@ -33,10 +36,10 @@
                                 />
 
                 </StackPanel>
-                <Grid Grid.Row="1" >
+                <Grid Grid.Row="1">
                     <StackPanel>
                         <Ellipse
-                            Margin="20,20,20,0"
+                            Margin="20,0,20,0"
                             Height="150" Width="150">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="/Assets/plus--V1.png" />
@@ -44,7 +47,7 @@
                             </Ellipse.Fill>
 
                         </Ellipse>
-                        <TextBlock Text="CurrentUser"
+                        <TextBlock Text="Quick Sign in"
                                    Foreground="Black"
                                    FontSize="28" HorizontalAlignment="Center" Height="44">
 
@@ -63,12 +66,12 @@
 
             <Grid Name="GRID" Height="250" Width="310" Background="LightCyan" CornerRadius="10" >
                 <StackPanel>
-                    <TextBox Width="300" PlaceholderText="USERID"
+                    <TextBox Width="300" PlaceholderText="User-Id"
                              Height="40" HorizontalAlignment="Center" CornerRadius="10" Margin="5"/>
                     <PasswordBox Width="300" PlaceholderText="password" IsPasswordRevealButtonEnabled="True"
                                  PasswordRevealMode="Peek"
                              Height="40" HorizontalAlignment="Center" CornerRadius="10"/>
-                    <Button Content="Sign in" Foreground="Black" HorizontalAlignment="Center" CornerRadius="20"  Width="150" Background="DarkBlue"></Button>
+                    <Button Content="Sign in" Foreground="Black" HorizontalAlignment="Center" CornerRadius="20" Margin="5"  Width="150" Background="Blue"></Button>
                     <HyperlinkButton Content="Forgot password" FontSize="15" HorizontalAlignment="Center"/>
                     <TextBlock Text="______________________" HorizontalAlignment="Center"   Foreground="black"></TextBlock>
                     <HyperlinkButton Content="Need any help ?" FontSize="15" HorizontalAlignment="Center"/>
@@ -83,6 +86,7 @@
 
 
             </RelativePanel>
+        </Grid>
         </Grid>
     </Grid>
 </Page>
