@@ -8,85 +8,131 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="White" >
-         <Image Source="/Assets/Frontcover.jpg" Stretch="Fill"/>
+        
 
-        <Grid Margin="100" Background="LightGray" CornerRadius="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <Grid HorizontalAlignment="Center" Margin="50,130,50,70"  Height="400" Width="400" VerticalAlignment="Top" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" VerticalAlignment="Top">
-                    <TextBlock  
-                               Text="SocioTalk" 
-                               FontSize="40" 
-                               FontWeight="Bold"                           
-                               Foreground="BlueViolet"                     
-                               Margin="90,0,0,0"/>
-                    <TextBlock
-                                Text="Connect in to feel Safe and Secure"
-                                Margin="90,0,0,0"
-                                Foreground="black"          
-                                />
+    <Grid>
+        <Image Source="/Assets/Frontcover.jpg" Stretch="Fill"/>
+        <ScrollViewer>
+            <Grid Name="InDisplay"
+                  Background="LightGray"
+                  CornerRadius="20">
+                     <Grid.RowDefinitions>
+                           <RowDefinition   Height="auto"/>
+                           <RowDefinition Height="auto"/>
+                     </Grid.RowDefinitions>              
 
-                </StackPanel>
-                <Grid Grid.Row="1">
-                    <StackPanel>
-                        <Ellipse
-                            Margin="20,0,20,0"
-                            Height="150" Width="150">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="/Assets/plus--V1.png" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Name="IntroPart" >
+                            
+                
+                            <StackPanel Name="IntroPartStack"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                                <TextBlock
+                                        Text="SocioTalk" 
+                                        FontSize="40" 
+                                        FontWeight="Bold"                           
+                                        Foreground="BlueViolet"                     
+                                        Margin="0,0,0,0"/>
+                                <TextBlock
+                                        Text="Connect in to feel Safe and Secure"
+                                        Margin="0,0,0,0"
+                                        Foreground="black"/>
 
-                            </Ellipse.Fill>
+                                <Ellipse
+                                        Margin="20,0,20,0"
+                                        Height="150"
+                                        Width="150">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="/Assets/plus--V1.png" />
+                                        </Ellipse.Fill>
 
-                        </Ellipse>
-                        <TextBlock Text="Quick Sign in"
-                                   Foreground="Black"
-                                   FontSize="28" HorizontalAlignment="Center" Height="44">
-
-                        </TextBlock>
-
+                                </Ellipse>
+                                <TextBlock Text="Quick Sign in"
+                                           Foreground="Black"
+                                           FontSize="20" 
+                                           HorizontalAlignment="Center" 
+                                           Height="44" 
+                                           Margin="0,0,0,20"/>
+                                <HyperlinkButton x:Name="SignUpButton" 
+                                            Content="Click Here to Create a new Account"
+                                                 FontSize="14" 
+                                                 Foreground="Blue" 
+                                                 Margin="0,0,0,20"
+                                                 Click="HyperlinkButton_Click" />
                     </StackPanel>
+                       
+                    </Grid>
+                    <Grid Name="SignInPart"  Width="300" Height="300" HorizontalAlignment="Center">
+                        <StackPanel>
+                            <TextBox x:Name="UserIdBlock"
+                                     Width="250"
+                                     PlaceholderText="User-Id" 
+                                     FontSize="20"
+                                     Height="40"
+                                     HorizontalAlignment="Center" 
+                                     CornerRadius="10" 
+                                     Margin="5"/>
+                            <PasswordBox x:Name="PasswordBlock"   
+                                         Width="250" 
+                                         PlaceholderText="password" 
+                                         IsPasswordRevealButtonEnabled="True"
+                                         PasswordRevealMode="Peek"  
+                                         FontSize="20"
+                                         Height="40" 
+                                         HorizontalAlignment="Center" 
+                                         CornerRadius="10"/>
+                            <Button Content="Sign in" 
+                                    Foreground="Black" 
+                                    HorizontalAlignment="Center" 
+                                    CornerRadius="20" 
+                                    Margin="5"  
+                                    Width="150" 
+                                    Background="Blue"
+                                    Click="Button_Click"
+                                    FontSize="20"/>
+                            <HyperlinkButton Content="Forgot password" 
+                                             FontSize="10" 
+                                             HorizontalAlignment="Center"/>
+                            <TextBlock Text="______________________" 
+                                       HorizontalAlignment="Center"   
+                                       Foreground="black"/>
+                            <HyperlinkButton Content="Need any help ?" 
+                                             FontSize="10" 
+                                             HorizontalAlignment="Center"/>
 
-                </Grid>
+                        </StackPanel>
+                    </Grid>      
             </Grid>
-
-
-
-        </StackPanel>
-        <Grid Grid.Column="1">
-            <RelativePanel VerticalAlignment="Center" HorizontalAlignment="Center">
-
-            <Grid Name="GRID" Height="250" Width="310" Background="LightCyan" CornerRadius="10" >
-                <StackPanel>
-                    <TextBox Width="300" PlaceholderText="User-Id"
-                             Height="40" HorizontalAlignment="Center" CornerRadius="10" Margin="5"/>
-                    <PasswordBox Width="300" PlaceholderText="password" IsPasswordRevealButtonEnabled="True"
-                                 PasswordRevealMode="Peek"
-                             Height="40" HorizontalAlignment="Center" CornerRadius="10"/>
-                    <Button Content="Sign in" Foreground="Black" HorizontalAlignment="Center" CornerRadius="20" Margin="5"  Width="150" Background="Blue"></Button>
-                    <HyperlinkButton Content="Forgot password" FontSize="15" HorizontalAlignment="Center"/>
-                    <TextBlock Text="______________________" HorizontalAlignment="Center"   Foreground="black"></TextBlock>
-                    <HyperlinkButton Content="Need any help ?" FontSize="15" HorizontalAlignment="Center"/>
-                </StackPanel>
-
-            </Grid>
-                <HyperlinkButton Name="CreateAccButton"   RelativePanel.Below="GRID" HorizontalAlignment="Center" Content="Create Account" FontSize="20" Foreground="Blue"/>
-                <TextBlock RelativePanel.Below="GRID" RelativePanel.RightOf="CreateAccButton"  Margin="5" Text=" to explore the World" Foreground="Black" FontSize="20" />
-
-
-
-
-
-            </RelativePanel>
-        </Grid>
-        </Grid>
+        </ScrollViewer>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="InDisplay.(Margin)" Value="20"/>
+                        <Setter Target="IntroPart.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="SignInPart.(Grid.Row)" Value="1"/>
+                        <Setter Target="SignInPart.(Grid.ColumnSpan)" Value="2"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"/>                        
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="InDisplay.(Margin)" Value="200,200,200,200"/>
+                        <Setter Target="IntroPart.(Grid.Column)" Value="0"/>
+                        <Setter Target="SignInPart.(Grid.Column)" Value="1"/>
+                        <Setter Target="IntroPartStack.(Margin)" Value="0,100,0,100"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
