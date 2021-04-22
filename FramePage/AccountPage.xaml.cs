@@ -33,12 +33,12 @@ namespace Social.FramePage
         {
             base.OnNavigatedTo(e);
             CurrentUser = (User)e.Parameter;
-            UserName.Text ="User name : "+ CurrentUser.UserName;
-            LastName.Text = "Last name : " + CurrentUser.LastName;
-            UserID.Text = "User Id : " + CurrentUser.UserId.ToString();
-            Email.Text = "Email address : " + CurrentUser.Email;
-            Birthday.Text = "DOB : " + CurrentUser.BirthDay;
-            Gender.Text = "Gender : " + CurrentUser.Gender;
+            UserNameBlock.Text ="User name : "+ CurrentUser.UserName;
+            LastNameBlock.Text = "Last name : " + CurrentUser.LastName;
+            UserIDBlock.Text = "User Id : " + CurrentUser.UserId.ToString();
+            EmailBlock.Text = "Email address : " + CurrentUser.Email;
+            BirthdayBlock.Text = "DOB : " + CurrentUser.BirthDay;
+            GenderBlock.Text = "Gender : " + CurrentUser.Gender;
 
         }
 
@@ -46,8 +46,6 @@ namespace Social.FramePage
         {
             
             ApplicationData.Current.LocalSettings.Values["UserClass"] = null;
-
-
             MainPage.MainFramePage.Navigate(typeof(MainPage));
         }
     }

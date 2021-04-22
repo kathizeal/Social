@@ -12,38 +12,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="auto"/>
-
-
-
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" Margin="20,0,0,0">
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    Margin="20,0,0,0">
             <RelativePanel>
-            <Ellipse x:Name="Ellipiseicon" Width="40" Height="40">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource ="/Assets/male-01.png" />
+                <Ellipse x:Name="Ellipiseicon"
+                     Width="40" 
+                     Height="40">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource ="/Assets/male-01.png" />
                     </Ellipse.Fill>
-            </Ellipse>
-            <TextBlock x:Name="Heading" Foreground="White" FontSize="24" Margin="20,0,0,0" RelativePanel.RightOf="Ellipiseicon"></TextBlock>
-            <TextBlock x:Name="time" Foreground="White" FontSize="12" Margin="20,0,0,0" RelativePanel.Below="Heading" RelativePanel.RightOf="Ellipiseicon"></TextBlock>
-                <TextBlock x:Name="Createdby" Foreground="White" FontSize="12" Margin="20,0,0,0"  RelativePanel.Below="time" RelativePanel.RightOf="Ellipiseicon"/>
-               
+                </Ellipse>
+                <TextBlock x:Name="Heading"
+                       Foreground="White" 
+                       FontSize="24" 
+                       Margin="20,0,0,0"
+                       RelativePanel.RightOf="Ellipiseicon"/>
+                <TextBlock x:Name="time"
+                           Foreground="White" 
+                           FontSize="12"
+                           Margin="20,0,0,0"
+                           RelativePanel.Below="Heading"
+                           RelativePanel.RightOf="Ellipiseicon"/>
+                <TextBlock x:Name="Createdby"
+                           Foreground="White"
+                           FontSize="12"
+                           Margin="20,0,0,0"
+                           RelativePanel.Below="time" 
+                           RelativePanel.RightOf="Ellipiseicon"/>
+
             </RelativePanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="50,10,0,0"  Padding="50">
-            
+        <StackPanel Grid.Row="1" 
+                    Margin="50,10,0,0"
+                    Padding="50">
 
-            <TextBlock x:Name="Title" Foreground="White" FontSize="22" Margin="5,20,20,20" HorizontalAlignment="Center"></TextBlock>
-            <TextBlock Text="---------------------------------------------" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="Content" Foreground="White" FontSize="22" Margin="5,20,20,20" HorizontalAlignment="Center"></TextBlock>
-            
-           
-
-
+            <TextBlock x:Name="Title"
+                       Foreground="White"
+                       FontSize="22"
+                       Margin="5,20,20,20"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="---------------------------------------------"
+                       HorizontalAlignment="Center"/>
+            <TextBlock x:Name="Content"
+                       Foreground="White"
+                       FontSize="22"
+                       Margin="5,20,20,20"
+                       HorizontalAlignment="Center"/>
 
         </StackPanel>
 
     </Grid>
-   
-   
-    
+
+
+
 </Page>

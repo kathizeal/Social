@@ -28,15 +28,12 @@ namespace Social.FramePage
     
     public sealed partial class SignInPage : Page
     {
-       /* UserManager userManager = UserManager.GetInstance();*/
-        
+              
          
         public SignInPage()
         {
             this.InitializeComponent();
-          /*  userManager.AddUser("user1", "1234");
-            userManager.AddUser("user2", "2345");*/
-            
+                      
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -49,19 +46,11 @@ namespace Social.FramePage
                     
                     string json = JsonConvert.SerializeObject(i);
                     ApplicationData.Current.LocalSettings.Values["UserClass"] = json;
-
-
-
                     MainFramePage.Navigate(typeof(PostPage), i);
                 }
 
-            }
-           
-
-
-            
-            
-            
+            }      
+     
         }
 
         private void HyperlinkButton_Click(object sender, RoutedEventArgs e)

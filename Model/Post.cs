@@ -9,7 +9,7 @@ namespace Social.Model
 {
     public class Post
     {        
-        public Post(string title, string content, string username,long userid,string image)
+        public Post(string title, string content, string username,long userid)
         {
             PostTitle = title;
             PostContent = content;
@@ -17,7 +17,7 @@ namespace Social.Model
             PostCreatedByUserId = userid;
             PostId = DateTime.Now.Ticks;
             CreatedTime = DateTime.UtcNow;
-            ImagePath = image;
+            
 
         }
         public string PostCreatedByUserName { get; set; }
@@ -26,7 +26,7 @@ namespace Social.Model
         public string PostTitle { get; set; }
         public string PostContent { get; set; }
         public DateTime CreatedTime { get; set; }
-        public string ImagePath { get; set; }
+       
         private List<Comment> _Comments =new List<Comment>();
         public List<Comment> Comments { get { return _Comments; } set { _Comments = value; } }       
         public int Likes { get; set; }

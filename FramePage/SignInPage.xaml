@@ -58,7 +58,7 @@
                                            Height="44" 
                                            Margin="0,0,0,20"/>
                                 <HyperlinkButton x:Name="SignUpButton" 
-                                            Content="Click Here to Create a new Account"
+                                                 Content="Click Here to Create a new Account"
                                                  FontSize="14" 
                                                  Foreground="Blue" 
                                                  Margin="0,0,0,20"
@@ -66,7 +66,10 @@
                     </StackPanel>
                        
                     </Grid>
-                    <Grid Name="SignInPart"  Width="300" Height="300" HorizontalAlignment="Center">
+                    <Grid Name="SignInPart"
+                          Width="300" 
+                          Height="300"
+                          HorizontalAlignment="Center">
                         <StackPanel>
                             <TextBox x:Name="UserIdBlock"
                                      Width="250"

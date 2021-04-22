@@ -28,37 +28,23 @@ namespace Social
     public sealed partial class MainPage : Page
     {
       public static UserManager userManager = UserManager.GetInstance();
+        public static PostManager postManager = PostManager.GetInstance();
         public static Frame MainFramePage;
         public MainPage()
         {
-
             this.InitializeComponent();
             MainFramePage = MyFrame;
             userManager.AddUser("Kathiravan","Kannan","kathizeal@gmail.com","1234","20/05/1999","Male");
             userManager.AddUser("Robin","jesba","RobiJesba@gmail.com", "2345","22/02/1999","Male");
-            if(ApplicationData.Current.LocalSettings.Values["UserClass"] == null)
+           /* postManager.AddPost(new Post("User1 Post", "This is my  First Post", "user1", 12345689));
+            postManager.AddPost(new Post("User2 Post", "This is my second Post", "user2", 12345689));
+            postManager.AddPost(new Post("User3 Post", "This is my third Post", "user2", 12345689));*/
+            if (ApplicationData.Current.LocalSettings.Values["UserClass"] == null)
                 MainFramePage.Navigate(typeof(SignInPage));
             else 
             {
-
                 MainFramePage.Navigate(typeof(PostPage));
-
-            }         
-
-            PostManager postManager = PostManager.GetInstance();
-
-           
-            
+            } 
         }
-        
-
-
-
-
-
-
-
-        
-
     }
 }

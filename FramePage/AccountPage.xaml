@@ -9,42 +9,76 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        
+
         <Grid>
-            
-            <Image Source="/Assets/blurbackground.jpg" Stretch="Fill" />
+
+            <Image Source="/Assets/blurbackground.jpg"
+                   Stretch="Fill" />
             <ScrollViewer>
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="50">
+                <StackPanel VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Margin="50">
                     <RelativePanel>
 
-                        <Ellipse Width="300" Height="300" x:Name="Icon">
-                    <Ellipse.Fill>
-                        <ImageBrush  ImageSource="/Assets/male-03.png"/>
-                    </Ellipse.Fill>
-                </Ellipse>
-                       
+                        <Ellipse Width="300"
+                                 Height="300"
+                                 x:Name="Icon">
+                            <Ellipse.Fill>
+                                <ImageBrush  ImageSource="/Assets/male-03.png"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
                         <StackPanel RelativePanel.Below="Icon">
                             <RelativePanel>
-                            
-                        
-                                <TextBlock x:Name="UserName" FontSize="24" Foreground="Black" Margin="0,10,10,0"/>
-                                <TextBlock x:Name="LastName" FontSize="24" Foreground="Black" RelativePanel.Below="UserName" Margin="0,10,10,0"/>
-                                <TextBlock x:Name="Gender" FontSize="24" Foreground="Black" RelativePanel.Below="LastName" Margin="0,10,10,0"/>
-                                <TextBlock x:Name="UserID" Text="User-Id :" FontSize="24" Foreground="Black" Margin="0,10,10,0" RelativePanel.Below="Gender"/>
-                                <TextBlock x:Name="Email" FontSize="24" Foreground="Black" RelativePanel.Below="UserID" Margin="0,10,10,0"/>
-                                <TextBlock x:Name="Birthday" FontSize="24" Foreground="Black" RelativePanel.Below="Email" Margin="0,10,10,0"/>
 
 
-                                <Button x:Name="SignOutButton" Content="Sign Out" Background="Blue" Foreground="White" FontSize="20" RelativePanel.Below="Birthday" CornerRadius="20" Margin="40" Click="SignOutButton_Click"/>
+                                <TextBlock x:Name="UserNameBlock"
+                                           FontSize="24"
+                                           Foreground="Black" 
+                                           Margin="0,10,10,0"/>
+                                <TextBlock x:Name="LastNameBlock"
+                                           FontSize="24" 
+                                           Foreground="Black"
+                                           RelativePanel.Below="UserNameBlock"
+                                           Margin="0,10,10,0"/>
+                                <TextBlock x:Name="GenderBlock"
+                                           FontSize="24"
+                                           Foreground="Black" 
+                                           RelativePanel.Below="LastNameBlock"
+                                           Margin="0,10,10,0"/>
+                                <TextBlock x:Name="UserIDBlock"                                            
+                                           FontSize="24"
+                                           Foreground="Black"
+                                           Margin="0,10,10,0"
+                                           RelativePanel.Below="GenderBlock"/>
+                                <TextBlock x:Name="EmailBlock"
+                                           FontSize="24"
+                                           Foreground="Black"
+                                           RelativePanel.Below="UserIDBlock"
+                                           Margin="0,10,10,0"/>
+                                <TextBlock x:Name="BirthdayBlock"
+                                           FontSize="24"
+                                           Foreground="Black"
+                                           RelativePanel.Below="EmailBlock"
+                                           Margin="0,10,10,0"/>
+                                <Button x:Name="SignOutButton"
+                                        Content="Sign Out"
+                                        Background="Blue"
+                                        Foreground="Black"
+                                        FontSize="20" 
+                                        RelativePanel.Below="BirthdayBlock"
+                                        CornerRadius="20"
+                                        Margin="40" 
+                                        Click="SignOutButton_Click"/>
                             </RelativePanel>
                         </StackPanel>
                     </RelativePanel>
-            </StackPanel>
+                </StackPanel>
             </ScrollViewer>
-            
+
 
         </Grid>
-        
+
 
     </Grid>
 </Page>

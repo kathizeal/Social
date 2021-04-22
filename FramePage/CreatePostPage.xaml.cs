@@ -12,9 +12,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Social.Model;
+using System.Collections.ObjectModel;
 using Social.Data;
-using Windows.UI.Xaml.Media.Imaging;
+using Social.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,27 +23,31 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SecondaryPage : Page
+    public sealed partial class CreatePostPage : Page
     {
-        public Model.Post Post { get { return this.DataContext as Model.Post; } }
-        public SecondaryPage()
+        User CurrentUser;
+        public CreatePostPage()
         {
             this.InitializeComponent();
-
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Post post = (Post)e.Parameter;
-            Content.Text = post.PostContent;
-            Title.Text = post.PostTitle;
-            Heading.Text= post.PostTitle;
-            time.Text = post.CreatedTime.ToString();
-            Createdby.Text = "Created By: " + post.PostCreatedByUserName;
+            base.OnNavigatedTo(e);
+            CurrentUser = (User)e.Parameter;
+            
 
+        }
 
-        }   
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            MainPage.postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
+            MainPage.MainFramePage.Navigate(typeof(PostPage));
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.MainFramePage.Navigate(typeof(PostPage));
+        }
     }
-
-    
-   
 }

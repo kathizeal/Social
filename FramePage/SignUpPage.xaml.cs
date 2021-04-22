@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -40,8 +40,13 @@ namespace Social.FramePage
         {
             
             string DOB = Birthday.ToShortDateString();
-            MainPage.userManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password,DOB,gender);
-            MainPage.MainFramePage.Navigate(typeof(MainPage));
+            if (string.IsNullOrWhiteSpace(UserNameBox.Text) || string.IsNullOrWhiteSpace(LastNameBox.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(RePasswordBox.Password) || string.IsNullOrWhiteSpace(DOB))
+                Warning.Visibility = Visibility.Visible;
+            else
+            {
+                MainPage.userManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, gender);
+                MainPage.MainFramePage.Navigate(typeof(MainPage));
+            }
         }
 
        private void Dob_DateChanged(object sender, DatePickerValueChangedEventArgs args)   

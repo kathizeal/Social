@@ -8,32 +8,67 @@
     xmlns:data="using:Social.Model" xmlns:local1="using:Social.Control"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
+
 
     <Grid  >
-        
+
         <NavigationView PaneDisplayMode="Auto" OpenPaneLength="120" Name="NavViewPostPage" 
                         SelectionChanged="NavViewPostPage_SelectionChanged"
-                        Loaded="NavViewPostPage_Loaded"
-                        IsBackEnabled="{Binding ElementName=PostFrame,Path=CanGoBack}"                        
+                        Loaded="NavViewPostPage_Loaded"                                              
                         >
             <NavigationView.MenuItems>
-                
-                    <NavigationViewItem Icon="Account" Content="Account" Tag="Account"/>
+
+                <NavigationViewItem Icon="Account" Content="Account" Tag="Account"/>
                 <NavigationViewItem Icon="List" Content="List" Tag="List"/>
+                <NavigationViewItem Icon="Add" Content="New Post" Tag="NewPost"/>
 
             </NavigationView.MenuItems>
             <Grid>
-                <SplitView DisplayMode="Inline" IsPaneOpen="True" x:Name="MySpLitView">
+                <SplitView x:Name="MySpLitView"
+                           DisplayMode="Inline"
+                           IsPaneOpen="True"
+                           >
                     <SplitView.Pane>
-                        <StackPanel Background="#FF333333" x:Name="List" BorderBrush="Silver" BorderThickness="1">
+                        <StackPanel Background="#FF333333"
+                                    x:Name="List"
+                                    BorderBrush="Silver"
+                                    BorderThickness="1">
                             <TextBlock Text="All List"/>
-                            <ListView ItemsSource="{x:Bind PostList}" ItemClick="ListView_ItemClick" IsItemClickEnabled="True"  BorderBrush="LightSlateGray" BorderThickness="0.4" x:Name="ClickList" >
+                            <ListView x:Name="ClickList"
+                                      ItemsSource="{x:Bind PostList}"
+                                      ItemClick="ListView_ItemClick" 
+                                      IsItemClickEnabled="True"
+                                      BorderBrush="LightSlateGray" 
+                                      BorderThickness="0.4">
                                 <ListView.ItemTemplate >
 
                                     <DataTemplate x:DataType="data:Post" >
+                                        <StackPanel>
+                                            
+                                                <TextBlock x:Name="TitleCard"
+                                                   Text="{x:Bind PostTitle}"
+                                                   FontSize="20"
+                                                   Foreground="White" 
+                                                   
+                                                   Margin="2"
+                                                    />
+                                                
+                                                <TextBlock x:Name="ContentCard"
+                                                   Text="{x:Bind PostContent}"
+                                                   RelativePanel.Below="TitleCard"
+                                                   FontSize="15"
+                                                   Foreground="White"
+                                                   Margin="3,1,3,1"
+                                                   TextWrapping="WrapWholeWords"
+                                                   />
+                                                <TextBlock x:Name="TimeCard"
+                                                   Text="{x:Bind CreatedTime}"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Right"
+                                                   />
+                                                 
 
-                                        <TextBlock Text="{x:Bind PostContent}" FontSize="20" Foreground="White" HorizontalAlignment="Stretch" Margin="5,25,5,25"/>
+                                        </StackPanel>
 
 
                                     </DataTemplate>
@@ -45,19 +80,20 @@
                     </SplitView.Pane>
                     <SplitView.Content>
                         <Grid  x:Name="PostFrame" >
-                            <Image Source="/Assets/Frontcover.jpg" Stretch="Fill"/>
-                            <Frame x:Name="SecondFrame" Tag="SecondaryFrame" >
+                            <Image Source="/Assets/Frontcover.jpg"
+                                   Stretch="Fill"/>
+                            <Frame x:Name="SecondFrame"
+                                   Tag="SecondaryFrame" >
 
                             </Frame>
                         </Grid>
 
                     </SplitView.Content>
                 </SplitView>
-                
-                
-                
-                
-                
+
+
+
+
             </Grid>
         </NavigationView>
         <!--<VisualStateManager.VisualStateGroups>
@@ -94,5 +130,5 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>-->
     </Grid>
-    
+
 </Page>
