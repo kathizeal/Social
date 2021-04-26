@@ -11,7 +11,8 @@
         
 
     <Grid>
-        <Image Source="/Assets/Frontcover.jpg" Stretch="Fill"/>
+        <Image Source="/Assets/Frontcover.jpg"
+               Stretch="Fill"/>
         <ScrollViewer>
             <Grid Name="InDisplay"
                   Background="LightGray"

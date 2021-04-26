@@ -18,7 +18,7 @@
                         >
             <NavigationView.MenuItems>
 
-                <NavigationViewItem Icon="Account" Content="Account" Tag="Account"/>
+                <NavigationViewItem Icon="Contact" Content="Account" Tag="Account"/>
                 <NavigationViewItem Icon="List" Content="List" Tag="List"/>
                 <NavigationViewItem Icon="Add" Content="New Post" Tag="NewPost"/>
 
@@ -29,6 +29,8 @@
                            IsPaneOpen="True"
                            >
                     <SplitView.Pane>
+
+                        <ScrollViewer>
                         <StackPanel Background="#FF333333"
                                     x:Name="List"
                                     BorderBrush="Silver"
@@ -48,25 +50,28 @@
                                                 <TextBlock x:Name="TitleCard"
                                                    Text="{x:Bind PostTitle}"
                                                    FontSize="20"
-                                                   Foreground="White" 
-                                                   
+                                                   Foreground="White"                                                   
                                                    Margin="2"
                                                     />
                                                 
                                                 <TextBlock x:Name="ContentCard"
                                                    Text="{x:Bind PostContent}"
-                                                   RelativePanel.Below="TitleCard"
                                                    FontSize="15"
                                                    Foreground="White"
                                                    Margin="3,1,3,1"
-                                                   TextWrapping="WrapWholeWords"
+                                                   Height="35"    
+                                                  
                                                    />
                                                 <TextBlock x:Name="TimeCard"
                                                    Text="{x:Bind CreatedTime}"
                                                    FontSize="10"
                                                    HorizontalAlignment="Right"
                                                    />
-                                                 
+                                                <Line
+                                                    Stroke="White"
+                                                    X2="500"
+                                                    Margin="1"/>
+
 
                                         </StackPanel>
 
@@ -77,6 +82,7 @@
 
                             </ListView>
                         </StackPanel>
+                        </ScrollViewer>
                     </SplitView.Pane>
                     <SplitView.Content>
                         <Grid  x:Name="PostFrame" >

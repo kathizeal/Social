@@ -8,11 +8,20 @@
     xmlns:data="using:Social.Model"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Grid Background="#FF333333">
+    <Page.Resources>
+        <SolidColorBrush x:Key="BlueColor" Color="#FF30B3DD" />
+        
+
+    </Page.Resources>
+    
+    
+    <Grid Background="#FF333333" x:Name="PostDetails">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition x:Name="SecondRow" Height="650"/>
+            <RowDefinition x:Name="ThirdRow" Height="50"/>
         </Grid.RowDefinitions>
+        
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0"
                     VerticalAlignment="Center"
@@ -45,9 +54,10 @@
 
             </RelativePanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" 
+        <ScrollViewer Grid.Row="1">
+        <StackPanel Grid.Row="1"
                     Margin="50,10,0,0"
-                    Padding="50">
+                    Padding="50,50,50,0">
 
             <TextBlock x:Name="Title"
                        Foreground="White"
@@ -58,12 +68,152 @@
                        HorizontalAlignment="Center"/>
             <TextBlock x:Name="Content"
                        Foreground="White"
-                       FontSize="22"
+                       FontSize="18"
                        Margin="5,20,20,20"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"/>
+                <StackPanel x:Name="CommentStack" Visibility="Collapsed">
+                    <TextBlock Text="Comment Section"></TextBlock>
+                    <Line       x:Name="CommentSeparator"
+                                                    Stroke="White"
+                                                    
+                                                    X2="1000"
+                                                    Margin="20,10,20,10"/>
+                    <ListView x:Name="CommentList" ItemsSource="{x:Bind PostComments}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Comment">
+                                <StackPanel x:Name="Inside">
+                                    <StackPanel Orientation="Horizontal">
+                                    
+                                    
+                                    
+                                        
+                                        <Ellipse x:Name="CommenterIcon"
+                                                 HorizontalAlignment="Left"
+                                                 Width="20" 
+                                                 Height="20">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource ="/Assets/male-01.png" />
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock x:Name="HeadingTB"
+                                                   HorizontalAlignment="Left"
+                                                   Text="{x:Bind CommenterName}"
+                                                   Foreground="White" 
+                                                   FontSize="14" 
+                                                   Margin="20,0,0,0"
+                                                   />
+                                        <TextBlock x:Name="CommentTimeTB"
+                                                   Text="{x:Bind CreatedTime}"
+                                                   Margin="700,0,0,0"
+                                                   HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                    <RelativePanel>
+                                        <TextBlock x:Name="ContentTB"
+                                                   Text="{x:Bind CommentContent}"
+                                                   TextWrapping="WrapWholeWords"
+                                                   Margin="50,10,0,0"
+                                                   Foreground="White"
+                                                   />
+                                        
+                                        <Line       x:Name="CommentSeparator"
+                                                    Stroke="White"
+                                                    RelativePanel.Below="ContentTB"
+                                                    X2="800"
+                                                    Margin="100,5,100,5"/>
+
+
+
+                                    </RelativePanel>
+                                    
+                                </StackPanel>
+                                
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
 
         </StackPanel>
 
+        </ScrollViewer>
+        <StackPanel Grid.Row="2"
+                    Background="#FF333333"
+                    Orientation="Horizontal"
+                    Padding="60,0,60,0"
+                    >
+            <RelativePanel>
+                <ToggleButton Name="LikeButton"
+                         Style="{StaticResource ToggleButtonRevealStyle}"
+                         Height="auto" Width="auto"
+                         Content="Like" 
+                         Margin="5,5,5,0"
+                         Click="LikeButton_Click"
+                         CornerRadius="2"
+                         
+                         />
+                <HyperlinkButton x:Name="LikeCount"
+                           Content="Likes :"
+                           Height="auto"
+                           Width="auto"
+                           Margin="5,5,5,0"
+                           RelativePanel.RightOf="LikeButton"
+                            CornerRadius="2"
+                           />
+
+                <TextBox x:Name="CommandTextBox"
+                         BeforeTextChanging="CommandTextBox_BeforeTextChanging"                       
+                         PlaceholderText="Click Command option to expand."
+                         RelativePanel.RightOf="LikeCount"
+                         Margin="5,5,5,0"
+                         TextWrapping="Wrap"
+                         CornerRadius="2"
+                         Width="800"/>
+                
+                
+                <Button x:Name="CommandButton"
+                        Height="auto"
+                        Width="auto"
+                        Content="Command"
+                        Visibility="Visible"
+                        RelativePanel.RightOf="CommandTextBox"
+                        Click="CommandButton_Click"
+                        CornerRadius="2"
+                        Margin="5,5,5,0"/>
+                <Button x:Name="DragDownButton"
+                        RelativePanel.Below="CommandButton"
+                        FontFamily="Segoe MDL2 Assets"
+                        Content="&#xE0A1;"
+                        Margin="5,5,5,0"
+                        Click="DragDownButton_Click"
+                        CornerRadius="2"
+                        Visibility="Collapsed"/>
+                <Button x:Name="ReplyButton"
+                        Content="Reply"
+                        Height="auto"
+                        Width="auto"
+                        CornerRadius="2"
+                        Visibility="Collapsed"
+                        RelativePanel.RightOf="CommandTextBox"
+                        Margin="5,5,5,0"/>
+                <Button x:Name="Edit"
+                        FontFamily="Segoe MDL2 Assets"
+                        Width="auto"
+                        Height="auto"
+                        FontSize="18"
+                        Content="&#xE10C;"
+                        CornerRadius="2"
+                         Margin="5,5,5,0"
+                        
+                        RelativePanel.RightOf="CommandButton"
+                        />
+
+
+
+
+
+            </RelativePanel>
+            
+        </StackPanel>
     </Grid>
 
 

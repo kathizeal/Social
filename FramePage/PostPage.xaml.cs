@@ -81,8 +81,10 @@ namespace Social.FramePage
                     MySpLitView.IsPaneOpen = false;                    
                     SecondaryFrame.Navigate(typeof(AccountPage),CurrentUser);
                     break;
-                case "List":                    
+                case "List":
+
                     MySpLitView.IsPaneOpen = true;
+
                     break;
                 case "NewPost":
                     MySpLitView.IsPaneOpen = false;

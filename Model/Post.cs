@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,8 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Social.Model
 {
-    public class Post
+
+    public class Post: INotifyPropertyChanged
     {        
         public Post(string title, string content, string username,long userid)
         {
@@ -17,6 +19,7 @@ namespace Social.Model
             PostCreatedByUserId = userid;
             PostId = DateTime.Now.Ticks;
             CreatedTime = DateTime.UtcNow;
+            Likes = 0;
             
 
         }
@@ -28,9 +31,18 @@ namespace Social.Model
         public DateTime CreatedTime { get; set; }
        
         private List<Comment> _Comments =new List<Comment>();
-        public List<Comment> Comments { get { return _Comments; } set { _Comments = value; } }       
+        public List<Comment> Comments { get { return _Comments; } set { _Comments = value; OnPropertyChanged("Comments"); } } 
+        
         public int Likes { get; set; }
         private List<long> _LikedId = new List<long>();
         public List<long> LikedId { get{ return _LikedId; } set { _LikedId = value; } }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }
