@@ -30,6 +30,7 @@ namespace Social
       public static UserManager userManager = UserManager.GetInstance();
         public static PostManager postManager = PostManager.GetInstance();
         public static Frame MainFramePage;
+       
         public MainPage()
         {
             this.InitializeComponent();
@@ -46,5 +47,6 @@ namespace Social
                 MainFramePage.Navigate(typeof(PostPage));
             } 
         }
+       
     }
 }

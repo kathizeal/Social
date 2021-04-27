@@ -26,11 +26,14 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SecondaryPage : Page 
+    public sealed partial class SecondaryPage : Page
     {
         /*public Model.Post Post { get { return this.DataContext as Model.Post; } }*/
         Post CurrentPost;
         User CurrentUser;
+        Comment CurrentComment;
+
+
         private ObservableCollection<Comment> _PostComments;
         public ObservableCollection<Comment> PostComments { get { return this._PostComments; } }
         public SecondaryPage()
@@ -45,9 +48,9 @@ namespace Social.FramePage
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
-           
-            
+
+
+
             CurrentPost = (Post)e.Parameter;
             if (CurrentPost.Likes != 0)
             {
@@ -59,24 +62,29 @@ namespace Social.FramePage
 
                 }
             }
+            
             _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
+            
             Content.Text = CurrentPost.PostContent;
             Title.Text = CurrentPost.PostTitle;
-            Heading.Text= CurrentPost.PostTitle;
+            Heading.Text = CurrentPost.PostTitle;
             time.Text = CurrentPost.CreatedTime.ToString();
             Createdby.Text = "Created By: " + CurrentPost.PostCreatedByUserName;
-            if(CurrentPost.LikedId==null)
-            LikeCount.Content = "Likes :0";
+            if (CurrentPost.LikedId == null)
+                LikeCount.Content = "Likes :0";
             else
                 LikeCount.Content = "Likes :" + CurrentPost.Likes;
-            if (CurrentPost.Comments.Count==0)
+            if (CurrentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
+
             }
             else
             {
                 CommentStack.Visibility = Visibility.Visible;
+
             }
+
 
 
 
@@ -86,23 +94,23 @@ namespace Social.FramePage
 
         }
 
-       /* private void CommandTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-        {
+        /* private void CommandTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+         {
 
-           SecondRow.Height = new GridLength(550);
-            ThirdRow.Height = new GridLength(200);
-            CommandTextBox.Height = 180;
-            DragDownButton.Visibility = Visibility.Visible;
+            SecondRow.Height = new GridLength(550);
+             ThirdRow.Height = new GridLength(200);
+             CommandTextBox.Height = 180;
+             DragDownButton.Visibility = Visibility.Visible;
 
-        }*/
+         }*/
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
-           
-                MainPage.postManager.LikePost(CurrentPost, CurrentUser);
-                LikeCount.Content = "Likes :" + CurrentPost.Likes;
-                
-            
+
+            MainPage.postManager.LikePost(CurrentPost, CurrentUser);
+            LikeCount.Content = "Likes :" + CurrentPost.Likes;
+
+
         }
 
         private void DragDownButton_Click(object sender, RoutedEventArgs e)
@@ -110,28 +118,76 @@ namespace Social.FramePage
             DragDownButton.Visibility = Visibility.Collapsed;
             SecondRow.Height = new GridLength(650);
             ThirdRow.Height = new GridLength(35);
-            CommandTextBox.Height = 35;
-           
+            CommentTextBox.Height = 35;
+
         }
 
-        private void CommandTextBox_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+        private void CommentTextBox_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
         {
             SecondRow.Height = new GridLength(550);
             ThirdRow.Height = new GridLength(200);
-            CommandTextBox.Height = 180;
+            CommentTextBox.Height = 180;
             DragDownButton.Visibility = Visibility.Visible;
         }
 
-        private void CommandButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             SecondRow.Height = new GridLength(550);
             ThirdRow.Height = new GridLength(200);
-            CommandTextBox.Height = 180;
+            CommentTextBox.Height = 180;
             DragDownButton.Visibility = Visibility.Visible;
-             MainPage.postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommandTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+            MainPage.postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
             CommentStack.Visibility = Visibility.Visible;
-            this.Frame.Navigate(typeof(SecondaryPage),CurrentPost);
+            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
         }
+
+        private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+
+
+            ReplyButton.Visibility = Visibility.Visible;
+            Edit.Visibility = Visibility.Visible;
+            CommentButton.Visibility = Visibility.Collapsed;
+
+            CommentTextBox.Focus(FocusState.Programmatic);
+            CurrentComment = (Comment)e.ClickedItem;
+
+        }
+
+       private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            //MainPage.postManager.AddReply(CurrentPost, CurrentComment.CommentId, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, CurrentComment.CommentId));
+            MainPage.postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+            
+
+            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+
+        }
+
+       /* private ObservableCollection<Comment> Reply(long id)
+        {
+            ObservableCollection<Comment> CurrentReply = new ObservableCollection<Comment>();
+            foreach(var i in PostComments)
+            {
+                if(i.ParentCommentId==id)
+                {
+                    CurrentReply.Add(i);
+                }
+            }
+          
+            return;
+        }*/
+        
+
+
+
+
+
+        /*private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            //Comment currentComment = (Comment)e.ClickedItem;
+        }*/
     }
 
     

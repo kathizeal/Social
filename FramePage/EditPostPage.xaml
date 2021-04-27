@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="Social.FramePage.EditPostPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Social.FramePage"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#FF333333">
+        <StackPanel>
+            <TextBox x:Name="TitleBox"
+                     Header="Title"
+                     Width="auto"
+                     Height="100"
+                     PlaceholderText="Title of the Post"
+                     Margin="40" />
+            <TextBox x:Name="ContentBox"
+                     Header="Content"
+                     Width="auto"
+                     Height="300" 
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     PlaceholderText="Content of the Post"
+                     Margin="40"/>
+            <Button x:Name="CreateButton"
+                    Content="Edit" 
+                    CornerRadius="2"
+                    Click="EditButton_Click"
+                    HorizontalAlignment="Left"
+                    Margin="40,0,0,0"/>
+            <Button x:Name="CancelButton" 
+                    Content="Cancel" 
+                    CornerRadius="2" 
+                    Click="CancelButton_Click" 
+                    HorizontalAlignment="Left" 
+                    Margin="40,10,0,0"/>
+        </StackPanel>
+
+    </Grid>
+</Page>

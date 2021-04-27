@@ -5,63 +5,74 @@
     xmlns:local="using:Social.FramePage"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Social.Model"
+    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
 
-        <Grid>
-
+        <Grid >
             <Image Source="/Assets/blurbackground.jpg"
                    Stretch="Fill" />
+
             <ScrollViewer>
-                <StackPanel VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Margin="50">
-                    <RelativePanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
 
-                        <Ellipse Width="300"
-                                 Height="300"
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Top"
+                                HorizontalAlignment="Center"
+                                Margin="50"
+                                Grid.Column="0">
+                        
+                        <RelativePanel>
+
+                            <Ellipse Width="220"
+                                 Height="220"
                                  x:Name="Icon">
-                            <Ellipse.Fill>
-                                <ImageBrush  ImageSource="/Assets/male-03.png"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                                <Ellipse.Fill>
+                                    <ImageBrush  ImageSource="/Assets/male-03.png"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
 
-                        <StackPanel RelativePanel.Below="Icon">
-                            <RelativePanel>
+                            <StackPanel RelativePanel.Below="Icon">
+                                <RelativePanel>
 
 
-                                <TextBlock x:Name="UserNameBlock"
+                                    <TextBlock x:Name="UserNameBlock"
                                            FontSize="24"
                                            Foreground="Black" 
                                            Margin="0,10,10,0"/>
-                                <TextBlock x:Name="LastNameBlock"
+                                    <TextBlock x:Name="LastNameBlock"
                                            FontSize="24" 
                                            Foreground="Black"
                                            RelativePanel.Below="UserNameBlock"
                                            Margin="0,10,10,0"/>
-                                <TextBlock x:Name="GenderBlock"
+                                    <TextBlock x:Name="GenderBlock"
                                            FontSize="24"
                                            Foreground="Black" 
                                            RelativePanel.Below="LastNameBlock"
                                            Margin="0,10,10,0"/>
-                                <TextBlock x:Name="UserIDBlock"                                            
+                                    <TextBlock x:Name="UserIDBlock"                                            
                                            FontSize="24"
                                            Foreground="Black"
                                            Margin="0,10,10,0"
                                            RelativePanel.Below="GenderBlock"/>
-                                <TextBlock x:Name="EmailBlock"
+                                    <TextBlock x:Name="EmailBlock"
                                            FontSize="24"
                                            Foreground="Black"
                                            RelativePanel.Below="UserIDBlock"
                                            Margin="0,10,10,0"/>
-                                <TextBlock x:Name="BirthdayBlock"
+                                    <TextBlock x:Name="BirthdayBlock"
                                            FontSize="24"
                                            Foreground="Black"
                                            RelativePanel.Below="EmailBlock"
                                            Margin="0,10,10,0"/>
-                                <Button x:Name="SignOutButton"
+                                    <Button x:Name="SignOutButton"
                                         Content="Sign Out"
                                         Background="Blue"
                                         Foreground="Black"
@@ -70,10 +81,65 @@
                                         CornerRadius="20"
                                         Margin="40" 
                                         Click="SignOutButton_Click"/>
-                            </RelativePanel>
+                                </RelativePanel>
+                            </StackPanel>
+                        </RelativePanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Background="#FF333333">
+                        <TextBlock Text="Your Post" FontSize="20" HorizontalAlignment="Left" Margin="50,20,50,20" Foreground="White"/>
+                        <ListView x:Name="My_Post" ItemsSource="{x:Bind MyPost}" Grid.Column="1" ItemClick="MyPost_ItemClick" IsItemClickEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Post">
+                                <StackPanel>
+
+                                    <TextBlock x:Name="TitleCard"
+                                                   Text="{x:Bind PostTitle}"
+                                                   FontSize="20"
+                                                   Foreground="White"                                                   
+                                                   Margin="2"
+                                                    />
+
+                                    <TextBlock x:Name="ContentCard"
+                                                   Text="{x:Bind PostContent}"
+                                                   FontSize="15"
+                                                   Foreground="White"
+                                                   Margin="3,1,3,1"
+                                                   Height="35"    
+                                                  
+                                                   />
+                                    <TextBlock x:Name="TimeCard"
+                                                   Text="{x:Bind CreatedTime}"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Right"
+                                                   />
+                                    <Line
+                                                    Stroke="White"
+                                                    X2="500"
+                                                    Margin="1"/>
+
+
+                                </StackPanel>
+
+                            </DataTemplate>
+                            
+                            
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Background="#FF333333" BorderBrush="Gray" BorderThickness="0.4,0,0,0">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,20,20">
+                        <HyperlinkButton x:Name="Edit" Content="Edit Post" Click="Edit_Click"/>
+                        <HyperlinkButton x:Name="Delete"   Content="Delete Post" Click="Delete_Click" />
+                            <TextBlock Text="SocioTalk enables you to post your feed and you can manage your feed in account page. Feel free to use it to have a Secure and Safety Communication."
+                                       TextWrapping="WrapWholeWords"
+                                       Margin="0,50,0,0"/>
                         </StackPanel>
-                    </RelativePanel>
-                </StackPanel>
+
+                    </StackPanel>
+                    
+                </Grid>
+                
+                
             </ScrollViewer>
 
 

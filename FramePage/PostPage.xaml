@@ -5,7 +5,7 @@
     xmlns:local="using:Social.FramePage"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:data="using:Social.Model" xmlns:local1="using:Social.Control"
+    xmlns:data="using:Social.Model"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 

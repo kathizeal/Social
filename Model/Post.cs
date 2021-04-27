@@ -31,8 +31,9 @@ namespace Social.Model
         public DateTime CreatedTime { get; set; }
        
         private List<Comment> _Comments =new List<Comment>();
-        public List<Comment> Comments { get { return _Comments; } set { _Comments = value; OnPropertyChanged("Comments"); } } 
-        
+        public List<Comment> Comments { get { return _Comments; } set { _Comments = value; OnPropertyChanged("Comments"); } }
+       /* private List<Comment> _Reply = new List<Comment>();
+        public List<Comment> Reply { get { return _Reply; } set { _Reply = value; } }*/
         public int Likes { get; set; }
         private List<long> _LikedId = new List<long>();
         public List<long> LikedId { get{ return _LikedId; } set { _LikedId = value; } }

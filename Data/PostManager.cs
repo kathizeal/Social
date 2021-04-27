@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using Social.Model;
 
 namespace Social.Data
 {
-    public sealed class PostManager
+    public sealed class PostManager  
     {
         private List<Post> _Posts = new List<Post>();
         private static PostManager _Instance = null;
@@ -36,9 +36,9 @@ namespace Social.Data
         }
 
         public List<Post> ViewAllPost() { return _Posts; }
-        public List<Post> ViewPost(long postid)
+        public Post ViewPost(long postid)
         {
-            return _Posts.Where(post => post.PostId == postid).ToList();
+            return _Posts.Where(post => post.PostId == postid) as Post;
         }
         public List<Post> ViewMyPost(long userid)
         {
@@ -53,10 +53,29 @@ namespace Social.Data
         {
             return post.Comments.Where(comments => comments.PostId == postid).ToList();
         }
-        public void AddReply(Post post, long parentCommentId,Comment comment)
+        public Comment GetComment(List<Comment> comments,Comment ParentComment)
         {
-            comment.ParentCommentId = parentCommentId;
-            post.Comments.Add(comment);          
+            //return comments.Where(_comment => _comment.CommentId == ParentComment.CommentId) as Comment;
+            foreach(var i in comments)
+            {
+                if (i.CommentId == ParentComment.CommentId)
+                    return i;
+            }
+            return ParentComment;
+        }
+        public void AddReply(Post post, Comment parentComment ,Comment comment)
+        {
+            comment.ParentCommentId = parentComment.CommentId;
+            /*comment.Reply.Add(comment);*/
+            /*post.Comments.Add(comment);*/
+            /*post.Reply.Add(comment);*/
+            Comment reply;
+            reply = GetComment(post.Comments, parentComment);
+            post.Comments.Remove(reply);
+            reply.Reply.Add(comment);
+           
+            post.Comments.Add(reply);
+
 
         }        
         public void LikePost(Post post,User user)
@@ -67,6 +86,22 @@ namespace Social.Data
                 post.LikedId.Add(user.UserId);
             }
         }
+        public Post Edit(Post post)
+        {
+
+            Post newPost = new Post(post.PostTitle, post.PostContent, post.PostCreatedByUserName, post.PostCreatedByUserId);
+            newPost.CreatedTime = post.CreatedTime;
+            newPost.PostId = post.PostId;
+            newPost.Likes = post.Likes;
+            newPost.Comments = post.Comments;
+            newPost.LikedId = post.LikedId;
+            return newPost;
+        }
+        public void RemoveComment(Post post,Comment comment)
+        {
+            post.Comments.Remove(comment);
+        }
+       
     }
 
 }

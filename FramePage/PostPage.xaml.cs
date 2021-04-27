@@ -33,35 +33,44 @@ namespace Social.FramePage
     {
         public static Frame SecondaryFrame;
         User CurrentUser;
-        private ObservableCollection<Post> _postList;  
+       
+        private  ObservableCollection<Post> _PostList;  
         public  ObservableCollection<Post> PostList
         {
-            get { return this._postList; }
+            get { return _PostList; }
+            
+          
         }
         public PostPage()
         {
             this.InitializeComponent();
-            _postList= new ObservableCollection<Post>(MainPage.postManager.ViewAllPost());
+            
             SecondaryFrame = SecondFrame;
-            NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;        
+            NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
+            
 
         }
         
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            
             // Instead of hard coded items, the data could be pulled 
             // asynchronously from a database or the internet.
-           /* PostList.Add(new Post("User1 Post", "This is my First Post", "user1", 12345689, "/Assets/male-01.png"));
-            PostList.Add(new Post("User2 Post", "This is my Second Post", "user2", 12345689, "/Assets/male-02.png"));
-            PostList.Add(new Post("User3 Post", "This is my third Post", "user3", 12345689, "/Assets/male-03.png"));*/
+            /* PostList.Add(new Post("User1 Post", "This is my First Post", "user1", 12345689, "/Assets/male-01.png"));
+             PostList.Add(new Post("User2 Post", "This is my Second Post", "user2", 12345689, "/Assets/male-02.png"));
+             PostList.Add(new Post("User3 Post", "This is my third Post", "user3", 12345689, "/Assets/male-03.png"));*/
+
+
+            _PostList = new ObservableCollection<Post>(MainPage.postManager.ViewAllPost());
+           
             object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
             var user = JsonConvert.DeserializeObject<User>(value.ToString());
             CurrentUser = user;          
             
 
 
-        }
+        }       
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {

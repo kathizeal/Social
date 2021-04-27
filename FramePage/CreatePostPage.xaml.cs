@@ -33,6 +33,8 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+           
             CurrentUser = (User)e.Parameter;
             
 
