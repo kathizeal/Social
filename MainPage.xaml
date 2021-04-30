@@ -5,23 +5,17 @@
     xmlns:local="using:Social"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Social.Model"
    
     
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-    <Grid Background="Silver">
-
+    <Grid>
         
-                <Frame Name="MyFrame">
-            
+        <Frame x:Name="MainFrame">
 
-                </Frame>
-            
-
-        
-       
-
+        </Frame>
     </Grid>
 </Page>

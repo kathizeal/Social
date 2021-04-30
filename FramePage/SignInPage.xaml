@@ -6,113 +6,149 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    
+    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style x:Key="InvisibleButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
 
-        
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
-    <Grid>
-        <Image Source="/Assets/Frontcover.jpg"
-               Stretch="Fill"/>
-        <ScrollViewer>
-            <Grid Name="InDisplay"
-                  Background="LightGray"
-                  CornerRadius="20">
-                     <Grid.RowDefinitions>
-                           <RowDefinition   Height="auto"/>
-                           <RowDefinition Height="auto"/>
-                     </Grid.RowDefinitions>              
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Name="IntroPart" >
-                            
-                
-                            <StackPanel Name="IntroPartStack"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                                <TextBlock
-                                        Text="SocioTalk" 
-                                        FontSize="40" 
-                                        FontWeight="Bold"                           
-                                        Foreground="BlueViolet"                     
-                                        Margin="0,0,0,0"/>
-                                <TextBlock
-                                        Text="Connect in to feel Safe and Secure"
-                                        Margin="0,0,0,0"
-                                        Foreground="black"/>
 
-                                <Ellipse
-                                        Margin="20,0,20,0"
-                                        Height="150"
-                                        Width="150">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource="/Assets/plus--V1.png" />
-                                        </Ellipse.Fill>
 
-                                </Ellipse>
-                                <TextBlock Text="Quick Sign in"
-                                           Foreground="Black"
-                                           FontSize="20" 
-                                           HorizontalAlignment="Center" 
-                                           Height="44" 
-                                           Margin="0,0,0,20"/>
-                                <HyperlinkButton x:Name="SignUpButton" 
-                                                 Content="Click Here to Create a new Account"
-                                                 FontSize="14" 
-                                                 Foreground="Blue" 
-                                                 Margin="0,0,0,20"
-                                                 Click="HyperlinkButton_Click" />
-                    </StackPanel>
-                       
-                    </Grid>
-                    <Grid Name="SignInPart"
-                          Width="300" 
-                          Height="300"
-                          HorizontalAlignment="Center">
-                        <StackPanel>
-                            <TextBox x:Name="UserIdBlock"
-                                     Width="250"
-                                     PlaceholderText="User-Id" 
-                                     FontSize="20"
-                                     Height="40"
-                                     HorizontalAlignment="Center" 
-                                     CornerRadius="10" 
-                                     Margin="5"/>
-                            <PasswordBox x:Name="PasswordBlock"   
-                                         Width="250" 
-                                         PlaceholderText="password" 
-                                         IsPasswordRevealButtonEnabled="True"
-                                         PasswordRevealMode="Peek"  
-                                         FontSize="20"
-                                         Height="40" 
-                                         HorizontalAlignment="Center" 
-                                         CornerRadius="10"/>
-                            <Button Content="Sign in" 
-                                    Foreground="Black" 
-                                    HorizontalAlignment="Center" 
-                                    CornerRadius="20" 
-                                    Margin="5"  
-                                    Width="150" 
-                                    Background="Blue"
-                                    Click="Button_Click"
-                                    FontSize="20"/>
-                            <HyperlinkButton Content="Forgot password" 
-                                             FontSize="10" 
-                                             HorizontalAlignment="Center"/>
-                            <TextBlock Text="______________________" 
-                                       HorizontalAlignment="Center"   
-                                       Foreground="black"/>
-                            <HyperlinkButton Content="Need any help ?" 
-                                             FontSize="10" 
-                                             HorizontalAlignment="Center"/>
 
-                        </StackPanel>
-                    </Grid>      
-            </Grid>
-        </ScrollViewer>
-        <VisualStateManager.VisualStateGroups>
+
+    <Grid >
+        <Image Source="/Assets/white.jpg"
+                  Stretch="Fill"/>
+
+
+        <Grid 
+            
+            Width="600"
+            Height="400"
+            Background="White"
+            
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            
+            CornerRadius="10"
+
+            
+            >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="SignInPart"/>
+
+
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                       Orientation="Vertical"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Margin="10,5,10,5" >
+                <TextBlock
+                          Text="SocioTalk" 
+                          FontSize="30" 
+                          FontWeight="Bold"                            
+                          Foreground="BlueViolet"                     
+                          Margin="5,5,5,5" FontFamily="Arial"/>
+
+
+                <TextBox 
+                        x:Name="UserIdBlock"
+                        Width="240"
+                        PlaceholderText="User-Id" 
+                        FontSize="18"
+                        Height="40"
+                        Background="WhiteSmoke"
+                        PlaceholderForeground="Gray"
+                        
+                        Foreground="Black"
+                         
+                        BorderBrush="Black"
+                    
+                        BorderThickness="1"
+                        HorizontalAlignment="Center"
+                        
+
+                        Margin="5"   />
+
+                <PasswordBox
+                    
+                            x:Name="PasswordBlock"   
+                            Width="240" 
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            PlaceholderText=" Password"
+                            IsPasswordRevealButtonEnabled="True"
+                            PasswordRevealMode="Peek" 
+                            Foreground="Black"
+                            FontSize="18"   
+                            Padding="5"
+                            Height="40" 
+                            Margin="5"
+                            Background="WhiteSmoke"
+                            HorizontalAlignment="Center" 
+                            >
+                                <PasswordBox.Resources>
+                                    <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="Gray"/>
+                                    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="Gray"/>
+                                </PasswordBox.Resources>
+
+
+                </PasswordBox>
+                <Button 
+                        Content="Sign in" 
+                        Style="{ThemeResource Sign}"                                                   
+                        Foreground="WhiteSmoke"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        HorizontalAlignment="Center" 
+                        CornerRadius="2" 
+                        Margin="5"  
+                        Width="240" 
+                        Background="MediumSlateBlue"
+                        Click="Button_Click"
+                        FontSize="20"/>
+                <Button 
+                                Content="Forgot password" 
+                                Style="{ThemeResource Sign}"
+                                Foreground="MediumSlateBlue"
+                                FontSize="10" 
+                                HorizontalAlignment="Center"/>
+                <TextBlock
+                           Text="_____________________________" 
+                           HorizontalAlignment="Center"
+                           FontSize="20"
+                           Width="240"
+                           Foreground="MediumTurquoise"/>
+                <Button
+                                 x:Name="SignUpButton"                               
+                                 Content="Click Here to Create a new Account"
+                                 FontSize="14" 
+                                 Foreground="MediumSlateBlue"
+                                 Style="{ThemeResource Sign}" 
+                                 HorizontalAlignment="Center"
+                                 Click="HyperlinkButton_Click"  />
+
+
+            </StackPanel>
+
+        </Grid>
+
+
+
+
+        <!--  <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="NarrowState">
                     <VisualState.StateTriggers>
@@ -137,6 +173,6 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </Page>

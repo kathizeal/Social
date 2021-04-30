@@ -23,9 +23,11 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CreatePostPage : Page
+   /* public sealed partial class CreatePostPage : Page
     {
         User CurrentUser;
+       
+        PostManager postManager = PostManager.GetInstance();
         public CreatePostPage()
         {
             this.InitializeComponent();
@@ -43,13 +45,53 @@ namespace Social.FramePage
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
 
-            MainPage.postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
-            MainPage.MainFramePage.Navigate(typeof(PostPage));
+            postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
+            // MainPage.MainFramePage.Navigate(typeof(PostPage));
+            //Frame.Navigate(typeof(PostPage));
+            
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.MainFramePage.Navigate(typeof(PostPage));
+            // MainPage.MainFramePage.Navigate(typeof(PostPage));
+            Frame.GoBack();
+            //Frame.Navigate(typeof(PostPage));
+        }
+    }*/
+    public sealed partial class CreatePostPage : Page
+    {
+        User CurrentUser;
+
+        PostManager postManager = PostManager.GetInstance();
+        public CreatePostPage()
+        {
+            this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+
+            CurrentUser = (User)e.Parameter;
+
+
+        }
+        private void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
+            // MainPage.MainFramePage.Navigate(typeof(PostPage));
+            this.Frame.Navigate(typeof(PostPage));
+            //Frame.Navigate(typeof(MainPage));
+
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            // MainPage.MainFramePage.Navigate(typeof(PostPage));
+            //this.Frame.GoBack();
+            this.Frame.Navigate(typeof(PostPage));
+
         }
     }
 }

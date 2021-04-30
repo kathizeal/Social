@@ -26,25 +26,182 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /* public sealed partial class SecondaryPage : Page
+     {
+         //public Model.Post Post { get { return this.DataContext as Model.Post; } }
+         Post CurrentPost;
+         User CurrentUser;
+         Comment CurrentComment;
+         PostManager postManager = PostManager.GetInstance();
+
+
+         private ObservableCollection<Comment> _PostComments;
+         public ObservableCollection<Comment> PostComments { get { return this._PostComments; } }
+         public SecondaryPage()
+         {
+             this.InitializeComponent();
+             UserManager userManager = UserManager.GetInstance();
+             CurrentUser = userManager.Current();
+
+
+
+         }
+         protected override void OnNavigatedTo(NavigationEventArgs e)
+         {
+
+
+
+             CurrentPost = (Post)e.Parameter;
+             if (CurrentPost.Likes != 0)
+             {
+                 foreach (var i in CurrentPost.LikedId)
+                 {
+                     if (i == CurrentUser.UserId)
+                         LikeButton.Background = (SolidColorBrush)Resources["BlueColor"];
+
+
+                 }
+             }
+
+             _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
+
+             Content.Text = CurrentPost.PostContent;
+             //Title.Text = CurrentPost.PostTitle;
+             Heading.Text = CurrentPost.PostTitle;
+             time.Text = CurrentPost.CreatedTime.ToString();
+             Createdby.Text = "Created By: " + CurrentPost.PostCreatedByUserName;
+             if (CurrentPost.LikedId == null)
+                 LikeCount.Content = "0";
+             else
+                 LikeCount.Content =  CurrentPost.Likes;
+             if (CurrentPost.Comments.Count == 0)
+             {
+                 CommentStack.Visibility = Visibility.Collapsed;
+
+             }
+             else
+             {
+                 CommentStack.Visibility = Visibility.Visible;
+
+             }
+
+
+
+
+
+
+
+
+         }
+
+         /* private void CommandTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+          {
+
+             SecondRow.Height = new GridLength(550);
+              ThirdRow.Height = new GridLength(200);
+              CommandTextBox.Height = 180;
+              DragDownButton.Visibility = Visibility.Visible;
+
+          }*/
+
+    /* private void LikeButton_Click(object sender, RoutedEventArgs e)
+     {
+
+         postManager.LikePost(CurrentPost, CurrentUser);
+         LikeCount.Content =   CurrentPost.Likes;
+
+
+     }
+
+     private void DragDownButton_Click(object sender, RoutedEventArgs e)
+     {
+         DragDownButton.Visibility = Visibility.Collapsed;
+         SecondRow.Height = new GridLength(650);
+         ThirdRow.Height = new GridLength(35);
+         CommentTextBox.Height = 35;
+
+     }
+
+     private void CommentTextBox_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+     {
+        /* SecondRow.Height = new GridLength(550);
+         ThirdRow.Height = new GridLength(200);
+         CommentTextBox.Height = 180;
+         DragDownButton.Visibility = Visibility.Visible;
+     }
+     */
+    /* private void CommentButton_Click(object sender, RoutedEventArgs e)
+     {
+       /*  SecondRow.Height = new GridLength(550);
+         ThirdRow.Height = new GridLength(200);
+        CommentTextBox.Height = 180;
+         DragDownButton.Visibility = Visibility.Visible;
+         postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+         CommentStack.Visibility = Visibility.Visible;
+         this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+     }
+
+     private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
+     {
+
+
+
+         ReplyButton.Visibility = Visibility.Visible;
+         Edit.Visibility = Visibility.Visible;
+         CommentButton.Visibility = Visibility.Collapsed;
+
+         CommentTextBox.Focus(FocusState.Programmatic);
+         CurrentComment = (Comment)e.ClickedItem;
+
+     }
+
+    private void ReplyButton_Click(object sender, RoutedEventArgs e)
+     {
+         //MainPage.postManager.AddReply(CurrentPost, CurrentComment.CommentId, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, CurrentComment.CommentId));
+         postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+
+
+         this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+
+     }
+     */
+    /* private ObservableCollection<Comment> Reply(long id)
+     {
+         ObservableCollection<Comment> CurrentReply = new ObservableCollection<Comment>();
+         foreach(var i in PostComments)
+         {
+             if(i.ParentCommentId==id)
+             {
+                 CurrentReply.Add(i);
+             }
+         }
+
+         return;
+     }*/
+
+
+
+
+
+
+    /*private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        //Comment currentComment = (Comment)e.ClickedItem;
+    }
+}*/
     public sealed partial class SecondaryPage : Page
     {
-        /*public Model.Post Post { get { return this.DataContext as Model.Post; } }*/
         Post CurrentPost;
         User CurrentUser;
         Comment CurrentComment;
-
-
+        PostManager postManager = PostManager.GetInstance();
+        UserManager userManager = UserManager.GetInstance();
         private ObservableCollection<Comment> _PostComments;
         public ObservableCollection<Comment> PostComments { get { return this._PostComments; } }
         public SecondaryPage()
         {
             this.InitializeComponent();
-            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
-            var user = JsonConvert.DeserializeObject<User>(value.ToString());
-            CurrentUser = user;
-            /**/
-
-
+            CurrentUser = userManager.Current();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -52,6 +209,7 @@ namespace Social.FramePage
 
 
             CurrentPost = (Post)e.Parameter;
+            _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
             if (CurrentPost.Likes != 0)
             {
                 foreach (var i in CurrentPost.LikedId)
@@ -62,18 +220,15 @@ namespace Social.FramePage
 
                 }
             }
-            
-            _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
-            
             Content.Text = CurrentPost.PostContent;
-            Title.Text = CurrentPost.PostTitle;
+            /*Title.Text = CurrentPost.PostTitle;*/
             Heading.Text = CurrentPost.PostTitle;
             time.Text = CurrentPost.CreatedTime.ToString();
             Createdby.Text = "Created By: " + CurrentPost.PostCreatedByUserName;
             if (CurrentPost.LikedId == null)
-                LikeCount.Content = "Likes :0";
+                LikeCount.Content = "0";
             else
-                LikeCount.Content = "Likes :" + CurrentPost.Likes;
+                LikeCount.Content = CurrentPost.Likes;
             if (CurrentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
@@ -86,61 +241,15 @@ namespace Social.FramePage
             }
 
 
-
-
-
-
-
-
         }
-
-        /* private void CommandTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
-         {
-
-            SecondRow.Height = new GridLength(550);
-             ThirdRow.Height = new GridLength(200);
-             CommandTextBox.Height = 180;
-             DragDownButton.Visibility = Visibility.Visible;
-
-         }*/
-
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
 
-            MainPage.postManager.LikePost(CurrentPost, CurrentUser);
-            LikeCount.Content = "Likes :" + CurrentPost.Likes;
+            postManager.LikePost(CurrentPost, CurrentUser);
+            LikeCount.Content = CurrentPost.Likes;
 
 
         }
-
-        private void DragDownButton_Click(object sender, RoutedEventArgs e)
-        {
-            DragDownButton.Visibility = Visibility.Collapsed;
-            SecondRow.Height = new GridLength(650);
-            ThirdRow.Height = new GridLength(35);
-            CommentTextBox.Height = 35;
-
-        }
-
-        private void CommentTextBox_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
-        {
-            SecondRow.Height = new GridLength(550);
-            ThirdRow.Height = new GridLength(200);
-            CommentTextBox.Height = 180;
-            DragDownButton.Visibility = Visibility.Visible;
-        }
-
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
-        {
-            SecondRow.Height = new GridLength(550);
-            ThirdRow.Height = new GridLength(200);
-            CommentTextBox.Height = 180;
-            DragDownButton.Visibility = Visibility.Visible;
-            MainPage.postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
-            CommentStack.Visibility = Visibility.Visible;
-            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
-        }
-
         private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
         {
 
@@ -154,42 +263,28 @@ namespace Social.FramePage
             CurrentComment = (Comment)e.ClickedItem;
 
         }
-
-       private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            /*  SecondRow.Height = new GridLength(550);
+              ThirdRow.Height = new GridLength(200);
+             CommentTextBox.Height = 180;
+              DragDownButton.Visibility = Visibility.Visible;*/
+            postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+            CommentStack.Visibility = Visibility.Visible;
+            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+        }
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             //MainPage.postManager.AddReply(CurrentPost, CurrentComment.CommentId, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, CurrentComment.CommentId));
-            MainPage.postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
-            
+            postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+
 
             this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
 
         }
 
-       /* private ObservableCollection<Comment> Reply(long id)
-        {
-            ObservableCollection<Comment> CurrentReply = new ObservableCollection<Comment>();
-            foreach(var i in PostComments)
-            {
-                if(i.ParentCommentId==id)
-                {
-                    CurrentReply.Add(i);
-                }
-            }
-          
-            return;
-        }*/
-        
-
-
-
-
-
-        /*private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            //Comment currentComment = (Comment)e.ClickedItem;
-        }*/
     }
 
-    
-   
+
+
 }

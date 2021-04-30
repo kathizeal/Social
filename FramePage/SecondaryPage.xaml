@@ -13,21 +13,22 @@
         
 
     </Page.Resources>
-    
-    
+
+
     <Grid Background="#FF333333" x:Name="PostDetails">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition x:Name="SecondRow" Height="650"/>
             <RowDefinition x:Name="ThirdRow" Height="50"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0"
                     VerticalAlignment="Center"
                     Margin="20,0,0,0">
             <RelativePanel>
                 <Ellipse x:Name="Ellipiseicon"
+                         Margin="0,6,0,5"
                      Width="40" 
                      Height="40">
                     <Ellipse.Fill>
@@ -36,40 +37,35 @@
                 </Ellipse>
                 <TextBlock x:Name="Heading"
                        Foreground="White" 
-                       FontSize="24" 
+                       FontSize="20" 
                        Margin="20,0,0,0"
                        RelativePanel.RightOf="Ellipiseicon"/>
-                <TextBlock x:Name="time"
-                           Foreground="White" 
-                           FontSize="12"
-                           Margin="20,0,0,0"
-                           RelativePanel.Below="Heading"
-                           RelativePanel.RightOf="Ellipiseicon"/>
+
                 <TextBlock x:Name="Createdby"
                            Foreground="White"
                            FontSize="12"
                            Margin="20,0,0,0"
-                           RelativePanel.Below="time" 
+                           RelativePanel.Below="Heading" 
+                           RelativePanel.RightOf="Ellipiseicon"/>
+                <TextBlock x:Name="time"
+                           Foreground="White" 
+                           FontSize="12"
+                           Margin="20,0,0,0"
+                           RelativePanel.Below="Createdby"
                            RelativePanel.RightOf="Ellipiseicon"/>
 
             </RelativePanel>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
-        <StackPanel Grid.Row="1"
+            <StackPanel Grid.Row="1"
                     Margin="50,10,0,0"
                     Padding="50,50,50,0">
 
-            <TextBlock x:Name="Title"
-                       Foreground="White"
-                       FontSize="22"
-                       Margin="5,20,20,20"
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="---------------------------------------------"
-                       HorizontalAlignment="Center"/>
-            <TextBlock x:Name="Content"
+                <TextBlock x:Name="Content"
                        Foreground="White"
                        FontSize="18"
                        Margin="5,20,20,20"
+                       TextAlignment="Justify"
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"/>
                 <StackPanel x:Name="CommentStack" Visibility="Collapsed">
@@ -79,15 +75,15 @@
                                                     
                                                     X2="1000"
                                                     Margin="20,10,20,10"/>
-                    <ListView Name="CommentList" ItemsSource="{x:Bind PostComments}" ItemClick="CommentList_ItemClick" IsItemClickEnabled="True">
+                    <ListView Name="CommentList" ItemsSource="{x:Bind PostComments}" ItemClick="CommentList_ItemClick" IsItemClickEnabled="True" Foreground="{ThemeResource SystemAltMediumColor}">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Comment">
                                 <StackPanel Name="Inside">
                                     <StackPanel Orientation="Horizontal">
-                                    
-                                    
-                                    
-                                        
+
+
+
+
                                         <Ellipse x:Name="CommenterIcon"
                                                  HorizontalAlignment="Left"
                                                  Width="20" 
@@ -99,35 +95,38 @@
                                         <TextBlock x:Name="HeadingTB"
                                                    HorizontalAlignment="Left"
                                                    Text="{x:Bind CommenterName}"
-                                                   Foreground="White" 
+                                                    
                                                    FontSize="14" 
                                                    Margin="20,0,0,0"
                                                    />
-                                        <TextBlock x:Name="CommentTimeTB"
-                                                   Text="{x:Bind CreatedTime}"
-                                                   Margin="700,0,0,0"
-                                                   HorizontalAlignment="Right"/>
+
                                     </StackPanel>
                                     <RelativePanel>
                                         <TextBlock x:Name="ContentTB"
                                                    Text="{x:Bind CommentContent}"
                                                    TextWrapping="WrapWholeWords"
                                                    Margin="50,10,0,5"
-                                                   Foreground="White"
+                                                   
                                                    />
-                                        
+                                        <TextBlock x:Name="CommentTimeTB"
+                                                                       RelativePanel.Below="ContentTB"
+                                                                       Text="{x:Bind CreatedTime}"
+                                                                       Margin="50,5,0,0"
+                                                                       FontSize="10"
+                                                                       HorizontalAlignment="Right"/>
+
 
 
                                         <Line       x:Name="CommentSeparator"
-                                                    Stroke="White"
-                                                    RelativePanel.Below="ContentTB"
+                                                    Style="{ThemeResource ColorPickerBorderStyle}"
+                                                    RelativePanel.Below="CommentTimeTB"
                                                     X2="800"
                                                     Margin="100,5,100,5"/>
 
 
 
                                     </RelativePanel>
-                                        <StackPanel Name="ReplyStack"  Margin="50,0,50,0" >
+                                    <StackPanel Name="ReplyStack"  Margin="50,0,50,0" >
                                         <!--<TextBlock Text="Reply Section"/>
                                         <Line x:Name="ReplySeparator"
                                               Stroke="White"
@@ -149,14 +148,11 @@
                                                             <TextBlock x:Name="HeadingTB"
                                                                        HorizontalAlignment="Left"
                                                                        Text="{x:Bind CommenterName}"
-                                                                       Foreground="White" 
+                                                                        
                                                                        FontSize="14" 
                                                                        Margin="20,0,0,0"
                                                                        />
-                                                            <TextBlock x:Name="CommentTimeTB"
-                                                                       Text="{x:Bind CreatedTime}"
-                                                                       Margin="700,0,0,0"
-                                                                       HorizontalAlignment="Right"/>
+
 
 
                                                         </StackPanel>
@@ -165,16 +161,23 @@
                                                                        Text="{x:Bind CommentContent}"
                                                                        TextWrapping="WrapWholeWords"
                                                                        Margin="50,10,0,5"
-                                                                       Foreground="White"
+                                                                       
                                                                        />
+                                                            <TextBlock x:Name="CommentTimeTB"
+                                                                       RelativePanel.Below="ContentTB"
+                                                                       Text="{x:Bind CreatedTime}"
+                                                                       Margin="50,5,0,0"
+                                                                       FontSize="10"
+                                                                       HorizontalAlignment="Right"/>
 
 
 
                                                             <Line x:Name="CommentSeparator"
-                                                                  Stroke="White"
-                                                                  RelativePanel.Below="ContentTB"
+                                                                  Style="{ThemeResource ColorPickerBorderStyle}"
+                                                                  RelativePanel.Below="CommentTimeTB"
                                                                   X2="800"
                                                                   Margin="100,5,100,5"/>
+
 
 
 
@@ -185,20 +188,21 @@
 
                                             </ListView.ItemTemplate>
                                         </ListView>
-                                        </StackPanel>
+                                    </StackPanel>
 
                                 </StackPanel>
-                                
+
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
 
-        </StackPanel>
+            </StackPanel>
 
         </ScrollViewer>
         <StackPanel Grid.Row="2"
                     Background="#FF333333"
+                   
                     Orientation="Horizontal"
                     Padding="60,0,60,0"
                     >
@@ -206,14 +210,16 @@
                 <ToggleButton Name="LikeButton"
                          Style="{StaticResource ToggleButtonRevealStyle}"
                          Height="auto" Width="auto"
-                         Content="Like" 
+                         FontFamily="Segoe UI Symbol"
+                         Content="&#x1F44D;" 
                          Margin="5,5,5,0"
+                         
                          Click="LikeButton_Click"
                          CornerRadius="2"
                          
                          />
                 <HyperlinkButton x:Name="LikeCount"
-                           Content="Likes :"
+                           
                            Height="auto"
                            Width="auto"
                            Margin="5,5,5,0"
@@ -222,35 +228,27 @@
                            />
 
                 <TextBox x:Name="CommentTextBox"
-                         BeforeTextChanging="CommentTextBox_BeforeTextChanging"                       
+                                                
                          PlaceholderText="Click Comment option to expand."
                          RelativePanel.RightOf="LikeCount"
                          Margin="5,5,5,0"
+                         Height="40"
                          TextWrapping="Wrap"
-                         CornerRadius="2"
+                         CornerRadius="2"                
                         
-                         
-                         
                          Width="800"/>
-                
-                
+
+
                 <Button x:Name="CommentButton"
                         Height="auto"
                         Width="auto"
-                        Content="Command"
+                        Content="Comment"   
                         
                         RelativePanel.RightOf="CommentTextBox"
                         Click="CommentButton_Click"
                         CornerRadius="2"
                         Margin="5,5,5,0"/>
-                <Button x:Name="DragDownButton"
-                        RelativePanel.Below="CommentButton"
-                        FontFamily="Segoe MDL2 Assets"
-                        Content="&#xE0A1;"
-                        Margin="5,5,5,0"
-                        Click="DragDownButton_Click"
-                        CornerRadius="2"
-                        Visibility="Collapsed"/>
+              
                 <Button x:Name="ReplyButton"
                         Content="Reply"
                         Height="auto"
@@ -279,7 +277,7 @@
 
 
             </RelativePanel>
-            
+
         </StackPanel>
     </Grid>
 

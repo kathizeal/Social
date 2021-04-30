@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Social.Model;
+using Windows.Storage;
 
 namespace Social.Data
 {
@@ -70,6 +72,34 @@ namespace Social.Data
                 
             }
             return "No User found";
+        }
+       
+        public bool State()
+        {
+            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
+            if (value==null)
+            return false;
+            else 
+            return true;
+        }
+
+        public void  SignedUser(User user)
+        {
+            string json = JsonConvert.SerializeObject(user);
+            ApplicationData.Current.LocalSettings.Values["UserClass"] = json;
+           
+            
+        }
+        public void SignOut()
+        {
+            ApplicationData.Current.LocalSettings.Values["UserClass"] = null;
+            _CurrentUser = null;
+        }
+        public User Current()
+        {
+            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
+            var user = JsonConvert.DeserializeObject<User>(value.ToString());
+            return user;
         }
 
     }

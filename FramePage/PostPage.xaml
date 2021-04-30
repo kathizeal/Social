@@ -10,20 +10,22 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-    <Grid  >
+   <Grid >
 
-        <NavigationView PaneDisplayMode="Auto" OpenPaneLength="120" Name="NavViewPostPage" 
+        <NavigationView 
+            PaneDisplayMode="Auto" OpenPaneLength="120" Name="NavViewPostPage" 
                         SelectionChanged="NavViewPostPage_SelectionChanged"
-                        Loaded="NavViewPostPage_Loaded"                                              
+                        Loaded="NavViewPostPage_Loaded"
+                        
                         >
             <NavigationView.MenuItems>
 
                 <NavigationViewItem Icon="Contact" Content="Account" Tag="Account"/>
-                <NavigationViewItem Icon="List" Content="List" Tag="List"/>
+                <NavigationViewItem Icon="List" Content="List" Tag="List" Tapped="NavigationViewItem_Tapped"/>
                 <NavigationViewItem Icon="Add" Content="New Post" Tag="NewPost"/>
 
             </NavigationView.MenuItems>
-            <Grid>
+            <Grid >
                 <SplitView x:Name="MySpLitView"
                            DisplayMode="Inline"
                            IsPaneOpen="True"
@@ -31,57 +33,82 @@
                     <SplitView.Pane>
 
                         <ScrollViewer>
-                        <StackPanel Background="#FF333333"
+                            <StackPanel 
                                     x:Name="List"
                                     BorderBrush="Silver"
+                                    Background="#FF333333"
                                     BorderThickness="1">
-                            <TextBlock Text="All List"/>
-                            <ListView x:Name="ClickList"
+                                <TextBlock Text="All List" FontSize="28" HorizontalAlignment="Center"/>
+                                <ListView x:Name="ClickList"
                                       ItemsSource="{x:Bind PostList}"
                                       ItemClick="ListView_ItemClick" 
                                       IsItemClickEnabled="True"
                                       BorderBrush="LightSlateGray" 
-                                      BorderThickness="0.4">
-                                <ListView.ItemTemplate >
+                                      BorderThickness="0.4"
+                                      
+                                      Foreground="{ThemeResource SystemAltMediumColor}">
+                                    <ListView.ItemTemplate >
 
-                                    <DataTemplate x:DataType="data:Post" >
-                                        <StackPanel>
-                                            
-                                                <TextBlock x:Name="TitleCard"
+                                        <DataTemplate x:DataType="data:Post" >
+                                            <StackPanel>
+                                                <RelativePanel>
+                                                    <Ellipse x:Name="Icon"
+                                                 HorizontalAlignment="Left"
+                                                             VerticalAlignment="Center"
+                                                 Margin="0,10,0,0"
+                                                 Width="30" 
+                                                 Height="30">
+                                                        <Ellipse.Fill>
+                                                            <ImageBrush ImageSource ="/Assets/male-01.png" />
+                                                        </Ellipse.Fill>
+                                                    </Ellipse>
+
+                                                    <TextBlock x:Name="TitleCard"
+                                                                   RelativePanel.RightOf="Icon"
+                                                                   
                                                    Text="{x:Bind PostTitle}"
-                                                   FontSize="20"
-                                                   Foreground="White"                                                   
-                                                   Margin="2"
+                                                   FontSize="18"
+                                                                                                      
+                                                   Margin="10,10,0,0"
                                                     />
-                                                
-                                                <TextBlock x:Name="ContentCard"
+                                                  
+
+                                                    <TextBlock x:Name="ContentCard"
+                                                               RelativePanel.Below="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
                                                    Text="{x:Bind PostContent}"
                                                    FontSize="15"
-                                                   Foreground="White"
-                                                   Margin="3,1,3,1"
-                                                   Height="35"    
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Height="25"
+                                                   Margin="10,1,3,1"
+                                                       
                                                   
                                                    />
-                                                <TextBlock x:Name="TimeCard"
-                                                   Text="{x:Bind CreatedTime}"
-                                                   FontSize="10"
-                                                   HorizontalAlignment="Right"
-                                                   />
+                                                    <TextBlock x:Name="TimeCard"
+                                                                       RelativePanel.Below="ContentCard"
+                                                                        RelativePanel.RightOf="Icon"
+                                                                       Text="{x:Bind CreatedTime.ToShortDateString()}"
+                                                                       Margin="10,5,0,0"
+                                                                       FontSize="10"
+                                                                       HorizontalAlignment="Right"/>
+                                                
                                                 <Line
-                                                    Stroke="White"
+                                                    RelativePanel.Below="TimeCard"
+                                                    Style="{ThemeResource ColorPickerBorderStyle}"
                                                     X2="500"
                                                     Margin="1"/>
+                                                </RelativePanel>
 
 
-                                        </StackPanel>
+                                            </StackPanel>
 
 
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
 
 
-                            </ListView>
-                        </StackPanel>
+                                </ListView>
+                            </StackPanel>
                         </ScrollViewer>
                     </SplitView.Pane>
                     <SplitView.Content>
@@ -102,6 +129,8 @@
 
             </Grid>
         </NavigationView>
+
+
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="NarrowStateOnlyList">
@@ -136,5 +165,6 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>-->
     </Grid>
+  
 
 </Page>

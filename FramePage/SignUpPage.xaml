@@ -11,7 +11,16 @@
     <Grid>
         <Image Source="/Assets/blurbackground.jpg" Stretch="Fill" />
         
-            <Button x:Name="BackButton" Content="&#xE0A6;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="BackButton_Click"></Button>
+          
+        <Grid
+            Width="600"
+            Height="500"
+            Background="White"
+            
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            
+            CornerRadius="10">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <RelativePanel>
                 <TextBlock              x:Name="Logo"
@@ -22,21 +31,84 @@
                                         Margin="0,0,0,0"/>
 
                 <TextBox
-                    x:Name="UserNameBox" Width="150"  Foreground="Black"
-                         PlaceholderText="First name" FontSize="18" 
-                         Margin="5" CornerRadius="2" Height="40"
-                          RelativePanel.Below="Logo" />
-                <TextBox x:Name="LastNameBox" Width="150" Foreground="Black" PlaceholderText="Last name" RelativePanel.RightOf="UserNameBox" CornerRadius="2" Height="40" FontSize="18" Margin="5" RelativePanel.Below="Logo"/>
+                        x:Name="UserNameBox" Width="150"  Foreground="Black"
+                        PlaceholderText="First name" FontSize="15" 
+                        Margin="5" CornerRadius="2" Height="30"
+                        RelativePanel.Below="Logo"
+                        
+                                       
+                        />
+                <TextBox 
+                        x:Name="LastNameBox" 
+                        Width="150" 
+                        Foreground="Black" 
+                        PlaceholderText="Last name" 
+                        RelativePanel.RightOf="UserNameBox" 
+                        CornerRadius="2" 
+                        Height="30" 
+                        FontSize="15" 
+                        Margin="5" 
+                        RelativePanel.Below="Logo"
+                        
+                                   
+                         />
 
-                <TextBox x:Name="EmailBox" Width="300" Foreground="Black" PlaceholderText="********@gmail.com" RelativePanel.Below="UserNameBox" CornerRadius="2" Height="40" FontSize="18" Margin="5"/>
-                <PasswordBox x:Name="PasswordBox" Width="300" Foreground="Black" PlaceholderText="Password" RelativePanel.Below="EmailBox" CornerRadius="2" Height="40" FontSize="18" Margin="5" IsPasswordRevealButtonEnabled="True"
-                                         PasswordRevealMode="Peek"/>
-                <PasswordBox x:Name="RePasswordBox" Width="300" Foreground="Black" PlaceholderText="Re-enter Password" RelativePanel.Below="PasswordBox" CornerRadius="2" Height="40" FontSize="18" Margin="5" IsPasswordRevealButtonEnabled="True"
-                                         PasswordRevealMode="Peek"/>
+                <TextBox 
+                        x:Name="EmailBox"
+                        Width="312"
+                        Foreground="Black" 
+                        PlaceholderText="********@gmail.com"
+                        RelativePanel.Below="UserNameBox" 
+                        CornerRadius="2" 
+                        Height="30" 
+                        FontSize="15"
+                        Margin="5"
+                        
+                        
+                        />
+                <PasswordBox 
+                        x:Name="PasswordBox" 
+                        Width="312" 
+                        Foreground="Black" 
+                        PlaceholderText="Password" 
+                        RelativePanel.Below="EmailBox" 
+                        CornerRadius="2" 
+                        Height="30" 
+                        FontSize="15" 
+                        Margin="5" 
+                        IsPasswordRevealButtonEnabled="True"
+                        PasswordRevealMode="Peek"
+                        
+                                     
+                        >
+                      
+
+                    </PasswordBox>
+                <PasswordBox
+                    x:Name="RePasswordBox" 
+                    Width="312" 
+                    Foreground="Black"
+                    PlaceholderText="Re-enter Password"
+                    RelativePanel.Below="PasswordBox" 
+                    CornerRadius="2"
+                    Height="30" 
+                    FontSize="15" 
+                    Margin="5" 
+                    IsPasswordRevealButtonEnabled="True"
+                    PasswordRevealMode="Peek"
+                                  
+                       >
+                        
+
+                </PasswordBox>
                 <TextBlock x:Name="BirthdayText" Text="Tell us your Birthday" Foreground="Black" FontSize="12" RelativePanel.Below="RePasswordBox" Margin="5"/>
-                <DatePicker x:Name="Dob" Foreground="Black" CornerRadius="2" RelativePanel.Below="BirthdayText" MonthFormat="{}{month.integer(2)}" Margin="5" DateChanged="Dob_DateChanged"/>
+                <DatePicker x:Name="Dob" Foreground="Black"   CornerRadius="2" RelativePanel.Below="BirthdayText" MonthFormat="{}{month.integer(2)}" Margin="5" DateChanged="Dob_DateChanged" Width="312" 
+                            
+                        >
+                    
+                </DatePicker>
 
-               <!-- <DropDownButton x:Name="GenderButton" Content="Gender"  RelativePanel.Below="Dob" Foreground="Black" Margin="5" BorderBrush="Black" BorderThickness="1" o>
+                <!-- <DropDownButton x:Name="GenderButton" Content="Gender"  RelativePanel.Below="Dob" Foreground="Black" Margin="5" BorderBrush="Black" BorderThickness="1" o>
                     <DropDownButton.Flyout>
                         <MenuFlyout Placement="Bottom">
                             <MenuFlyoutItem Text="Male"/>
@@ -45,22 +117,22 @@
                         </MenuFlyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>-->
-                <ComboBox x:Name="GenderBox" RelativePanel.Below="Dob" CornerRadius="2" SelectionChanged="GenderBox_SelectionChanged"  PlaceholderText="Gender" Width="100" Margin="5" >
+                    <ComboBox x:Name="GenderBox" RelativePanel.Below="Dob" Foreground="Black" CornerRadius="2" SelectionChanged="GenderBox_SelectionChanged"  PlaceholderText="Gender" Width="100" Margin="5,3,5,5" PlaceholderForeground="#FFD4D4D4">
                     <ComboBoxItem Content="Male"/>
                     <ComboBoxItem Content="Female"/>
                     <ComboBoxItem Content="Not Willing"/>
                 </ComboBox>
-                <TextBlock x:Name="SampleText" Text="Feel safe and secure by joining our SocioTalk" FontSize="18" Foreground="BlueViolet" RelativePanel.Below="GenderBox"/>
-                <Button x:Name="SignUpButton" Click="SignUpButton_Click" Content="SignUp" CornerRadius="2" Foreground="Black" RelativePanel.Below="SampleText" Margin="50,10,50,5" BorderBrush="Silver" BorderThickness="1" Background="LightBlue" Width="100" FontWeight="SemiBold"/>
-                <Button x:Name="CancelButton" Click="CancelButton_Click" Content="Cancel" CornerRadius="2" Foreground="Black" RelativePanel.RightOf="SignUpButton" RelativePanel.Below="SampleText"    Margin="50,10,50,5" BorderBrush="Silver" BorderThickness="1" Background="LightBlue" Width="100" FontWeight="SemiBold"/>
+                <TextBlock x:Name="SampleText" Text="Feel safe and secure by joining our SocioTalk" FontSize="15" Foreground="MediumSlateBlue" RelativePanel.Below="GenderBox" Margin="5"/>
+                <Button x:Name="SignUpButton" Style="{StaticResource Sign}" Click="SignUpButton_Click" Content="SignUp" CornerRadius="2"  RelativePanel.Below="SampleText" Margin="5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100" />
+                <Button x:Name="CancelButton" Style="{StaticResource Sign}" Click="CancelButton_Click" Content="Cancel" CornerRadius="2"  RelativePanel.RightOf="SignUpButton" RelativePanel.Below="SampleText"    Margin="105,5,5,5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100" />
                 <TextBlock x:Name="Warning" Text="*All fields are required to be filled" Foreground="Red" RelativePanel.Below="SignUpButton"  Margin="10,10,2,10" Visibility="Collapsed"/>
 
 
 
             </RelativePanel>
             </StackPanel>
-        
 
 
+        </Grid>
     </Grid>
 </Page>

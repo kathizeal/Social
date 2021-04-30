@@ -29,11 +29,13 @@ namespace Social.FramePage
     /// 
     /// </summary>
    
-    public sealed partial class PostPage : Page
+   public sealed partial class PostPage : Page
     {
-        public static Frame SecondaryFrame;
-        User CurrentUser;
        
+        User CurrentUser;
+        public NavigationView navigationView;
+        
+
         private  ObservableCollection<Post> _PostList;  
         public  ObservableCollection<Post> PostList
         {
@@ -44,8 +46,10 @@ namespace Social.FramePage
         public PostPage()
         {
             this.InitializeComponent();
+            navigationView = NavViewPostPage;
+
+
             
-            SecondaryFrame = SecondFrame;
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             
 
@@ -54,20 +58,21 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            
+
             // Instead of hard coded items, the data could be pulled 
             // asynchronously from a database or the internet.
             /* PostList.Add(new Post("User1 Post", "This is my First Post", "user1", 12345689, "/Assets/male-01.png"));
              PostList.Add(new Post("User2 Post", "This is my Second Post", "user2", 12345689, "/Assets/male-02.png"));
              PostList.Add(new Post("User3 Post", "This is my third Post", "user3", 12345689, "/Assets/male-03.png"));*/
 
+            PostManager postManager = PostManager.GetInstance();
+            _PostList = new ObservableCollection<Post>(postManager.ViewAllPost());
 
-            _PostList = new ObservableCollection<Post>(MainPage.postManager.ViewAllPost());
-           
-            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
-            var user = JsonConvert.DeserializeObject<User>(value.ToString());
-            CurrentUser = user;          
-            
+            /*object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
+            var user = JsonConvert.DeserializeObject<User>(value.ToString());*/
+            UserManager userManager = UserManager.GetInstance();
+            CurrentUser = userManager.Current();
+
 
 
         }       
@@ -75,7 +80,7 @@ namespace Social.FramePage
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var selectedPost = (Post)e.ClickedItem;
-            SecondaryFrame.Navigate(typeof(SecondaryPage),selectedPost);
+            SecondFrame.Navigate(typeof(SecondaryPage),selectedPost);
 
         }
         
@@ -88,16 +93,19 @@ namespace Social.FramePage
                 case "Account":                   
 
                     MySpLitView.IsPaneOpen = false;                    
-                    SecondaryFrame.Navigate(typeof(AccountPage),CurrentUser);
+                    this.Frame.Navigate(typeof(AccountPage),CurrentUser);
                     break;
-                case "List":
+               /* case "List":
 
-                    MySpLitView.IsPaneOpen = true;
+                    if (MySpLitView.IsPaneOpen == false)
+                        MySpLitView.IsPaneOpen = true;
+                    else
+                        MySpLitView.IsPaneOpen = false;
 
-                    break;
+                    break;*/
                 case "NewPost":
                     MySpLitView.IsPaneOpen = false;
-                    SecondaryFrame.Navigate(typeof(CreatePostPage), CurrentUser);
+                    this.Frame.Navigate(typeof(CreatePostPage), CurrentUser);
                     break;
 
 
@@ -109,6 +117,13 @@ namespace Social.FramePage
             NavViewPostPage.IsPaneOpen = false;
            
         }
+
+        private void NavigationViewItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            MySpLitView.IsPaneOpen = !MySpLitView.IsPaneOpen;
+        }
+
+
 
 
         /*private void Grid_Loaded(object sender, RoutedEventArgs e)

@@ -25,37 +25,80 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    
+
+    /* public sealed partial class SignInPage : Page
+     {
+
+         public UserManager userManager = UserManager.GetInstance(); 
+         public SignInPage()
+         {
+             this.InitializeComponent();
+
+
+
+         }
+
+         private void Button_Click(object sender, RoutedEventArgs e)
+         {
+             List<User> users =userManager.UsersLists();
+            foreach(var i in users)
+             {
+                 if (UserIdBlock.Text == i.UserName && PasswordBlock.Password == i.Password)
+                 {
+
+                     userManager.SignedUser(i);
+
+                     Frame.Navigate(typeof(PostPage), i);
+                     //Frame.Navigate(typeof(PostPage), i);
+                 }
+
+             }      
+
+         }
+
+         private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+         {
+             Frame.Navigate(typeof(SignUpPage));
+             //Frame.Navigate(typeof(SignUpPage));
+         }
+     }*/
     public sealed partial class SignInPage : Page
     {
-              
-         
+
+        public UserManager userManager = UserManager.GetInstance();
         public SignInPage()
         {
             this.InitializeComponent();
-                      
+
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            List<User> users =MainPage.userManager.UsersLists();
-           foreach(var i in users)
+            List<User> users = userManager.UsersLists();
+            foreach (var i in users.ToList())
             {
                 if (UserIdBlock.Text == i.UserName && PasswordBlock.Password == i.Password)
                 {
-                    
-                    string json = JsonConvert.SerializeObject(i);
-                    ApplicationData.Current.LocalSettings.Values["UserClass"] = json;
-                    MainFramePage.Navigate(typeof(PostPage), i);
+
+                    userManager.SignedUser(i);
+                    MainPage mainPage = new MainPage();
+                    this.Frame.Navigate(typeof(PostPage));
+                    //Frame.GoBack();
+                    //Frame.Navigate(typeof(MainPage), i);
+                    //Frame.Navigate(typeof(PostPage), i);
                 }
 
-            }      
-     
+            }
+
         }
 
         private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFramePage.Navigate(typeof(SignUpPage));
+            this.Frame.Navigate(typeof(SignUpPage));
+            //Frame.Navigate(typeof(SignUpPage));
         }
     }
 }
+

@@ -16,7 +16,7 @@ namespace Social.Model
             CommenterName = username;
             CommenterId = userid;
             CommentId = DateTime.Now.Ticks;
-            CreatedTime = DateTime.UtcNow;
+            CreatedTime = DateTime.UtcNow.ToShortDateString();
             ParentCommentId = parentid;
         }        
         public long? ParentCommentId { get; set; }
@@ -25,7 +25,7 @@ namespace Social.Model
         public long CommentId { get; set; }
         public string Title { get; set; }
         public string CommentContent { get; set; }
-        public DateTime CreatedTime { get; set; }
+        public string CreatedTime { get; set; }
         public long PostId { get; set; }
        private List<Comment> _Reply = new List<Comment>();
         public List<Comment> Reply { get { return _Reply; } set { _Reply = value; } }
