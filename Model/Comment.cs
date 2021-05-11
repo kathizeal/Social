@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,25 +11,31 @@ namespace Social.Model
     public class Comment
     {
 
-        public Comment(long postid, string content, string username, long userid,long? parentid)
+       
+        public Comment()
         {
-            PostId = postid;
-            CommentContent = content;
-            CommenterName = username;
-            CommenterId = userid;
             CommentId = DateTime.Now.Ticks;
             CreatedTime = DateTime.UtcNow.ToShortDateString();
-            ParentCommentId = parentid;
-        }        
+           
+            
+        }
+        [ForeignKey(typeof(Comment))]
         public long? ParentCommentId { get; set; }
         public string CommenterName { get; set; }
         public long CommenterId { get; set; }
+        [PrimaryKey]
         public long CommentId { get; set; }
         public string Title { get; set; }
+       
         public string CommentContent { get; set; }
         public string CreatedTime { get; set; }
-        public long PostId { get; set; }
+        [ForeignKey(typeof(Post))]
+        public long PostId { get; set; } 
+        
+       
+       
        private List<Comment> _Reply = new List<Comment>();
+        [Ignore]
         public List<Comment> Reply { get { return _Reply; } set { _Reply = value; } }
     } 
 

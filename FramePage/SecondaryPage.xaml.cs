@@ -207,7 +207,7 @@ namespace Social.FramePage
         {
 
 
-
+            
             CurrentPost = (Post)e.Parameter;
             _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
             if (CurrentPost.Likes != 0)
@@ -224,11 +224,16 @@ namespace Social.FramePage
             /*Title.Text = CurrentPost.PostTitle;*/
             Heading.Text = CurrentPost.PostTitle;
             time.Text = CurrentPost.CreatedTime.ToString();
+            CommentCnt.Text ="Comments :"+ CurrentPost.CommentCount.ToString();
             Createdby.Text = "Created By: " + CurrentPost.PostCreatedByUserName;
-            if (CurrentPost.LikedId == null)
+            if (CurrentPost.Likes == 0)
                 LikeCount.Content = "0";
             else
+
+            {
+                LikeCount.Visibility = Visibility.Visible;
                 LikeCount.Content = CurrentPost.Likes;
+            }
             if (CurrentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
@@ -239,13 +244,26 @@ namespace Social.FramePage
                 CommentStack.Visibility = Visibility.Visible;
 
             }
+            if (CurrentPost.Likes == 0)
+                LikeCount.Content = "0";
+            else
+
+            {
+                LikeCount.Visibility = Visibility.Visible;
+                LikeCount.Content = CurrentPost.Likes;
+            }
 
 
         }
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
 
+            if (CurrentPost.LikedId.Contains(CurrentUser.UserId))
+                postManager.UnLikePost(CurrentPost, CurrentUser);
+               
+            else               
             postManager.LikePost(CurrentPost, CurrentUser);
+
             LikeCount.Content = CurrentPost.Likes;
 
 
@@ -256,7 +274,8 @@ namespace Social.FramePage
 
 
             ReplyButton.Visibility = Visibility.Visible;
-            Edit.Visibility = Visibility.Visible;
+            Cancel.Visibility = Visibility.Visible;
+            //Edit.Visibility = Visibility.Visible;
             CommentButton.Visibility = Visibility.Collapsed;
 
             CommentTextBox.Focus(FocusState.Programmatic);
@@ -269,20 +288,43 @@ namespace Social.FramePage
               ThirdRow.Height = new GridLength(200);
              CommentTextBox.Height = 180;
               DragDownButton.Visibility = Visibility.Visible;*/
-            postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+            Comment newComment = new Comment();
+            newComment.ParentCommentId = null;
+            newComment.PostId = CurrentPost.PostId;
+            newComment.CommentContent = CommentTextBox.Text;
+            newComment.CommenterName = CurrentUser.UserName;
+            newComment.CommenterId = CurrentUser.UserId;
+            postManager.AddComment(CurrentPost, newComment);
+            //postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
             CommentStack.Visibility = Visibility.Visible;
             this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
         }
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             //MainPage.postManager.AddReply(CurrentPost, CurrentComment.CommentId, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, CurrentComment.CommentId));
-            postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
+            Comment newReply = new Comment();
+            newReply.PostId = CurrentPost.PostId;
+            newReply.CommentContent = CommentTextBox.Text;
+            newReply.CommenterName = CurrentUser.UserName;
+            newReply.CommenterId = CurrentUser.UserId;
+            newReply.ParentCommentId = CurrentComment.CommentId;
+            postManager.AddReply(CurrentPost, CurrentComment, newReply);
+            //postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
 
 
             this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
 
         }
 
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            CommentList.SelectedItem = null;
+            ReplyButton.Visibility = Visibility.Collapsed;
+            Cancel.Visibility = Visibility.Collapsed;
+            //Edit.Visibility = Visibility.Visible;
+            CommentButton.Visibility = Visibility.Visible;
+
+        }
     }
 
 

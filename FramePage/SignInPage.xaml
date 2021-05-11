@@ -9,18 +9,7 @@
     
     
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.Resources>
-        <Style x:Key="InvisibleButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-
-                    <ControlTemplate TargetType="Button">
-                        <ContentPresenter />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
+  
 
 
 
@@ -28,15 +17,15 @@
 
 
     <Grid >
-        <Image Source="/Assets/white.jpg"
-                  Stretch="Fill"/>
+        <Image Style="{ThemeResource Ima}"/>
+
 
 
         <Grid 
             
             Width="600"
             Height="400"
-            Background="White"
+            Background="{ThemeResource Back}"
             
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -68,15 +57,14 @@
                         Width="240"
                         PlaceholderText="User-Id" 
                         FontSize="18"
-                        Height="40"
-                        Background="WhiteSmoke"
-                        PlaceholderForeground="Gray"
+                       
+                        Background="{ThemeResource PrimaryColor}"
                         
-                        Foreground="Black"
-                         
-                        BorderBrush="Black"
+                        TextChanging="UserIdBlock_TextChanging"
+                        
+                       
                     
-                        BorderThickness="1"
+                      
                         HorizontalAlignment="Center"
                         
 
@@ -86,44 +74,45 @@
                     
                             x:Name="PasswordBlock"   
                             Width="240" 
-                            BorderBrush="Black"
-                            BorderThickness="1"
+                           Background="{ThemeResource PrimaryColor}"
+                            
                             PlaceholderText=" Password"
                             IsPasswordRevealButtonEnabled="True"
                             PasswordRevealMode="Peek" 
-                            Foreground="Black"
+                          
                             FontSize="18"   
-                            Padding="5"
-                            Height="40" 
+                            PasswordChanging="PasswordBlock_PasswordChanging"
+                            
                             Margin="5"
-                            Background="WhiteSmoke"
+                            
                             HorizontalAlignment="Center" 
                             >
-                                <PasswordBox.Resources>
-                                    <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="Gray"/>
-                                    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="Gray"/>
-                                </PasswordBox.Resources>
+                             
 
 
                 </PasswordBox>
                 <Button 
                         Content="Sign in" 
                         Style="{ThemeResource Sign}"                                                   
-                        Foreground="WhiteSmoke"
+                        
                         BorderBrush="Black"
                         BorderThickness="1"
                         HorizontalAlignment="Center" 
                         CornerRadius="2" 
                         Margin="5"  
+                        Foreground="{ThemeResource TextColor}"
                         Width="240" 
                         Background="MediumSlateBlue"
                         Click="Button_Click"
                         FontSize="20"/>
-                <Button 
+                <HyperlinkButton  
+                                x:Name="ForgotButton"
                                 Content="Forgot password" 
-                                Style="{ThemeResource Sign}"
+                                
                                 Foreground="MediumSlateBlue"
+                                Visibility="Collapsed"
                                 FontSize="10" 
+                                Click="ForgotButton_Click"
                                 HorizontalAlignment="Center"/>
                 <TextBlock
                            Text="_____________________________" 
@@ -131,15 +120,27 @@
                            FontSize="20"
                            Width="240"
                            Foreground="MediumTurquoise"/>
-                <Button
+                <HyperlinkButton
                                  x:Name="SignUpButton"                               
                                  Content="Click Here to Create a new Account"
                                  FontSize="14" 
                                  Foreground="MediumSlateBlue"
-                                 Style="{ThemeResource Sign}" 
                                  HorizontalAlignment="Center"
-                                 Click="HyperlinkButton_Click"  />
-
+                                 Click="SignUpButton_Click"  />
+                <HyperlinkButton 
+                        x:Name="DeleteAccount"
+                        Content="Delete Account"
+                        FontSize="14"
+                        Foreground="MediumSlateBlue"
+                                               
+                        HorizontalAlignment="Center"
+                        Click="DeleteAccount_Click"/>
+                <TextBlock 
+                            x:Name="Warning"
+                            
+                            Visibility="Collapsed"
+                            Foreground="Red"
+                            HorizontalAlignment="Center"/>
 
             </StackPanel>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,22 @@ namespace Social.Data
     {
         private User _CurrentUser;
         private static UserManager _Instance = null;
-        private List<User> _UserLists = new List<User>();       
+        private List<User> _UserLists = new List<User>();
+        
+
+        string path;
+        SQLite.Net.SQLiteConnection conn;
+        public void CreateTable()
+        {
+
+            path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
+               "db.sqlite");
+            conn = new SQLite.Net.SQLiteConnection(new
+               SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
+            conn.CreateTable<User>();
+        }
+        
+
         private UserManager() { }
         public static UserManager GetInstance()
         {
@@ -37,12 +53,26 @@ namespace Social.Data
         }
         public List<User> UsersLists()
         {
+            var query = conn.Table<User>();
+            foreach( var user in query)
+            {
+                _UserLists.Add(user);
+            }
+            
             return _UserLists;
         }
-        public void AddUser(String username,string lastname,string email, String password,string birthday,string gender)
+        public void AddUser(string username,string lastname,string email, string password,string birthday,string gender)
         {
-
-            _UserLists.Add(new User(username,lastname,email, password,birthday,gender));
+            CreateTable();
+            User newUser = new User();
+            newUser.UserName = username;
+            newUser.BirthDay = birthday;
+            newUser.LastName = lastname;
+            newUser.Password = password;
+            newUser.Gender = gender;
+            newUser.Email = email;
+             conn.Insert(newUser);
+           // _UserLists.Add(newUser);
 
         }
         public bool LoginUser(string username, string password)
@@ -65,7 +95,7 @@ namespace Social.Data
         public string FindUser(long id)
         {
             
-            foreach(var user in _UserLists)
+            foreach(var user in UsersLists())
             {
                 if (user.UserId == id)
                     return user.UserName;
@@ -100,6 +130,27 @@ namespace Social.Data
             object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
             var user = JsonConvert.DeserializeObject<User>(value.ToString());
             return user;
+        }
+        public void Update(User user)
+        {
+            CreateTable();
+            User newUser = new User();
+            newUser.UserName = user.UserName;
+            newUser.BirthDay =user.BirthDay;
+            newUser.LastName = user.LastName;
+            newUser.Password = user.Password;
+            newUser.Gender =user.Gender;
+            newUser.Email =user.Email;
+            newUser.UserId = user.UserId;
+            
+
+            conn.Insert(newUser);
+        }
+
+        public void DeleteUserRecord()
+        {
+            conn.DropTable<User>();
+            conn.CreateTable<User>();
         }
 
     }

@@ -52,8 +52,42 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="PrimaryColor" Color="#eef"/>
+                    <SolidColorBrush x:Key="SecondaryColor" Color="#ccf"/>
+                    <SolidColorBrush x:Key="TertiaryColor" Color="blue"/>
+                    <SolidColorBrush x:Key="TextColor" Color="Black"/>
+                    <SolidColorBrush x:Key="Back" Color="White"/>
+                    <SolidColorBrush x:Key="PH" Color="#FF6C6C70"/>
+                    <SolidColorBrush x:Key="PaneBack" Color="#FFE6E6E6"/>
+
+                    <Style TargetType="Image" x:Key="Ima">
+                        <Setter Property="Source" Value="/Assets/white.jpg"/>
+                        <Setter Property="Stretch" Value="Fill"/>
+                    </Style>
+
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="PrimaryColor" Color="#001"/>
+                    <SolidColorBrush x:Key="SecondaryColor" Color="#11111f"/>
+                    <SolidColorBrush x:Key="TertiaryColor" Color="#88f"/>
+                    <SolidColorBrush x:Key="TextColor" Color="White"/>
+                    <SolidColorBrush x:Key="Back" Color="Black"/>
+                    <SolidColorBrush x:Key="PH" Color="#FF99999D"/>
+                    <SolidColorBrush x:Key="PaneBack" Color="#ff1f1f1f" />
+
+                    <Style TargetType="Image" x:Key="Ima">
+                        <Setter Property="Source" Value="/Assets/Dark-2.jpg"/>
+                        <Setter Property="Stretch" Value="Fill"/>
+                    </Style>
+
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
-    </Application.Resources> 
+       
+    </Application.Resources>
+   
     
 
 </Application>

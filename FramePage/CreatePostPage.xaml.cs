@@ -78,8 +78,13 @@ namespace Social.FramePage
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-
-            postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
+            Post newPost = new Post();
+            newPost.PostTitle = TitleBox.Text;
+            newPost.PostContent = ContentBox.Text;
+            newPost.PostCreatedByUserName = CurrentUser.UserName;
+            newPost.PostCreatedByUserId = CurrentUser.UserId;
+            // postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
+            postManager.AddPost(newPost);
             // MainPage.MainFramePage.Navigate(typeof(PostPage));
             this.Frame.Navigate(typeof(PostPage));
             //Frame.Navigate(typeof(MainPage));

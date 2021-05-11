@@ -96,10 +96,10 @@ namespace Social.FramePage
     {
         Post post;
         User _CurrentUser;
-
+        DispatcherTimer Timer = new DispatcherTimer();
         UserManager userManager = UserManager.GetInstance();
-        PostManager postManager = PostManager.GetInstance();
-        private ObservableCollection<Post> _MyPost;
+       PostManager postManager = PostManager.GetInstance();
+      private ObservableCollection<Post> _MyPost;
         public ObservableCollection<Post> MyPost
         {
             get { return this._MyPost; }
@@ -107,18 +107,32 @@ namespace Social.FramePage
         public AccountPage()
         {
             this.InitializeComponent();
+            Timer.Tick += Timer_Tick;
+            Timer.Interval = new TimeSpan(0, 0, 1);
+            Timer.Start();
+           
+           // Date.Text = DateTime.Today.ToShortDateString();
+        }
+        private void Timer_Tick(object sender, object e)
+        {
+           // Time.Text = DateTime.Now.ToString("h:mm:ss tt");
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             _CurrentUser = (User)e.Parameter;
-            UserNameBlock.Text = "User name : " + _CurrentUser.UserName;
-            LastNameBlock.Text = "Last name : " + _CurrentUser.LastName;
-            UserIDBlock.Text = "User Id : " + _CurrentUser.UserId.ToString();
-            EmailBlock.Text = "Email address : " + _CurrentUser.Email;
-            BirthdayBlock.Text = "DOB : " + _CurrentUser.BirthDay;
-            GenderBlock.Text = "Gender : " + _CurrentUser.Gender;
+            
+            UserNameBlock.Text =  _CurrentUser.UserName;
+            LastNameBlock.Text = _CurrentUser.LastName;
+            UserIDBlock.Text   =  _CurrentUser.UserId.ToString();
+            EmailBlock.Text    =_CurrentUser.Email;
+            BirthdayBlock.Text = _CurrentUser.BirthDay;
+            GenderBlock.Text   = _CurrentUser.Gender;
             _MyPost = new ObservableCollection<Post>(postManager.ViewMyPost(_CurrentUser.UserId));
+            if(_MyPost.Count==0)
+                NoPost.Visibility = Visibility.Visible;
+            else
+                NoPost.Visibility = Visibility.Collapsed;
         }
 
         private void SignOutButton_Click(object sender, RoutedEventArgs e)
@@ -135,7 +149,7 @@ namespace Social.FramePage
             Frame.Navigate(typeof(MainPage));
         }
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+       private void Edit_Click(object sender, RoutedEventArgs e)
         {
             postManager.DeletePost(post);
             Post SelectedPost = postManager.Edit(post);
@@ -149,6 +163,11 @@ namespace Social.FramePage
         private void MyPost_ItemClick(object sender, ItemClickEventArgs e)
         {
             post = (Post)e.ClickedItem;
+            SampleText.Visibility = Visibility.Collapsed;
+            ViewPost.Visibility = Visibility.Visible;
+            PostContent.Text = post.PostContent;    
+            
+           
 
 
         }
@@ -166,6 +185,42 @@ namespace Social.FramePage
             //Frame.GoBack();
             Frame.Navigate(typeof(PostPage), _CurrentUser);
         }
+
+        private void View_Click(object sender, RoutedEventArgs e)
+        {
+            Intro.Visibility = Visibility.Collapsed;
+            InsideFrame.Visibility = Visibility.Visible;
+            //this.Frame.Navigate(typeof(MyPostPage),_CurrentUser);
+        }
+
+        private void Editbt_Click(object sender, RoutedEventArgs e)
+        {
+            postManager.DeletePost(post);
+            Post SelectedPost = postManager.Edit(post);
+
+            Frame.Navigate(typeof(EditPostPage), SelectedPost);
+        }
+
+        private void Deletebt_Click(object sender, RoutedEventArgs e)
+        {
+            postManager.DeletePost(post);
+            Frame.Navigate(typeof(AccountPage), _CurrentUser);
+        }
+
+        private void GoAccount_Click(object sender, RoutedEventArgs e)
+        {
+
+            Intro.Visibility = Visibility.Visible;
+            InsideFrame.Visibility = Visibility.Collapsed;
+        }
+
+        private void ViewPost_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ViewPost),post);
+
+        }
+
+       
     }
 
 }

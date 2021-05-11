@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Social.Model
 {
     public class User
     {
-        public User(string userName,string lastName,string email, string password,string birthday,string gender)
+        /*public User(string userName,string lastName,string email, string password,string birthday,string gender)
         {
             this.UserId = DateTime.Now.Ticks;
             this.UserName = userName;
@@ -17,9 +18,14 @@ namespace Social.Model
             this.Email = email;
             this.BirthDay = birthday;
             this.Gender = gender;
+        }*/
+        public User()
+        {
+            this.UserId = DateTime.Now.Ticks;
         }
         public string UserName { get; set; }
         public string LastName { get; set; }
+        [PrimaryKey]
         public long UserId { get; set; }
         public string Password { get; set; }
         

@@ -26,46 +26,13 @@ namespace Social.FramePage
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
 
-    /* public sealed partial class SignInPage : Page
-     {
-
-         public UserManager userManager = UserManager.GetInstance(); 
-         public SignInPage()
-         {
-             this.InitializeComponent();
-
-
-
-         }
-
-         private void Button_Click(object sender, RoutedEventArgs e)
-         {
-             List<User> users =userManager.UsersLists();
-            foreach(var i in users)
-             {
-                 if (UserIdBlock.Text == i.UserName && PasswordBlock.Password == i.Password)
-                 {
-
-                     userManager.SignedUser(i);
-
-                     Frame.Navigate(typeof(PostPage), i);
-                     //Frame.Navigate(typeof(PostPage), i);
-                 }
-
-             }      
-
-         }
-
-         private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
-         {
-             Frame.Navigate(typeof(SignUpPage));
-             //Frame.Navigate(typeof(SignUpPage));
-         }
-     }*/
+    
     public sealed partial class SignInPage : Page
     {
 
         public UserManager userManager = UserManager.GetInstance();
+        User user;
+
         public SignInPage()
         {
             this.InitializeComponent();
@@ -76,28 +43,67 @@ namespace Social.FramePage
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            bool found = false;
             List<User> users = userManager.UsersLists();
             foreach (var i in users.ToList())
             {
-                if (UserIdBlock.Text == i.UserName && PasswordBlock.Password == i.Password)
+                if (UserIdBlock.Text == i.UserName)
                 {
+                    user = i;
+                    if (PasswordBlock.Password == i.Password)
+                    {
+                        
+                        userManager.SignedUser(i);
+                        MainPage mainPage = new MainPage();
+                        this.Frame.Navigate(typeof(PostPage));
+                        //Frame.GoBack();
+                        //Frame.Navigate(typeof(MainPage), i);
+                        //Frame.Navigate(typeof(PostPage), i);
+                    }
+                    else
+                    {
+                        Warning.Text = "Password not matched.";
+                        Warning.Visibility = Visibility.Visible;
+                        ForgotButton.Visibility = Visibility.Visible;
 
-                    userManager.SignedUser(i);
-                    MainPage mainPage = new MainPage();
-                    this.Frame.Navigate(typeof(PostPage));
-                    //Frame.GoBack();
-                    //Frame.Navigate(typeof(MainPage), i);
-                    //Frame.Navigate(typeof(PostPage), i);
+                    }
                 }
+                found = true;
+
+            }
+            if (found == false)
+            {
+                Warning.Text = "No account found";
+                Warning.Visibility = Visibility.Visible;
 
             }
 
         }
 
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SignUpPage));
             //Frame.Navigate(typeof(SignUpPage));
+        }
+
+        private void DeleteAccount_Click(object sender, RoutedEventArgs e)
+        {
+            userManager.DeleteUserRecord();
+        }
+
+        private void PasswordBlock_PasswordChanging(PasswordBox sender, PasswordBoxPasswordChangingEventArgs args)
+        {
+            Warning.Visibility = Visibility.Collapsed;
+        }
+
+        private void UserIdBlock_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        {
+            Warning.Visibility = Visibility.Collapsed;
+        }
+
+        private void ForgotButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(PasswordChangePage), user);
         }
     }
 }

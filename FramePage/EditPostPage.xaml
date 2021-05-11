@@ -8,12 +8,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="#FF333333">
+    <Grid Background="{ThemeResource PaneBack}">
         <StackPanel>
             <TextBox x:Name="TitleBox"
                      Header="Title"
                      Width="auto"
-                     Height="100"
+                     Height="60"
                      PlaceholderText="Title of the Post"
                      Margin="40" />
             <TextBox x:Name="ContentBox"
@@ -24,8 +24,10 @@
                      TextWrapping="Wrap"
                      PlaceholderText="Content of the Post"
                      Margin="40"/>
-            <Button x:Name="CreateButton"
-                    Content="Edit" 
+            <RelativePanel>
+                <Button x:Name="CreateButton"
+                    Content="Edit"
+                    Width="60"
                     CornerRadius="2"
                     Click="EditButton_Click"
                     HorizontalAlignment="Left"
@@ -33,9 +35,11 @@
             <Button x:Name="CancelButton" 
                     Content="Cancel" 
                     CornerRadius="2" 
+                    RelativePanel.RightOf="CreateButton"
                     Click="CancelButton_Click" 
                     HorizontalAlignment="Left" 
-                    Margin="40,10,0,0"/>
+                    Margin="20,0,0,0"/>
+            </RelativePanel>
         </StackPanel>
 
     </Grid>

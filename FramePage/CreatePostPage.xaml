@@ -8,44 +8,39 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="#FF333333">
+    <Grid Background="{ThemeResource PaneBack}">
+
         <StackPanel>
-            <RelativePanel HorizontalAlignment="Center">
             <TextBox x:Name="TitleBox"
                      Header="Title"
-                     Width="1000"
+                     Width="auto"
                      Height="60"
                      PlaceholderText="Title of the Post"
                      Margin="40" />
-            
-            <TextBox x:Name="ContenBox"
+            <TextBox x:Name="ContentBox"
                      Header="Content"
-                     Width="1000"
-                     Height="300"
-                     RelativePanel.Below="TitleBox"
-                     
+                     Width="auto"
+                     Height="300" 
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      PlaceholderText="Content of the Post"
-                     Margin="40,20,40,40"/>
-            
-            <Button x:Name="CreateButton"
-                    Content="Create" 
+                     Margin="40"/>
+            <RelativePanel>
+                <Button x:Name="CreateButton"
+                    Content="Create"
+                    Width="60"
                     CornerRadius="2"
-                    RelativePanel.Below="ContenBox"
                     Click="CreateButton_Click"
                     HorizontalAlignment="Left"
                     Margin="40,0,0,0"/>
-            <Button x:Name="CancelButton" 
+                <Button x:Name="CancelButton" 
                     Content="Cancel" 
                     CornerRadius="2" 
                     RelativePanel.RightOf="CreateButton"
-                    RelativePanel.Below="ContenBox"
                     Click="CancelButton_Click" 
                     HorizontalAlignment="Left" 
                     Margin="20,0,0,0"/>
             </RelativePanel>
         </StackPanel>
-
     </Grid> 
 </Page>

@@ -9,179 +9,390 @@
     
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Grid>
         
-        <Grid >
-            <Image Source="/Assets/white.jpg"
-                  Stretch="Fill"/>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState 
+                            x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger 
+                                        MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter 
+                                Target="View.(Visibility)"
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="InsideFrame.(Orientation)" 
+                                Value="Horizontal"/>
+                        <Setter 
+                                Target="Editbt.(Visibility)" 
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="Deletebt.(Visibility)" 
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="GoAccount.(Visibility)"
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="GoBack.(Visibility)"
+                                Value="Visible"/>
+                        <Setter 
+                                Target="Intro.(Visibility)"
+                                Value="Visible"/>
+
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState 
+                            x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger 
+                                        MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter 
+                                Target="GoBack.(Visibility)"
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="GoAccount.(Visibility)"
+                                Value="Visible"/>
+                        <Setter 
+                                Target="View.(Visibility)"
+                                Value="Visible"/>
+                        <Setter 
+                                Target="InsideFrame.(Visibility)" 
+                                Value="Collapsed"/>
+                        <Setter 
+                                Target="InsideFrame.(Orientation)" 
+                                Value="Horizontal"/>
+                        <Setter 
+                                Target="Option.(Visibility)" 
+                                Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Image Style="{ThemeResource Ima}"/>
+        
+        
+        <StackPanel Orientation="Horizontal" Background="Transparent">
+
+           
+                    <StackPanel HorizontalAlignment="Left"  VerticalAlignment="Top">
+            <Button 
+                        x:Name="GoBack" 
+                        FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xE0A6;"  
+                        Background="Transparent"
+                        Foreground="{ThemeResource TextColor}" 
+                        Click="GoBack_Click" 
+                        ClickMode="Press"/>
+            <Button     
+                         x:Name="GoAccount" 
+                        FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xE0A6;"  
+                        Background="Transparent"
+                        Foreground="{ThemeResource TextColor}" 
+                        Click="GoAccount_Click" 
+                        ClickMode="Press"/>
+               
+
+                <Button
+                        x:Name="Editbt" 
+                        FontFamily="Segoe MDL2 Assets"
+                        Content="&#xE104;"                       
+                        Foreground="{ThemeResource TextColor}"
+                        Click="Editbt_Click" 
+                        Background="Transparent"
+                        ClickMode="Press"/>
+            <Button 
+                        x:Name="Deletebt" 
+                        FontFamily="Segoe MDL2 Assets"
+                        Content="&#xE107;"
+                        Background="Transparent"
+                        Foreground="{ThemeResource TextColor}"
+                        Click="Deletebt_Click" 
+                        ClickMode="Press"/>
+        </StackPanel>
             
 
+            <StackPanel
+                    x:Name="Intro"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"    
+                    Margin="50" 
+                    
+                    
+                    >
+             
 
+            <RelativePanel>
 
-
-            <ScrollViewer>
-                <Grid>
-                   
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
-
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="GoBack" FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" HorizontalAlignment="Left"  VerticalAlignment="Top" Foreground="Black" Click="GoBack_Click" ClickMode="Press"/>
-                    <StackPanel VerticalAlignment="Top"
-                                HorizontalAlignment="Center"
-                                Margin="50"
-                                Grid.Column="0">
-                        
-                        <RelativePanel>
-
-                            <Ellipse Width="220"
+                <Ellipse Width="220"
                                  Height="220"
                                  x:Name="Icon">
-                                <Ellipse.Fill>
-                                    <ImageBrush  ImageSource="/Assets/male-03.png"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
+                    <Ellipse.Fill>
+                        <ImageBrush  ImageSource="/Assets/male-03.png"/>
+                    </Ellipse.Fill>
+                </Ellipse>
 
-                            <StackPanel RelativePanel.Below="Icon">
-                                <RelativePanel>
+                <StackPanel RelativePanel.Below="Icon">
+                    <RelativePanel>
 
-
-                                    <TextBlock x:Name="UserNameBlock"
-                                           FontSize="24"
-                                           Foreground="{ThemeResource SystemAltHighColor}" 
-                                           Margin="0,10,10,0"/>
-                                    <TextBlock x:Name="LastNameBlock"
-                                           FontSize="24" 
-                                           Foreground="{ThemeResource SystemAltHighColor}"                                           
-                                           RelativePanel.Below="UserNameBlock"
-                                           Margin="0,10,10,0"/>
-                                    <TextBlock x:Name="GenderBlock"
-                                           FontSize="24"
-                                           Foreground="{ThemeResource SystemAltHighColor}" 
-                                           RelativePanel.Below="LastNameBlock"
-                                           Margin="0,10,10,0"/>
-                                    <TextBlock x:Name="UserIDBlock"                                            
-                                           FontSize="24"
-                                           Foreground="{ThemeResource SystemAltHighColor}"
-                                           Margin="0,10,10,0"
-                                           RelativePanel.Below="GenderBlock"/>
-                                    <TextBlock x:Name="EmailBlock"
-                                           FontSize="24"
-                                           Foreground="{ThemeResource SystemAltHighColor}"
-                                           RelativePanel.Below="UserIDBlock"
-                                           Margin="0,10,10,0"/>
-                                    <TextBlock x:Name="BirthdayBlock"
-                                           FontSize="24"
-                                           Foreground="{ThemeResource SystemAltHighColor}"
-                                           RelativePanel.Below="EmailBlock"
-                                           Margin="0,10,10,0"/>
-                                    <Button x:Name="SignOutButton"
+                        <TextBlock 
+                                    x:Name="UNTB" 
+                                    Text="User Name" 
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    Margin="0,10,10,0" 
+                                    FontSize="24" />
+                        <TextBlock 
+                                    x:Name="UserNameBlock"
+                                    FontSize="24"
+                                    RelativePanel.RightOf="UNTB"
+                                    Foreground="{ThemeResource TextColor}"
+                                    Margin="0,10,10,0"/>
+                        <TextBlock 
+                                    x:Name="LNTB" 
+                                    Text="Last Name"
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    RelativePanel.Below="UNTB"
+                                    Margin="0,10,10,0" 
+                                    FontSize="24"/>
+                        <TextBlock 
+                                    x:Name="LastNameBlock"
+                                    FontSize="24" 
+                                    Foreground="{ThemeResource TextColor}"
+                                    RelativePanel.Below="UserNameBlock"
+                                    RelativePanel.RightOf="LNTB"
+                                    Margin="0,10,10,0"/>
+                        <TextBlock 
+                                    x:Name="GenderTB" 
+                                    Text="Gender"
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    RelativePanel.Below="LNTB"
+                                    Margin="0,10,10,0" 
+                                    FontSize="24"/>
+                        <TextBlock
+                                    x:Name="GenderBlock"
+                                    FontSize="24"
+                                    Foreground="{ThemeResource TextColor}"
+                                    RelativePanel.Below="LastNameBlock"
+                                    RelativePanel.RightOf="GenderTB"
+                                    Margin="0,10,10,0"/>
+                        <TextBlock 
+                                    x:Name="USIDTB" 
+                                    Text="User Id" 
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    RelativePanel.Below="GenderTB" 
+                                    Margin="0,10,10,0" 
+                                    FontSize="24"/>
+                        <TextBlock 
+                                    x:Name="UserIDBlock"                                            
+                                    FontSize="24"
+                                    Foreground="{ThemeResource TextColor}"
+                                    Margin="0,10,10,0"
+                                    RelativePanel.Below="GenderBlock"
+                                    RelativePanel.RightOf="USIDTB"/>
+                        <TextBlock 
+                                    x:Name="EmailTB" 
+                                    Text="Email" 
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    RelativePanel.Below="USIDTB" 
+                                    Margin="0,10,10,0"
+                                    FontSize="24"/>
+                        <TextBlock 
+                                    x:Name="EmailBlock"
+                                    FontSize="24"
+                                    Foreground="{ThemeResource TextColor}"
+                                    RelativePanel.RightOf="EmailTB"
+                                    RelativePanel.Below="UserIDBlock"
+                                    Margin="0,10,10,0"/>
+                        <TextBlock 
+                                    x:Name="BirthTB" 
+                                    Text="Birthday" 
+                                    Foreground="{ThemeResource TextColor}"
+                                    Width="150" 
+                                    RelativePanel.Below="EmailTB" 
+                                    Margin="0,10,10,0" 
+                                    FontSize="24"/>
+                        <TextBlock 
+                                    x:Name="BirthdayBlock"
+                                    FontSize="24"
+                                    Foreground="{ThemeResource TextColor}" 
+                                    RelativePanel.RightOf="BirthTB"
+                                    RelativePanel.Below="EmailBlock"
+                                    Margin="0,10,10,0"/>
+                            <HyperlinkButton 
+                                         x:Name="View"
+                                        Content="View my post"
+                                        Foreground="MediumSlateBlue"
+                                        FontSize="18" 
+                                        HorizontalAlignment="Center"
+                                        
+                                        Margin="20,10,20,10"
+                                        
+                                        RelativePanel.Below="BirthTB"
+                                        Click="View_Click"/>
+                            <Button x:Name="SignOutButton"
                                         Content="Sign Out"
-                                            Style="{StaticResource Sign}"
+                                        Style="{StaticResource Sign}"
                                         Background="MediumSlateBlue"
-                                        Foreground="{ThemeResource SystemAltHighColor}"
+                                        Foreground="{ThemeResource TextColor}"
                                         FontSize="20" 
-                                        RelativePanel.Below="BirthdayBlock"
+                                       RelativePanel.Below="View"
+                                       HorizontalAlignment="Center"   
+                                        
                                         CornerRadius="40"
-                                        Margin="40" 
+                                        Margin="40"
+                                        
                                         Click="SignOutButton_Click"/>
-                                </RelativePanel>
-                            </StackPanel>
+                          
+
                         </RelativePanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" BorderBrush="Gray" BorderThickness="0.4,0,0,0">
-                        <TextBlock Text="Your Post" FontSize="20" HorizontalAlignment="Left" Margin="50,20,50,20" Foreground="{ThemeResource SystemAltHighColor}"/>
-                        <ListView x:Name="My_Post" ItemsSource="{x:Bind MyPost}" Grid.Column="1" ItemClick="MyPost_ItemClick" IsItemClickEnabled="True" Foreground="{ThemeResource SystemAltHighColor}">
+                  
+
+                    
+
+
+                </StackPanel>
+                   
+                </RelativePanel>
+               
+            </StackPanel>
+           
+
+            <StackPanel x:Name="InsideFrame" Background="{ThemeResource PaneBack }" >
+               
+
+                <ScrollViewer   BorderBrush="Gray" BorderThickness="0.4,0,0,0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Your Post" FontSize="20" HorizontalAlignment="Left" Margin="50,20,50,20" Foreground="{ThemeResource TextColor}"/>
+                        <TextBlock x:Name="NoPost" Text="No post is found from you" Margin="70,300,20,20" Width="300" FontSize="20"  Foreground="{ThemeResource TextColor}" HorizontalAlignment="Stretch"/>
+                        <ListView x:Name="My_Post" ItemsSource="{x:Bind MyPost}" Grid.Column="1" ItemClick="MyPost_ItemClick" IsItemClickEnabled="True" Foreground="{ThemeResource SystemAltMediumColor}"
+                            >
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Post">
+                                <StackPanel>
                                     <StackPanel>
-                                        <StackPanel>
-                                            <RelativePanel>
-                                                <Ellipse x:Name="Icon"
+                                        <RelativePanel>
+                                            <Ellipse x:Name="Icon"
                                                  HorizontalAlignment="Left"
                                                              VerticalAlignment="Center"
                                                  Margin="0,10,0,0"
                                                  Width="30" 
                                                  Height="30">
-                                                    <Ellipse.Fill>
-                                                        <ImageBrush ImageSource ="/Assets/male-03.png" />
-                                                    </Ellipse.Fill>
-                                                </Ellipse>
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource ="/Assets/male-03.png" />
+                                                </Ellipse.Fill>
+                                            </Ellipse>
 
-                                                <TextBlock x:Name="TitleCard"
-                                                                   RelativePanel.RightOf="Icon"
-                                                                   
-                                                   Text="{x:Bind PostTitle}"
-                                                   FontSize="18"
-                                                   Foreground="{ThemeResource SystemAltHighColor}"
-                                                                                                      
-                                                   Margin="8,10,0,0"
+                                            <TextBlock 
+                                                       x:Name="TitleCard"
+                                                       RelativePanel.RightOf="Icon"
+                                                       Text="{x:Bind PostTitle}"
+                                                       FontSize="18"
+                                                       Margin="8,10,0,0"
                                                     />
-                                                
 
-                                                <TextBlock x:Name="ContentCard"
-                                                               RelativePanel.Below="TitleCard"
-                                                               RelativePanel.RightOf="Icon"
-                                                   Text="{x:Bind PostContent}"
-                                                   FontSize="15"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   Height="28"
-                                                   Margin="10,1,3,1"
-                                                   Foreground="{ThemeResource SystemAltHighColor}"
+
+                                            <TextBlock 
+                                                       x:Name="ContentCard"
+                                                       RelativePanel.Below="TitleCard"
+                                                       RelativePanel.RightOf="Icon"
+                                                       Text="{x:Bind PostContent}"
+                                                       FontSize="15"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Height="28"
+                                                       Margin="10,1,3,1"
+                                                       Foreground="MediumSlateBlue"
                                                        
                                                   
                                                    />
-                                                <TextBlock x:Name="TimeCard"
-                                                   RelativePanel.Below="ContentCard"
-                                                   RelativePanel.RightOf="Icon"
-                                                   Margin="10,1,3,1"
-                                                   
-                                                             
-                                                   Text="{x:Bind CreatedTime.ToShortDateString()}"
-                                                   Foreground="{ThemeResource SystemAltHighColor}"
-                                                   FontSize="10"
+                                            <TextBlock 
+                                                       x:Name="TimeCard"
+                                                       RelativePanel.Below="ContentCard"
+                                                       RelativePanel.RightOf="Icon"
+                                                       Margin="10,1,3,1"
+                                                       Text="{x:Bind CreatedTime.ToShortDateString()}"
+                                                       FontSize="10"
                                                    
                                                    />
 
-                                                <Line
-                                                    RelativePanel.Below="TimeCard"
-                                                    Style="{ThemeResource ColorPickerBorderStyle}"
-                                                    X2="500"
-                                                    Margin="1"/>
-                                            </RelativePanel>
-                                        </StackPanel>
-
+                                            <Line
+                                                  RelativePanel.Below="TimeCard"
+                                                  Style="{ThemeResource ColorPickerBorderStyle}"
+                                                  X2="500"
+                                                  Margin="1"/>
+                                        </RelativePanel>
                                     </StackPanel>
 
+                                </StackPanel>
+
                             </DataTemplate>
-                            
-                            
+
+
                         </ListView.ItemTemplate>
                     </ListView>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2"  BorderBrush="Gray" BorderThickness="0.4,0,0,0">
-                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,20,20">
-                        <Button x:Name="Edit" Content="Edit Post" Click="Edit_Click" Style="{ThemeResource Sign}" Foreground="MediumSlateBlue"/>
-                            <Button x:Name="Delete"   Content="Delete Post" Click="Delete_Click" Style="{ThemeResource Sign}" Foreground="MediumSlateBlue" />
-                            <TextBlock Text="SocioTalk enables you to post your feed and you can manage your feed in account page. Feel free to use it to have a Secure and Safety Communication."
-                                       TextWrapping="WrapWholeWords"
-                                       Foreground="{StaticResource SystemColorGrayTextColor}"
-                                       Margin="0,50,0,0"/>
-                        </StackPanel>
-
-                    </StackPanel>
-                    
-                </Grid>
-                
-                
+                </StackPanel>
             </ScrollViewer>
+            <StackPanel  x:Name="Option" BorderBrush="Gray" BorderThickness="0.4,0,0,0">
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,20,20">
+                    <HyperlinkButton x:Name="Edit" Content="Edit Post" Click="Edit_Click"  Foreground="MediumSlateBlue"/>
+                    <HyperlinkButton x:Name="Delete"   Content="Delete Post" Click="Delete_Click" Foreground="MediumSlateBlue" />
+                    <TextBlock 
+                               x:Name="SampleText"
+                                Text="SocioTalk enables you to post your feed and you can manage your feed in account page. Feel free to use it to have a Secure and Safety Communication."
+                                       TextWrapping="WrapWholeWords"
+                                        Width="300"
+                                       Foreground="{ThemeResource TextColor}"
+                                       Margin="0,50,0,0"/>
+                </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  Width="350"
+                                  Height="620"
+                                  Margin="20">
+                        
+                        <TextBlock 
+                                    x:Name="PostContent"
+                                    Margin="5"
+                                    
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Justify"
+                                    HorizontalAlignment="Center"
+                                    TextWrapping="WrapWholeWords"/>
+                        
 
 
-        </Grid>
+
+                    </ScrollViewer>
+                    <HyperlinkButton 
+                                    x:Name="ViewPost" 
+                                    Content="View full post" 
+                                    Click="ViewPost_Click"
+                                    HorizontalAlignment="Center"
+                                    Visibility="Collapsed"/>
+
+                </StackPanel>
+
+        </StackPanel>
 
 
+
+
+
+
+
+
+
+    </StackPanel>
     </Grid>
+
+
+
 </Page>

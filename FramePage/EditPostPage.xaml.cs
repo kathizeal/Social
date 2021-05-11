@@ -119,8 +119,8 @@ namespace Social.FramePage
 
 
 
-            postManager.DeletePost(EditingPost);
-            postManager.AddPost(NewPost);
+           // postManager.DeletePost(EditingPost);
+            postManager.UpdateEdit(NewPost);
             Frame.GoBack();
             //MainPage.MainFramePage.Navigate(typeof(AccountPage),CurrentUser);
             //Frame.Navigate(typeof(AccountPage), CurrentUser);

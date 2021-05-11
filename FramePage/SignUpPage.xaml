@@ -9,13 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Image Source="/Assets/blurbackground.jpg" Stretch="Fill" />
-        
-          
+        <Image Style="{ThemeResource Ima}"/>
+
+
         <Grid
             Width="600"
             Height="500"
-            Background="White"
+            Background="{ThemeResource Back}"
             
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -31,9 +31,11 @@
                                         Margin="0,0,0,0"/>
 
                 <TextBox
-                        x:Name="UserNameBox" Width="150"  Foreground="Black"
-                        PlaceholderText="First name" FontSize="15" 
-                        Margin="5" CornerRadius="2" Height="30"
+                        x:Name="UserNameBox" Width="150" 
+                         Background="{ThemeResource PrimaryColor}"
+                        PlaceholderText="First name"
+                        FontSize="15"
+                        Margin="5" 
                         RelativePanel.Below="Logo"
                         
                                        
@@ -41,11 +43,12 @@
                 <TextBox 
                         x:Name="LastNameBox" 
                         Width="150" 
-                        Foreground="Black" 
+                        Background="{ThemeResource PrimaryColor}"
                         PlaceholderText="Last name" 
                         RelativePanel.RightOf="UserNameBox" 
-                        CornerRadius="2" 
-                        Height="30" 
+                        
+                    
+                        
                         FontSize="15" 
                         Margin="5" 
                         RelativePanel.Below="Logo"
@@ -56,11 +59,12 @@
                 <TextBox 
                         x:Name="EmailBox"
                         Width="312"
-                        Foreground="Black" 
+                        Background="{ThemeResource PrimaryColor}"
                         PlaceholderText="********@gmail.com"
                         RelativePanel.Below="UserNameBox" 
-                        CornerRadius="2" 
-                        Height="30" 
+                        
+                    
+                        
                         FontSize="15"
                         Margin="5"
                         
@@ -69,11 +73,12 @@
                 <PasswordBox 
                         x:Name="PasswordBox" 
                         Width="312" 
-                        Foreground="Black" 
+                        Background="{ThemeResource PrimaryColor}"
                         PlaceholderText="Password" 
                         RelativePanel.Below="EmailBox" 
-                        CornerRadius="2" 
-                        Height="30" 
+                        
+                        
+                        
                         FontSize="15" 
                         Margin="5" 
                         IsPasswordRevealButtonEnabled="True"
@@ -84,25 +89,32 @@
                       
 
                     </PasswordBox>
-                <PasswordBox
+                    <PasswordBox
                     x:Name="RePasswordBox" 
                     Width="312" 
-                    Foreground="Black"
+                    Background="{ThemeResource PrimaryColor}"
                     PlaceholderText="Re-enter Password"
                     RelativePanel.Below="PasswordBox" 
-                    CornerRadius="2"
-                    Height="30" 
                     FontSize="15" 
                     Margin="5" 
                     IsPasswordRevealButtonEnabled="True"
-                    PasswordRevealMode="Peek"
-                                  
-                       >
-                        
+                    PasswordRevealMode="Peek"/>
 
-                </PasswordBox>
-                <TextBlock x:Name="BirthdayText" Text="Tell us your Birthday" Foreground="Black" FontSize="12" RelativePanel.Below="RePasswordBox" Margin="5"/>
-                <DatePicker x:Name="Dob" Foreground="Black"   CornerRadius="2" RelativePanel.Below="BirthdayText" MonthFormat="{}{month.integer(2)}" Margin="5" DateChanged="Dob_DateChanged" Width="312" 
+
+
+
+
+                    <TextBlock x:Name="BirthdayText" Text="Tell us your Birthday" Foreground="{ThemeResource TextColor}" FontSize="12" RelativePanel.Below="RePasswordBox" Margin="5"/>
+                <DatePicker 
+                            x:Name="Dob" 
+                            Background="{ThemeResource PrimaryColor}"   
+                            
+                            RelativePanel.Below="BirthdayText" 
+                            MonthFormat="{}{month.integer(2)}" 
+                            Margin="5" 
+                            DateChanged="Dob_DateChanged" 
+                            Width="312" 
+                            
                             
                         >
                     
@@ -117,14 +129,24 @@
                         </MenuFlyout>
                     </DropDownButton.Flyout>
                 </DropDownButton>-->
-                    <ComboBox x:Name="GenderBox" RelativePanel.Below="Dob" Foreground="Black" CornerRadius="2" SelectionChanged="GenderBox_SelectionChanged"  PlaceholderText="Gender" Width="100" Margin="5,3,5,5" PlaceholderForeground="#FFD4D4D4">
+                    <ComboBox 
+                                x:Name="GenderBox" 
+                                RelativePanel.Below="Dob"                                  
+                                SelectionChanged="GenderBox_SelectionChanged" 
+                                Background="{ThemeResource PrimaryColor}" 
+                                PlaceholderText="Gender" 
+                                PlaceholderForeground="{ThemeResource PH}" 
+                                Width="100"
+                                Margin="5,3,5,5" 
+                                
+                              >
                     <ComboBoxItem Content="Male"/>
                     <ComboBoxItem Content="Female"/>
                     <ComboBoxItem Content="Not Willing"/>
                 </ComboBox>
                 <TextBlock x:Name="SampleText" Text="Feel safe and secure by joining our SocioTalk" FontSize="15" Foreground="MediumSlateBlue" RelativePanel.Below="GenderBox" Margin="5"/>
-                <Button x:Name="SignUpButton" Style="{StaticResource Sign}" Click="SignUpButton_Click" Content="SignUp" CornerRadius="2"  RelativePanel.Below="SampleText" Margin="5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100" />
-                <Button x:Name="CancelButton" Style="{StaticResource Sign}" Click="CancelButton_Click" Content="Cancel" CornerRadius="2"  RelativePanel.RightOf="SignUpButton" RelativePanel.Below="SampleText"    Margin="105,5,5,5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100" />
+                    <Button x:Name="SignUpButton" Style="{StaticResource Sign}" Click="SignUpButton_Click" Content="SignUp" CornerRadius="2"  RelativePanel.Below="SampleText" Margin="5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100"  Foreground="{ThemeResource TextColor}" />
+                    <Button x:Name="CancelButton" Style="{StaticResource Sign}" Click="CancelButton_Click" Content="Cancel" CornerRadius="2"  RelativePanel.RightOf="SignUpButton" RelativePanel.Below="SampleText"    Margin="105,5,5,5" BorderBrush="Silver" BorderThickness="1" Background="MediumSlateBlue" Width="100"  Foreground="{ThemeResource TextColor}"/>
                 <TextBlock x:Name="Warning" Text="*All fields are required to be filled" Foreground="Red" RelativePanel.Below="SignUpButton"  Margin="10,10,2,10" Visibility="Collapsed"/>
 
 
