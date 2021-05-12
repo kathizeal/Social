@@ -18,7 +18,6 @@
                         OpenPaneLength="120"  
                         SelectionChanged="NavViewPostPage_SelectionChanged"
                         Loaded="NavViewPostPage_Loaded"
-                        
                         >
             <NavigationView.MenuItems >
                 <NavigationViewItem 
@@ -42,140 +41,103 @@
                                     Content="New Post" 
                                     Tag="NewPost" 
                                     Tapped="AddButton"/>
-               
-
-
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
-               
                 <NavigationViewItem
                                     Icon="Delete"
                                     Content="Delete"
                                     Tapped="DeleteRecord"/>
-
-               
-
-
             </NavigationView.PaneFooter>
-         
-            
             <Grid >
                 <SplitView
                            x:Name="MySpLitView"
                            DisplayMode="Inline"
                            IsPaneOpen="True"
-                            
-                           
                            >
                     <SplitView.Pane>
-
                         <ScrollViewer>
                             <StackPanel 
                                         x:Name="List"
                                         BorderBrush="Silver"
-                                        
                                         BorderThickness="0">
                                 <TextBlock 
                                            Text="Post" 
                                            FontSize="28" 
                                            HorizontalAlignment="Center"/>
-                            
                                 <StackPanel     
                                             Margin="5" 
                                             Padding="10" 
                                             Background="{ThemeResource PaneBack}" 
                                             CornerRadius="5">
-                                
                                     <ListView 
-                                            x:Name="ClickList"
-                                            ItemsSource="{x:Bind PostList}"
-                                            ItemClick="ListView_ItemClick" 
-                                            IsItemClickEnabled="True"
-                                           
-                                            BorderBrush="LightSlateGray" 
-                                            BorderThickness="0.4"                                      
-                                            Foreground="{ThemeResource SystemAltMediumColor}">
+                                             x:Name="ClickList"
+                                             ItemsSource="{x:Bind PostList}"
+                                             ItemClick="ListView_ItemClick" 
+                                             IsItemClickEnabled="True"
+                                             BorderBrush="LightSlateGray" 
+                                             BorderThickness="0.4"                                      
+                                             Foreground="{ThemeResource SystemAltMediumColor}">
                                         <ListView.ItemTemplate >
-
                                             <DataTemplate 
-                                                    x:DataType="data:Post" >
+                                                         x:DataType="data:Post" >
                                                 <StackPanel>
                                                     <RelativePanel>
                                                         <Ellipse 
-                                                            x:Name="Icon"
-                                                            HorizontalAlignment="Left"
-                                                            VerticalAlignment="Center"
-                                                            Margin="0,20,0,0"
-                                                            Width="30" 
-                                                            Height="30">
+                                                                x:Name="Icon"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,20,0,0"
+                                                                Width="30" 
+                                                                Height="30">
                                                             <Ellipse.Fill>
                                                                 <ImageBrush 
-                                                                        ImageSource ="/Assets/male-01.png" />
+                                                                            ImageSource ="/Assets/male-01.png" />
                                                             </Ellipse.Fill>
                                                         </Ellipse>
-
                                                         <TextBlock 
-                                                                x:Name="TitleCard"
-                                                                RelativePanel.RightOf="Icon"                                                                   
-                                                                Text="{x:Bind PostTitle}"
-                                                                FontSize="18"
-                                                                
-                                                                Margin="10,10,0,0"
-                                                    />
-
-
+                                                                    x:Name="TitleCard"
+                                                                    RelativePanel.RightOf="Icon"                                                                   
+                                                                    Text="{x:Bind PostTitle}"
+                                                                    FontSize="18"
+                                                                    Margin="10,10,0,0"/>
                                                         <TextBlock 
-                                                                x:Name="ContentCard"
-                                                                RelativePanel.Below="TitleCard"
-                                                                RelativePanel.RightOf="Icon"
-                                                                Foreground="MediumSlateBlue"
-                                                                Text="{x:Bind PostContent}"
-                                                                FontSize="15"
-                                                                TextTrimming="CharacterEllipsis"
-                                                                Height="25"
-                                                                Margin="10,1,3,1"
-                                                       
-                                                  
-                                                   />
+                                                                    x:Name="ContentCard"
+                                                                    RelativePanel.Below="TitleCard"
+                                                                    RelativePanel.RightOf="Icon"
+                                                                    Foreground="MediumSlateBlue"
+                                                                    Text="{x:Bind PostContent}"
+                                                                    FontSize="15"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    Height="25"
+                                                                    Margin="10,1,3,1"/>
                                                         <TextBlock 
-                                                                x:Name="TimeCard"
-                                                                RelativePanel.Below="ContentCard"
-                                                                RelativePanel.RightOf="Icon"
-                                                                Text="{x:Bind CreatedTime.ToShortDateString()}"
-                                                                Margin="10,5,0,0"
-                                                                FontSize="10"
-                                                                HorizontalAlignment="Right"/>
+                                                                    x:Name="TimeCard"
+                                                                    RelativePanel.Below="ContentCard"
+                                                                    RelativePanel.RightOf="Icon"
+                                                                    Text="{x:Bind CreatedTime.ToShortDateString()}"
+                                                                    Margin="10,5,0,0"
+                                                                    FontSize="10"
+                                                                    HorizontalAlignment="Right"/>
 
                                                         <Line
-                                                         RelativePanel.Below="TimeCard"
-                                                         Style="{ThemeResource ColorPickerBorderStyle}"
-                                                         X2="500"
-                                                         Margin="1"/>
+                                                             RelativePanel.Below="TimeCard"
+                                                             Style="{ThemeResource ColorPickerBorderStyle}"
+                                                             X2="500"
+                                                             Margin="2"/>
                                                     </RelativePanel>
-
-
                                                 </StackPanel>
-
-
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
-
-
                                     </ListView>
-                               
+                                </StackPanel>
                             </StackPanel>
-                           
-                        </StackPanel>
-
                         </ScrollViewer> 
-
                     </SplitView.Pane>
                     <SplitView.Content>
                         <Grid  
-                         
                              x:Name="PostFrame" >
-                            <Image Style="{ThemeResource Ima}"/>
-
+                            <Image 
+                                    Style="{ThemeResource Ima}"/>
                             <!--<StackPanel 
                                         x:Name="CreateFloat"  
                                         Background="#FF1F1F1F" 
@@ -254,53 +216,44 @@
                                 </StackPanel>
 
                             </StackPanel>-->
-
-
-
-                           
-                            
                             <Frame      
                                    x:Name="SecondFrame"
                                    Tag="SecondaryFrame"
                                     >
-
                             </Frame>
                         </Grid>
-
                     </SplitView.Content>
                 </SplitView>
-
-
-
-
             </Grid>
         </NavigationView>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="NarrowState">
+                <VisualState 
+                            x:Name="NarrowState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
+                        <AdaptiveTrigger 
+                                        MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="MySpLitView.(OpenPaneLength)" Value="auto"/>
-                        
-                        
-
+                        <Setter 
+                                Target="MySpLitView.(OpenPaneLength)" 
+                                Value="auto"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="WideState">
+                <VisualState 
+                            x:Name="WideState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800"/>
+                        <AdaptiveTrigger 
+                                        MinWindowWidth="800"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="MySpLitView.(OpenPaneLength)" Value="400"/>
-                        
+                        <Setter 
+                                Target="MySpLitView.(OpenPaneLength)"
+                                Value="400"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
-
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="NarrowStateOnlyList">
@@ -335,6 +288,4 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>-->
     </Grid>
-  
-
 </Page>

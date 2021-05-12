@@ -178,12 +178,6 @@ namespace Social.FramePage
 
          return;
      }*/
-
-
-
-
-
-
     /*private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
     {
         //Comment currentComment = (Comment)e.ClickedItem;
@@ -191,50 +185,44 @@ namespace Social.FramePage
 }*/
     public sealed partial class SecondaryPage : Page
     {
-        Post CurrentPost;
-        User CurrentUser;
-        Comment CurrentComment;
-        PostManager postManager = PostManager.GetInstance();
-        UserManager userManager = UserManager.GetInstance();
+        Post _CurrentPost;
+        User _CurrentUser;
+        Comment _CurrentComment;
+        PostManager _postManager = PostManager.GetInstance();
+        UserManager _userManager = UserManager.GetInstance();
         private ObservableCollection<Comment> _PostComments;
         public ObservableCollection<Comment> PostComments { get { return this._PostComments; } }
         public SecondaryPage()
         {
             this.InitializeComponent();
-            CurrentUser = userManager.Current();
+            _CurrentUser = _userManager.Current();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
-
-            
-            CurrentPost = (Post)e.Parameter;
-            _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
-            if (CurrentPost.Likes != 0)
+            _CurrentPost = (Post)e.Parameter;
+            _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
+            if (_CurrentPost.Likes != 0)
             {
-                foreach (var i in CurrentPost.LikedId)
+                foreach (var i in _CurrentPost.LikedId)
                 {
-                    if (i == CurrentUser.UserId)
+                    if (i == _CurrentUser.UserId)
                         LikeButton.Background = (SolidColorBrush)Resources["BlueColor"];
-
-
                 }
             }
-            Content.Text = CurrentPost.PostContent;
+            Content.Text = _CurrentPost.PostContent;
             /*Title.Text = CurrentPost.PostTitle;*/
-            Heading.Text = CurrentPost.PostTitle;
-            time.Text = CurrentPost.CreatedTime.ToString();
-            CommentCnt.Text ="Comments :"+ CurrentPost.CommentCount.ToString();
-            Createdby.Text = "Created By: " + CurrentPost.PostCreatedByUserName;
-            if (CurrentPost.Likes == 0)
+            Heading.Text = _CurrentPost.PostTitle;
+            time.Text = _CurrentPost.CreatedTime.ToString();
+            CommentCnt.Text ="Comments : "+ _CurrentPost.CommentCount.ToString();
+            Createdby.Text = "Created By: " + _CurrentPost.PostCreatedByUserName;
+            if (_CurrentPost.Likes == 0)
                 LikeCount.Content = "0";
             else
-
             {
                 LikeCount.Visibility = Visibility.Visible;
-                LikeCount.Content = CurrentPost.Likes;
+                LikeCount.Content = _CurrentPost.Likes;
             }
-            if (CurrentPost.Comments.Count == 0)
+            if (_CurrentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
 
@@ -244,42 +232,41 @@ namespace Social.FramePage
                 CommentStack.Visibility = Visibility.Visible;
 
             }
-            if (CurrentPost.Likes == 0)
+            if (_CurrentPost.Likes == 0)
                 LikeCount.Content = "0";
             else
-
             {
                 LikeCount.Visibility = Visibility.Visible;
-                LikeCount.Content = CurrentPost.Likes;
+                LikeCount.Content = _CurrentPost.Likes;
             }
-
 
         }
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (CurrentPost.LikedId.Contains(CurrentUser.UserId))
-                postManager.UnLikePost(CurrentPost, CurrentUser);
-               
-            else               
-            postManager.LikePost(CurrentPost, CurrentUser);
+            if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
+            {
+                _postManager.UnLikePost(_CurrentPost, _CurrentUser);
+                this.Frame.Navigate(typeof(SecondaryPage), _CurrentPost);
+            }
+            else
+            {
+                _postManager.LikePost(_CurrentPost, _CurrentUser);
+                this.Frame.Navigate(typeof(SecondaryPage), _CurrentPost);
+            }
 
-            LikeCount.Content = CurrentPost.Likes;
-
+            LikeCount.Content = _CurrentPost.Likes;
 
         }
         private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
         {
 
-
-
             ReplyButton.Visibility = Visibility.Visible;
             Cancel.Visibility = Visibility.Visible;
             //Edit.Visibility = Visibility.Visible;
             CommentButton.Visibility = Visibility.Collapsed;
-
             CommentTextBox.Focus(FocusState.Programmatic);
-            CurrentComment = (Comment)e.ClickedItem;
+            _CurrentComment = (Comment)e.ClickedItem;
 
         }
         private void CommentButton_Click(object sender, RoutedEventArgs e)
@@ -290,29 +277,27 @@ namespace Social.FramePage
               DragDownButton.Visibility = Visibility.Visible;*/
             Comment newComment = new Comment();
             newComment.ParentCommentId = null;
-            newComment.PostId = CurrentPost.PostId;
+            newComment.PostId = _CurrentPost.PostId;
             newComment.CommentContent = CommentTextBox.Text;
-            newComment.CommenterName = CurrentUser.UserName;
-            newComment.CommenterId = CurrentUser.UserId;
-            postManager.AddComment(CurrentPost, newComment);
+            newComment.CommenterName = _CurrentUser.UserName;
+            newComment.CommenterId = _CurrentUser.UserId;
+            _postManager.AddComment(_CurrentPost, newComment);
             //postManager.AddComment(CurrentPost, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
             CommentStack.Visibility = Visibility.Visible;
-            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+            this.Frame.Navigate(typeof(SecondaryPage), _CurrentPost);
         }
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             //MainPage.postManager.AddReply(CurrentPost, CurrentComment.CommentId, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, CurrentComment.CommentId));
             Comment newReply = new Comment();
-            newReply.PostId = CurrentPost.PostId;
+            newReply.PostId = _CurrentPost.PostId;
             newReply.CommentContent = CommentTextBox.Text;
-            newReply.CommenterName = CurrentUser.UserName;
-            newReply.CommenterId = CurrentUser.UserId;
-            newReply.ParentCommentId = CurrentComment.CommentId;
-            postManager.AddReply(CurrentPost, CurrentComment, newReply);
+            newReply.CommenterName = _CurrentUser.UserName;
+            newReply.CommenterId = _CurrentUser.UserId;
+            newReply.ParentCommentId = _CurrentComment.CommentId;
+            _postManager.AddReply(_CurrentPost, _CurrentComment, newReply);
             //postManager.AddReply(CurrentPost, CurrentComment, new Comment(CurrentPost.PostId, CommentTextBox.Text, CurrentUser.UserName, CurrentUser.UserId, null));
-
-
-            this.Frame.Navigate(typeof(SecondaryPage), CurrentPost);
+            this.Frame.Navigate(typeof(SecondaryPage), _CurrentPost);
 
         }
 

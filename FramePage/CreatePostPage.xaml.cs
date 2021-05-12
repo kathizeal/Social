@@ -60,9 +60,9 @@ namespace Social.FramePage
     }*/
     public sealed partial class CreatePostPage : Page
     {
-        User CurrentUser;
+        User _CurrentUser;
 
-        PostManager postManager = PostManager.GetInstance();
+        PostManager _PostManager = PostManager.GetInstance();
         public CreatePostPage()
         {
             this.InitializeComponent();
@@ -70,31 +70,22 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-
-            CurrentUser = (User)e.Parameter;
-
-
+            _CurrentUser = (User)e.Parameter;
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             Post newPost = new Post();
             newPost.PostTitle = TitleBox.Text;
             newPost.PostContent = ContentBox.Text;
-            newPost.PostCreatedByUserName = CurrentUser.UserName;
-            newPost.PostCreatedByUserId = CurrentUser.UserId;
-            // postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
-            postManager.AddPost(newPost);
-            // MainPage.MainFramePage.Navigate(typeof(PostPage));
+            newPost.PostCreatedByUserName = _CurrentUser.UserName;
+            newPost.PostCreatedByUserId = _CurrentUser.UserId;
+            _PostManager.AddPost(newPost);
             this.Frame.Navigate(typeof(PostPage));
-            //Frame.Navigate(typeof(MainPage));
 
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            // MainPage.MainFramePage.Navigate(typeof(PostPage));
-            //this.Frame.GoBack();
             this.Frame.Navigate(typeof(PostPage));
 
         }

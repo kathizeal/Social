@@ -29,6 +29,7 @@
                         FontFamily="Segoe MDL2 Assets" 
                         Content="&#xE0A6;"  
                         Background="Transparent"
+                        Visibility="Visible"
                         Foreground="{ThemeResource TextColor}" 
                         Click="GoBack_Click"
                         VerticalAlignment="Top"

@@ -28,33 +28,19 @@ namespace Social
   
     public sealed partial class MainPage : Page
     {
-        UserManager userManager = UserManager.GetInstance();
-        PostManager postManager = PostManager.GetInstance();
-       
-       
-        public Frame mainFrame()
-        {
-            return MainFrame;
-        }
-
+        UserManager _UserManager = UserManager.GetInstance();
+        PostManager _PostManager = PostManager.GetInstance();
         public MainPage()
         {
             this.InitializeComponent();
-
-           /* userManager.AddUser("Kathiravan", "Kannan", "kathizeal@gmail.com", "1234", "20/05/1999", "Male");
-            userManager.AddUser("Robin", "jesba", "RobiJesba@gmail.com", "2345", "22/02/1999", "Male");
-            //_PostList = new ObservableCollection<Post>(postManager.ViewAllPost());
-            /*  postManager.AddPost(new Post("User1 Post", "This is my  First Post", "user1", 12345689));
-             postManager.AddPost(new Post("User2 Post", "This is my second Post", "user2", 12345689));
-             postManager.AddPost(new Post("User3 Post", "This is my third Post", "user2", 12345689));*/
-            if (userManager.State() == false)
+            if (_UserManager.State() == false)
             {
-                userManager.CreateTable();
+                _UserManager.CreateTable();
                 MainFrame.Navigate(typeof(SignInPage));
             }
             else
             {
-                postManager.CreateTable();
+                _PostManager.CreateTable();
                 MainFrame.Navigate(typeof(PostPage));
             }
 

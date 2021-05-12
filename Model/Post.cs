@@ -13,18 +13,7 @@ namespace Social.Model
 
     public class Post
     {        
-       /* public Post(string title, string content, string username,long userid)
-        {
-            PostTitle = title;
-            PostContent = content;
-            PostCreatedByUserName = username;
-            PostCreatedByUserId = userid;
-            PostId = DateTime.Now.Ticks;
-            CreatedTime = DateTime.UtcNow;
-            Likes = 0;
-            
-
-        }*/
+      
        public Post()
         {
             PostId = DateTime.Now.Ticks;
@@ -43,26 +32,12 @@ namespace Social.Model
         public DateTime CreatedTime { get; set; }
         public int Likes { get; set; }
         public int CommentCount { get; set; }
-
-
-
         private List<Comment> _Comments =new List<Comment>();
         [Ignore]
         public List<Comment> Comments { get { return _Comments; } set { _Comments = value; } }
-        /* private List<Comment> _Reply = new List<Comment>();
-         public List<Comment> Reply { get { return _Reply; } set { _Reply = value; } }*/
-        // public int Likes { get; set; }
-       
         private List<long> _LikedId = new List<long>();
          [Ignore]
         public List<long> LikedId { get { return _LikedId; }  set { _LikedId = value; } }
-        /* public event PropertyChangedEventHandler PropertyChanged;
-         public void OnPropertyChanged(String propertyName)
-         {
-             if (PropertyChanged != null)
-             {
-                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-             }
-         }*/
+        
     }
 }

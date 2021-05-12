@@ -8,16 +8,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{ThemeResource PaneBack}">
+    <Grid 
+         Background="{ThemeResource PaneBack}">
 
         <StackPanel>
-            <TextBox x:Name="TitleBox"
+            <TextBox
+                     x:Name="TitleBox"
                      Header="Title"
                      Width="auto"
                      Height="60"
                      PlaceholderText="Title of the Post"
                      Margin="40" />
-            <TextBox x:Name="ContentBox"
+            <TextBox 
+                     x:Name="ContentBox"
                      Header="Content"
                      Width="auto"
                      Height="300" 
@@ -26,20 +29,22 @@
                      PlaceholderText="Content of the Post"
                      Margin="40"/>
             <RelativePanel>
-                <Button x:Name="CreateButton"
-                    Content="Create"
-                    Width="60"
-                    CornerRadius="2"
-                    Click="CreateButton_Click"
-                    HorizontalAlignment="Left"
-                    Margin="40,0,0,0"/>
-                <Button x:Name="CancelButton" 
-                    Content="Cancel" 
-                    CornerRadius="2" 
-                    RelativePanel.RightOf="CreateButton"
-                    Click="CancelButton_Click" 
-                    HorizontalAlignment="Left" 
-                    Margin="20,0,0,0"/>
+                <Button 
+                        x:Name="CreateButton"
+                        Content="Create"
+                        Width="60"
+                        CornerRadius="2"
+                        Click="CreateButton_Click"
+                        HorizontalAlignment="Left"
+                        Margin="40,0,0,0"/>
+                <Button 
+                        x:Name="CancelButton" 
+                        Content="Cancel" 
+                        CornerRadius="2" 
+                        RelativePanel.RightOf="CreateButton"
+                        Click="CancelButton_Click" 
+                        HorizontalAlignment="Left" 
+                        Margin="20,0,0,0"/>
             </RelativePanel>
         </StackPanel>
     </Grid> 

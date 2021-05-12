@@ -9,40 +9,24 @@
     
     
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-  
-
-
-
-
-
-
     <Grid >
         <Image Style="{ThemeResource Ima}"/>
-
-
-
         <Grid 
-            
             Width="600"
             Height="400"
-            Background="{ThemeResource Back}"
-            
+            Background="{ThemeResource PaneBack}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
-            
-            CornerRadius="10"
-
-            
+            CornerRadius="10"           
             >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="SignInPart"/>
-
-
             </Grid.ColumnDefinitions>
             <StackPanel
                        Orientation="Vertical"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
+                      
                        Margin="10,5,10,5" >
                 <TextBlock
                           Text="SocioTalk" 
@@ -50,51 +34,29 @@
                           FontWeight="Bold"                            
                           Foreground="BlueViolet"                     
                           Margin="5,5,5,5" FontFamily="Arial"/>
-
-
                 <TextBox 
                         x:Name="UserIdBlock"
                         Width="240"
                         PlaceholderText="User-Id" 
                         FontSize="18"
-                       
                         Background="{ThemeResource PrimaryColor}"
-                        
                         TextChanging="UserIdBlock_TextChanging"
-                        
-                       
-                    
-                      
                         HorizontalAlignment="Center"
-                        
-
-                        Margin="5"   />
-
+                        Margin="5"/>
                 <PasswordBox
-                    
                             x:Name="PasswordBlock"   
                             Width="240" 
-                           Background="{ThemeResource PrimaryColor}"
-                            
+                            Background="{ThemeResource PrimaryColor}"
                             PlaceholderText=" Password"
                             IsPasswordRevealButtonEnabled="True"
                             PasswordRevealMode="Peek" 
-                          
                             FontSize="18"   
                             PasswordChanging="PasswordBlock_PasswordChanging"
-                            
                             Margin="5"
-                            
-                            HorizontalAlignment="Center" 
-                            >
-                             
-
-
-                </PasswordBox>
+                            HorizontalAlignment="Center"/>
                 <Button 
                         Content="Sign in" 
                         Style="{ThemeResource Sign}"                                                   
-                        
                         BorderBrush="Black"
                         BorderThickness="1"
                         HorizontalAlignment="Center" 
@@ -108,7 +70,6 @@
                 <HyperlinkButton  
                                 x:Name="ForgotButton"
                                 Content="Forgot password" 
-                                
                                 Foreground="MediumSlateBlue"
                                 Visibility="Collapsed"
                                 FontSize="10" 
@@ -132,18 +93,14 @@
                         Content="Delete Account"
                         FontSize="14"
                         Foreground="MediumSlateBlue"
-                                               
                         HorizontalAlignment="Center"
                         Click="DeleteAccount_Click"/>
                 <TextBlock 
                             x:Name="Warning"
-                            
                             Visibility="Collapsed"
                             Foreground="Red"
                             HorizontalAlignment="Center"/>
-
             </StackPanel>
-
         </Grid>
 
 

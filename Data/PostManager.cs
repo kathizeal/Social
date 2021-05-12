@@ -12,22 +12,16 @@ namespace Social.Data
     {
         string path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db.sqlite");
         SQLite.Net.SQLiteConnection conn;
-
-
-
         public void  CreateTable()
         {
-           conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
+            conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
             conn.CreateTable<Post>();
             conn.CreateTable<Comment>();
             conn.CreateTable<UserIds>();
-
         }
-
         private List<Post> _Posts = new List<Post>();
         private static PostManager _Instance = null;
         private PostManager() { }
-        
         public static PostManager GetInstance()
         {
             if (_Instance == null)
@@ -44,17 +38,12 @@ namespace Social.Data
            // _Posts.Add(post);
 
         }
-       /* public void CreatePost(Post post)
-        {
-           
-            _Posts.Add(post);
-        }*/
+     
         public void DeletePost(Post post)
         {
             conn.Delete(post);
             //_Posts.Remove(post);
         }
-
         public List<Post> ViewAllPost()
         {
 
@@ -181,18 +170,6 @@ namespace Social.Data
 
                
             }
-        }
-        public Post Edit(Post post)
-        {
-
-            //Post newPost = new Post(post.PostTitle, post.PostContent, post.PostCreatedByUserName, post.PostCreatedByUserId);
-            /*Post newPost = post;
-            newPost.CreatedTime = post.CreatedTime;
-            newPost.PostId = post.PostId;
-            newPost.Likes = post.Likes;
-            newPost.Comments = post.Comments;
-            newPost.LikedId = post.LikedId;*/
-            return post;
         }
         public void UpdateEdit(Post post)
         {

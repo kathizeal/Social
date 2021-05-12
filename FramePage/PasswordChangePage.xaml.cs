@@ -24,42 +24,37 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class PasswordChangePage : Page
     {
-        User user;
-
-       
+        User _User;
         public PasswordChangePage()
         {
             this.InitializeComponent();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-             user = (User)e.Parameter;
-            UserNameBox.Text = user.UserName;
+            _User = (User)e.Parameter;
+            UserNameBox.Text = _User.UserName;
 
         }
-
         private void LastNameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (LastNameBox.Text != user.LastName)
+            if (LastNameBox.Text != _User.LastName)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
         }
-
         private void EmailBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(EmailBox.Text!=user.Email)
+            if(EmailBox.Text!=_User.Email)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
         }
-
         private void Dob_DateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
-            DateTime Birthday;
-            Birthday = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
-            string DOB = Birthday.ToShortDateString();
-            if (DOB!=user.BirthDay)
+            DateTime birthDay;
+            birthDay = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
+            string DOB = birthDay.ToShortDateString();
+            if (DOB!=_User.BirthDay)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
@@ -69,10 +64,9 @@ namespace Social.FramePage
 
         private void Change_Click(object sender, RoutedEventArgs e)
         {
-            User newUser =user;
-            newUser.UserId = user.UserId;
+            User newUser =_User;
+            newUser.UserId = _User.UserId;
             newUser.Password = PasswordBox.Password;
-           
             UserManager userManager = UserManager.GetInstance();
             userManager.Update(newUser);
             Frame.Navigate(typeof(MainPage));
