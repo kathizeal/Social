@@ -9,14 +9,14 @@
     
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-   
+
     <Grid>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState 
@@ -26,6 +26,9 @@
                                         MinWindowWidth="800"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter
+                                Target="ListStack.Width"
+                                Value="550"/>
                         <Setter 
                                 Target="View.(Visibility)"
                                 Value="Collapsed"/>
@@ -47,6 +50,9 @@
                         <Setter 
                                 Target="Intro.(Visibility)"
                                 Value="Visible"/>
+                        <Setter
+                                Target="Intro.(Margin)"
+                                Value="50"/>
 
                     </VisualState.Setters>
                 </VisualState>
@@ -57,12 +63,15 @@
                                         MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter
+                                Target="ListStack.Width"
+                                Value="450"/>
                         <Setter 
                                 Target="ButtonStack.(Visibility)"
                                 Value="Visible"/>
                         <Setter
                                 Target="Intro.(Margin)"
-                                Value="50"/>
+                                Value="30,100,10,50"/>
                         <Setter
                                 Target="Intro.(Visibility)"
                                 Value="Visible"/>
@@ -84,7 +93,7 @@
                         <Setter 
                                 Target="InsideFrame.(Width)" 
                                 Value="500"/>
-                        
+
                         <Setter 
                                 Target="Option.(Visibility)" 
                                 Value="Collapsed"/>
@@ -94,13 +103,13 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid Grid.Column="0" Background="{ThemeResource PaneBack}">
-            
-            
-            
+
+
+
             <StackPanel 
                         x:Name="ButtonStack" 
                         HorizontalAlignment="Left"  
-                        VerticalAlignment="Top" 
+                        VerticalAlignment="Top"
                         Background="Transparent">
                 <Button 
                         x:Name="GoBack" 
@@ -156,29 +165,62 @@
                         x:Name="Intro"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center"    
-                        Margin="50"          
                         >
-             
+
 
                 <RelativePanel>
 
-                   <!-- <Ellipse 
+                    <Ellipse 
                             Width="220"
+                            Name="ProfilePic"
                             Height="220"
-                            x:Name="Icon">
+                            >
                         <Ellipse.Fill>
-                            <ImageBrush  
-                                        ImageSource="/Assets/male-03.png"/>
+                            <ImageBrush x:Name="br"
+                                        
+                            />
                         </Ellipse.Fill>
-                    </Ellipse>-->
-                    <PersonPicture 
-                                    Width="220"
-                                     Height="220"
-                                    Name="ProfilePic"
-                                    
-                                         />
+                    </Ellipse>
+                    <Button
+                        Margin="60,20,50,2"
+                        Style="{ThemeResource TextBlockButtonStyle }"
+                        x:Name="ProfileBB"
+                        HorizontalAlignment="Center"
+                        Content="Change Profile"
+                        RelativePanel.Below="ProfilePic">
+                        <Button.Flyout>
+                            <Flyout>
+                                <ScrollViewer
+                                    x:Name="AssetsScroll"
+                                    Width="450"
+                                    BorderBrush="Gray"
+                                    BorderThickness="0.4,0,0,0" 
+                                    VerticalScrollBarVisibility="Auto">
+                                                    <StackPanel>
 
-                    <StackPanel RelativePanel.Below="ProfilePic">
+                                        <GridView
+                                            x:Name="MyAssets"
+                                            IsItemClickEnabled="True"
+                                            ItemClick="MyAssets_ItemClick">
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate x:DataType="data:Profile">
+                                                    <StackPanel HorizontalAlignment="Center" >
+                                                        <Image Source="{x:Bind ImageFile}" Width="150" Margin="50,20,20,20" Height="150" Stretch="UniformToFill"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                        </GridView>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Flyout>
+
+                        </Button.Flyout>
+                    </Button>
+
+                   
+
+
+                    <StackPanel RelativePanel.Below="ProfileBB">
                         <RelativePanel>
 
                             <TextBlock 
@@ -187,10 +229,11 @@
                                         Foreground="{ThemeResource TextColor}"
                                         Width="150" 
                                         Margin="0,10,10,0" 
-                                        FontSize="20" />
+                                        FontSize="18" />
                             <TextBlock 
                                         x:Name="UserNameBlock"
-                                        FontSize="20"
+                                        FontSize="18"
+                                         Width="250"
                                         RelativePanel.RightOf="UNTB"
                                         Foreground="{ThemeResource TextColor}"
                                         Margin="0,10,10,0"/>
@@ -201,10 +244,11 @@
                                         Width="150" 
                                         RelativePanel.Below="UNTB"
                                         Margin="0,10,10,0" 
-                                        FontSize="20"/>
+                                        FontSize="18"/>
                             <TextBlock 
                                         x:Name="LastNameBlock"
-                                        FontSize="20" 
+                                        FontSize="18" 
+                                         Width="250"
                                         Foreground="{ThemeResource TextColor}"
                                         RelativePanel.Below="UserNameBlock"
                                         RelativePanel.RightOf="LNTB"
@@ -216,10 +260,11 @@
                                         Width="150" 
                                         RelativePanel.Below="LNTB"
                                         Margin="0,10,10,0" 
-                                        FontSize="20"/>
+                                        FontSize="18"/>
                             <TextBlock
                                         x:Name="GenderBlock"
-                                        FontSize="20"
+                                        FontSize="18"
+                                         Width="250"
                                         Foreground="{ThemeResource TextColor}"
                                         RelativePanel.Below="LastNameBlock"
                                         RelativePanel.RightOf="GenderTB"
@@ -231,10 +276,11 @@
                                         Width="150" 
                                         RelativePanel.Below="GenderTB" 
                                         Margin="0,10,10,0" 
-                                        FontSize="20"/>
+                                        FontSize="18"/>
                             <TextBlock 
                                         x:Name="UserIDBlock"                                            
-                                        FontSize="20"
+                                        FontSize="18"
+                                        Width="250"
                                         Foreground="{ThemeResource TextColor}"
                                         Margin="0,10,10,0"
                                         RelativePanel.Below="GenderBlock"
@@ -246,10 +292,12 @@
                                         Width="150"
                                         RelativePanel.Below="USIDTB" 
                                         Margin="0,10,10,0"
-                                        FontSize="20"/>
+                                        FontSize="18"/>
                             <TextBlock 
                                         x:Name="EmailBlock"
-                                        FontSize="20"
+                                        FontSize="18"
+                                        TextWrapping="Wrap"
+                                        Width="250"
                                         Foreground="{ThemeResource TextColor}"
                                         RelativePanel.RightOf="EmailTB"                                  
                                         RelativePanel.Below="UserIDBlock"
@@ -258,19 +306,21 @@
                                         x:Name="BirthTB" 
                                         Text="Birthday" 
                                         Foreground="{ThemeResource TextColor}"
+                                        Height="auto"
                                         Width="150" 
                                         RelativePanel.Below="EmailTB" 
                                         Margin="0,10,10,0" 
-                                        FontSize="20"/>
+                                        FontSize="18"/>
                             <TextBlock 
                                         x:Name="BirthdayBlock"
-                                        FontSize="20"
+                                        FontSize="18"
                                         Foreground="{ThemeResource TextColor}" 
                                         RelativePanel.RightOf="BirthTB"
                                         RelativePanel.Below="EmailBlock"
                                         Margin="0,10,10,0"/>
-                            <HyperlinkButton 
+                            <Button 
                                             x:Name="View"
+                                            Style="{ThemeResource TextBlockButtonStyle}"
                                             Content="View my post"
                                             Foreground="MediumSlateBlue"
                                             FontSize="18" 
@@ -285,26 +335,34 @@
             </StackPanel>
             <StackPanel 
                         x:Name="InsideFrame" >
-                <ScrollViewer  
+
+
+
+
+
+
+                <ScrollViewer 
+                            x:Name="ListStack"
                             BorderBrush="Gray"
                             BorderThickness="0.4,0,0,0" 
                             VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <TextBlock 
+
+                    <StackPanel x:Name="PostStack">
+                        <TextBlock 
                                 Text="Your Post"
                                 FontSize="20"
                                 HorizontalAlignment="Left"
                                 Margin="50,20,50,20"
                                 Foreground="{ThemeResource TextColor}"/>
-                    <TextBlock 
+                        <TextBlock 
                                 x:Name="NoPost"
                                 Text="No post is found from you" 
                                 Margin="70,300,20,20" 
-                                Width="450"     
+                                Width="450"   
                                 FontSize="20"
                                 Foreground="{ThemeResource TextColor}"
                                 HorizontalAlignment="Stretch"/>
-                    <ListView 
+                        <ListView 
                               x:Name="My_Post"
                               MaxWidth="540"
                               ItemsSource="{x:Bind MyPost}" 
@@ -312,94 +370,93 @@
                               ItemClick="MyPost_ItemClick" 
                               IsItemClickEnabled="True"
                               Foreground="{ThemeResource SystemAltMediumColor}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="data:Post">
-                                <StackPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Post">
                                     <StackPanel>
-                                        <RelativePanel>
-                                            <Ellipse 
-                                                    x:Name="Icon"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Center"
-                                                     Margin="0,10,0,0"
-                                                     Width="30" 
-                                                     Height="30">
-                                                <Ellipse.Fill>
-                                                    <ImageBrush 
-                                                            ImageSource ="/Assets/male-03.png" />
-                                                </Ellipse.Fill>
-                                            </Ellipse>
-                                               
-                                            <TextBlock 
-                                                       x:Name="TitleCard"
-                                                       RelativePanel.RightOf="Icon"
-                                                       Text="{x:Bind PostTitle}"
-                                                       FontSize="18"
-                                                       Margin="8,10,0,0"/>
-                                            <TextBlock 
-                                                       x:Name="ContentCard"
-                                                       RelativePanel.Below="TitleCard"
-                                                       RelativePanel.RightOf="Icon"
-                                                       Text="{x:Bind PostContent}"
-                                                       FontSize="15"                                                        
-                                                       TextWrapping="Wrap"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       Height="28"
-                                                       Margin="10,1,3,1"
-                                                       Foreground="{ThemeResource TertiaryColor}"/>
-                                            <TextBlock 
-                                                       x:Name="TimeCard"
-                                                       RelativePanel.Below="ContentCard"
-                                                       RelativePanel.RightOf="Icon"
-                                                       Margin="10,1,3,1"
-                                                       Text="{x:Bind CreatedTime.ToShortDateString()}"
-                                                       FontSize="10" />
-                                            <Line
-                                                  RelativePanel.Below="TimeCard"
-                                                  Style="{ThemeResource ColorPickerBorderStyle}"
-                                                  X2="500"
-                                                  Margin="1"/>
-                                        </RelativePanel>
+                                        <StackPanel>
+                                            <RelativePanel>
+                                                <Ellipse
+                                                               x:Name="Icon"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,10,0,0"
+                                                               Width="30" 
+                                                               Height="30">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource ="{x:Bind ProfilePic}" />
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                                <TextBlock
+                                                               x:Name="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
+                                                               Text="{x:Bind PostTitle}"
+                                                               Width="320"
+                                                               TextTrimming="CharacterEllipsis"
+                                                              FontSize="18"
+                                                               Margin="8,10,0,0"/>
+                                                <TextBlock 
+                                                               x:Name="ContentCard"
+                                                               RelativePanel.Below="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
+                                                               Text="{x:Bind PostContent}"
+                                                               FontSize="15"
+                                                               TextWrapping="Wrap"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               Height="28"
+                                                               Margin="10,1,3,1"
+                                                               Foreground="DimGray"/>
+                                                <StackPanel  RelativePanel.RightOf="TitleCard" Width="150" HorizontalAlignment="Right">
+                                                    <TextBlock 
+                                                               x:Name="TimeCard"
+                                                               Margin="30,10,3,1"
+                                                               HorizontalAlignment="Right"
+                                                               Text="{x:Bind CreatedTimeString}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               FontSize="10" />
+                                                </StackPanel>
+                                            </RelativePanel>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
-            </ScrollViewer>
-            <StackPanel  
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </ScrollViewer>
+                <StackPanel  
                 x:Name="Option"
                 BorderBrush="Gray" 
                 BorderThickness="0.4,0,0,0">
-                <StackPanel
+                    <StackPanel
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left"
                     Margin="20,20,20,20">
-                    <HyperlinkButton 
+                        <HyperlinkButton 
                         x:Name="Edit"
                         Content="Edit Post"
                         Click="Edit_Click" 
                         Foreground="MediumSlateBlue"/>
-                    <HyperlinkButton 
+                        <HyperlinkButton 
                         x:Name="Delete"  
                         Content="Delete Post"
                         Click="Delete_Click"
                         Foreground="MediumSlateBlue" />
-                    <TextBlock 
+                        <TextBlock 
                                x:Name="SampleText"
-                               Text="SocioTalk enables you to post your feed and you can manage your feed in account page. Feel free to use it to have a Secure and Safety Communication."
                                TextWrapping="WrapWholeWords"
                                Width="300"
                                Foreground="{ThemeResource TextColor}"
                                Margin="0,50,0,0"/>
-                   
-                </StackPanel>
+
+
+
+
+                    </StackPanel>
                     <ScrollViewer 
                                   VerticalScrollBarVisibility="Auto"
                                   MaxWidth="400"
                                   Height="620"
                                   Margin="20">
-                        
+
                         <TextBlock 
                                     x:Name="PostContent"
                                     Margin="5"

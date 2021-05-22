@@ -82,17 +82,17 @@
                            Width="240"
                            Foreground="MediumTurquoise"/>
                 <HyperlinkButton
-                                 x:Name="SignUpButton"                               
-                                 Content="Click Here to Create a new Account"
-                                 FontSize="14" 
-                                 Foreground="MediumSlateBlue"
-                                 HorizontalAlignment="Center"
-                                 Click="SignUpButton_Click"  />
+                                x:Name="SignUpButton"                               
+                                Content="Click Here to Create a new Account"
+                                FontSize="14" 
+                                Foreground="{ThemeResource SystemAccentColorDark1}"
+                                HorizontalAlignment="Center"
+                                Click="SignUpButton_Click"  />
                 <HyperlinkButton 
                         x:Name="DeleteAccount"
                         Content="Delete Account"
                         FontSize="14"
-                        Foreground="MediumSlateBlue"
+                        Foreground="{ThemeResource SystemAccentColorDark1}"
                         HorizontalAlignment="Center"
                         Click="DeleteAccount_Click"/>
                 <TextBlock 

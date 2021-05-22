@@ -60,9 +60,11 @@ namespace Social.FramePage
     }*/
     public sealed partial class CreatePostPage : Page
     {
-        User _CurrentUser;
 
+       
+        User _CurrentUser;
         PostManager _PostManager = PostManager.GetInstance();
+        UserManager _UserManager = UserManager.GetInstance();
         public CreatePostPage()
         {
             this.InitializeComponent();
@@ -74,20 +76,31 @@ namespace Social.FramePage
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            Post newPost = new Post();
-            newPost.PostTitle = TitleBox.Text;
-            newPost.PostContent = ContentBox.Text;
-            newPost.PostCreatedByUserName = _CurrentUser.UserName;
-            newPost.PostCreatedByUserId = _CurrentUser.UserId;
-            _PostManager.AddPost(newPost);
-            this.Frame.Navigate(typeof(PostPage));
-
+            if (string.IsNullOrWhiteSpace(TitleBox.Text) || string.IsNullOrWhiteSpace(ContentBox.Text))
+            {
+                TitleBox.PlaceholderText = "Not Should be empty";
+                ContentBox.PlaceholderText= "Not Should be empty";
+            }
+                
+            else
+            {
+                
+                Post newPost = new Post();
+                newPost.ProfilePic = _CurrentUser.ProfilePic;
+                newPost.PostTitle = TitleBox.Text;
+                newPost.PostContent = ContentBox.Text;
+                newPost.PostCreatedByUserName = _CurrentUser.UserName;
+                newPost.PostCreatedByUserId = _CurrentUser.UserId;
+                _PostManager.AddPost(newPost);
+                CreateHandler createHandler = CreateHandler.GetInstance();
+                createHandler.UpdateStatus(newPost);
+                this.Frame.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PostPage));
-
+            this.Frame.Visibility = Visibility.Collapsed;
         }
     }
 }

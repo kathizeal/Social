@@ -1,4 +1,4 @@
-﻿using SQLite;
+﻿using SQLite.Net.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace Social.Model
 {
-   class UserIds
+   public class UserIds
     {
-        
-        public long PostId { get; set; }
-        public String UserName { get; set; }
         [PrimaryKey]
+        public long Unique { get; set; }
+        public long PostId { get; set; }
+        public string UserName { get; set; }
         public long Userid { get; set; }
+       
         
     }
 }

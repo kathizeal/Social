@@ -97,7 +97,7 @@ namespace Social.FramePage
             ContentBox.Text = NewPost.PostContent;
             UserManager userManager = UserManager.GetInstance();
 
-            CurrentUser = userManager.Current();
+            CurrentUser =userManager.Current();
         }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {

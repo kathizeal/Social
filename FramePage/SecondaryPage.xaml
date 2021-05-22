@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Social.FramePage"
+   xmlns:uc="using:Social.Control"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   
     xmlns:data="using:Social.Model"
     
     mc:Ignorable="d"
@@ -13,7 +15,15 @@
     <Page.Resources>
         <SolidColorBrush x:Key="BlueColor" Color="#FF30B3DD" />
     </Page.Resources>
-    <Grid 
+    <Grid>
+        <uc:PostViewControl _CurrentPost="{x:Bind CurrentPost}"
+                            _CurrentUser="{x:Bind CurrentUser}"
+                            PostComments="{x:Bind PostComments}"          />
+    </Grid>
+
+
+    <!--<Grid 
+        
          Background="{ThemeResource PaneBack}" 
          x:Name="PostDetails">
         <Grid.RowDefinitions>
@@ -26,6 +36,9 @@
                             x:Name="ThirdRow"
                             Height="50"/>
         </Grid.RowDefinitions>
+        <Grid>
+           
+        </Grid>
         <Image 
               Style="{ThemeResource Ima}"/>
         <StackPanel 
@@ -295,13 +308,13 @@
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger
                                         MinWindowWidth="800"/>
-                        
+
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter
                                 Target="CommentWriteStack.(HorizontalAlignment)"
                                 Value="Center"/>
-                       
+
                         <Setter
                                 Target="ContentStack.(Width)"
                                 Value="auto"/>
@@ -323,7 +336,7 @@
                         <Setter
                                 Target="CommentWriteStack.(HorizontalAlignment)"
                                 Value="Left"/>
-                        
+
                         <Setter
                                 Target="ContentStack.(Width)"
                                 Value="Auto"/>
@@ -342,5 +355,6 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </Grid>
+    </Grid>-->
+
 </Page>

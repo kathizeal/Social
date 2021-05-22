@@ -119,6 +119,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\PostViewControl.xaml.cs">
+      <DependentUpon>PostViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ReplyControl.xaml.cs">
+      <DependentUpon>ReplyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\SinglePostControl.xaml.cs">
+      <DependentUpon>SinglePostControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreateHandler.cs" />
+    <Compile Include="CustomEvent.cs" />
     <Compile Include="Data\PostManager.cs" />
     <Compile Include="Data\UserManager.cs" />
     <Compile Include="FramePage\AccountPage.xaml.cs">
@@ -153,6 +164,7 @@
     </Compile>
     <Compile Include="Model\Comment.cs" />
     <Compile Include="Model\Post.cs" />
+    <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserIds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,9 +180,6 @@
     <Content Include="Assets\Dark-2.jpg" />
     <Content Include="Assets\Dark.jpg" />
     <Content Include="Assets\Frontcover.jpg" />
-    <Content Include="Assets\Kathi.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\male-01.png" />
     <Content Include="Assets\male-02.png" />
     <Content Include="Assets\male-03.png" />
@@ -178,6 +187,15 @@
     <Content Include="Assets\plus--v2.png" />
     <Content Include="Assets\white-abstract-background.jpg" />
     <Content Include="Assets\white.jpg" />
+    <Content Include="Avatar\Avatar-1.png" />
+    <Content Include="Avatar\Avatar-2.png" />
+    <Content Include="Avatar\Avatar-3.png" />
+    <Content Include="Avatar\Avatar-4.png" />
+    <Content Include="Avatar\Avatar-5.png" />
+    <Content Include="Avatar\Avatar-6.png" />
+    <Content Include="Avatar\Avatar-7.png" />
+    <Content Include="Avatar\Avatar-8.png" />
+    <Content Include="Avatar\Avatar-9.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -192,6 +210,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Control\PostViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\ReplyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\SinglePostControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FramePage\AccountPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -256,9 +286,7 @@
       <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Control\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

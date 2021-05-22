@@ -40,6 +40,7 @@ namespace Social
             }
             else
             {
+                _UserManager.CreateTable();
                 _PostManager.CreateTable();
                 MainFrame.Navigate(typeof(PostPage));
             }

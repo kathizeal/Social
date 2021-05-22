@@ -11,7 +11,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <Grid x:Name="RootGrid" Background="{ThemeResource SystemAccentColor}">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">
@@ -61,6 +61,7 @@
                     <SolidColorBrush x:Key="Back" Color="White"/>
                     <SolidColorBrush x:Key="PH" Color="#FF6C6C70"/>
                     <SolidColorBrush x:Key="PaneBack" Color="#FFE6E6E6"/>
+                    <SolidColorBrush x:Key="BlueColor" Color="#FF30B3DD" />
 
                     <Style TargetType="Image" x:Key="Ima">
                         <Setter Property="Source" Value="/Assets/white.jpg"/>
@@ -76,6 +77,7 @@
                     <SolidColorBrush x:Key="Back" Color="Black"/>
                     <SolidColorBrush x:Key="PH" Color="#FF99999D"/>
                     <SolidColorBrush x:Key="PaneBack" Color="#ff1f1f1f" />
+                    <SolidColorBrush x:Key="BlueColor" Color="#FF30B3DD" />
 
                     <Style TargetType="Image" x:Key="Ima">
                         <Setter Property="Source" Value="/Assets/Dark-2.jpg"/>

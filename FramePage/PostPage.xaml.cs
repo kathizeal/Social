@@ -32,53 +32,65 @@ namespace Social.FramePage
    
    public sealed partial class PostPage : Page 
    {
-       
+        PostManager _PostManager = PostManager.GetInstance();
         User _CurrentUser;
-        public NavigationView navigationView;
-        private  ObservableCollection<Post> _PostList=new ObservableCollection<Post>();  
+         SplitView splitView;
+        NavigationView _NavigationView;
+        private ObservableCollection<Post> _PostList;
         public  ObservableCollection<Post> PostList
         {
             get { return _PostList; }
+
        
+        }
+        void AddingPost(Post post)
+        {
+            _PostList.Add(post);
+            _PostList = _PostManager.DateChange(_PostList);
+        }
+        private void UpdateStatus(object sender, CustomEvent e)
+        {
+            AddingPost(e.Post);
         }
         public PostPage()
         {
             this.InitializeComponent();
-            navigationView = NavViewPostPage;
-            PostManager postManager = PostManager.GetInstance();
-            _PostList = new ObservableCollection<Post>(postManager.ViewAllPost());
+            CreateHandler createHandler = CreateHandler.GetInstance();
+            createHandler.OnUpdateStatus += new CreateHandler.StatusUpdateHandler(UpdateStatus);
+            _NavigationView = NavViewPostPage;
+            splitView = MySpLitView;
+            _PostList = new ObservableCollection<Post>(_PostManager.ViewAllPost());
+            _PostList = _PostManager.DateChange(_PostList);
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
+          
 
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Home.Visibility = Visibility.Collapsed;
-            // Instead of hard coded items, the data could be pulled 
-            // asynchronously from a database or the internet.
             UserManager userManager = UserManager.GetInstance();
-            _CurrentUser = userManager.Current();
+             _CurrentUser= userManager.Current();
+            _CurrentUser = userManager.Find(_CurrentUser.UserId);
+            MySpLitView.IsPaneOpen = true;
         }       
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            SecondFrame.Visibility = Visibility.Visible;
             var selectedPost = (Post)e.ClickedItem;
             var bounds = Window.Current.Bounds;
             double width = bounds.Width;
+            Home.Visibility = Visibility.Visible;
             if (width > 800)
             {
-
-                Home.Visibility = Visibility.Visible;
                 SecondFrame.Navigate(typeof(SecondaryPage), selectedPost);
             }
             else
             {
-                   
-                Home.Visibility = Visibility.Visible;
                 SecondFrame.Navigate(typeof(SecondaryPage), selectedPost);
                 MySpLitView.IsPaneOpen = false;
             }
-            
         }
         private void NavViewPostPage_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
@@ -86,104 +98,46 @@ namespace Social.FramePage
             switch(item.Tag.ToString())
             {
                 case "Account":                   
-
                     MySpLitView.IsPaneOpen = false;                    
                     this.Frame.Navigate(typeof(AccountPage),_CurrentUser);
                     break;
-
 
             }
           }
         private void NavViewPostPage_Loaded(object sender, RoutedEventArgs e)
         {
            NavViewPostPage.IsPaneOpen = false;
-
         }
         private void NavigationViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             MySpLitView.IsPaneOpen = !MySpLitView.IsPaneOpen;
+            Dummy.IsSelected = true;
+
         }
         private void AddButton(object sender, TappedRoutedEventArgs e)
         {
+            
+            SecondFrame.Visibility = Visibility.Visible;
+            SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+            Dummy.IsSelected = true;
+            Add.IsSelected = false;
 
-            this.Frame.Navigate(typeof(CreatePostPage), _CurrentUser);
-              
         }
         private void DeleteRecord(object sender, TappedRoutedEventArgs e)
         {
             PostManager postManager = PostManager.GetInstance();
             postManager.DeleteRecord();
-            this.Frame.Navigate(typeof(PostPage));
+            _PostList.Clear();
         }
         private void HomeButton(object sender, TappedRoutedEventArgs e)
         {
+            SecondFrame.Visibility = Visibility.Collapsed;
+            Dummy.IsSelected = true;
+            Home.Visibility = Visibility.Collapsed;
+            MySpLitView.IsPaneOpen = true;
 
-            this.Frame.Navigate(typeof(PostPage), _CurrentUser);
         }
-       /* private void MaxiButton_Click(object sender, RoutedEventArgs e)
-         {
-             Max = true;
-             Home.Visibility = Visibility.Visible;
-             SecondFrame.Navigate(typeof(SecondaryPage), CurrentPost);
-         }*/
-        /*  private void CloseButton_Click(object sender, RoutedEventArgs e)
-          {
-              FloatWindow.Height = 300;
-              FloatWindow.Width = 400;
-              IntroStack.Visibility = Visibility.Visible;
-              floatPost.Visibility = Visibility.Collapsed;
 
-          }*/
-        /*  private void MaxiButtonCreate_Click(object sender, RoutedEventArgs e)
-          {
-              Max = true;
-              MySpLitView.IsPaneOpen = false;
-              this.Frame.Navigate(typeof(CreatePostPage), CurrentUser);
-          }*/
-        /* private void CloseButtonCreate_Click(object sender, RoutedEventArgs e)
-         {
-
-             CreateFloat.Visibility = Visibility.Collapsed;
-             FloatWindow.Visibility = Visibility.Visible;
-         }*/
-        /*private void CreateButton_Click(object sender, RoutedEventArgs e)
-         {
-             PostManager postManager = PostManager.GetInstance();
-             Post newPost = new Post();
-             newPost.PostTitle = TitleBox.Text;
-             newPost.PostContent = ContenBox.Text;
-             newPost.PostCreatedByUserName = CurrentUser.UserName;
-             newPost.PostCreatedByUserId = CurrentUser.UserId;
-             // postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
-             postManager.AddPost(newPost);
-             // MainPage.MainFramePage.Navigate(typeof(PostPage));
-             this.Frame.Navigate(typeof(PostPage));
-             //Frame.Navigate(typeof(MainPage));
-
-         }*/
-        /*   private void CancelButton_Click(object sender, RoutedEventArgs e)
-           {
-               // MainPage.MainFramePage.Navigate(typeof(PostPage));
-               //this.Frame.GoBack();
-
-               CreateFloat.Visibility = Visibility.Collapsed;
-               FloatWindow.Visibility = Visibility.Visible;
-
-
-           }*/
-        /*private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (ClickList.IsItemClickEnabled)
-            {
-                string state = NarrowStateOnlyFrame.ToString();
-                VisualStateManager.GoToState(this, state, true);
-            }
-            else
-            {
-                string state = NarrowStateOnlyList.ToString();
-                VisualStateManager.GoToState(this, state, true);
-            }
-        }*/
-   }
+    }
 
 }   

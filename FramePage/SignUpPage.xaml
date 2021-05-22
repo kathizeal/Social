@@ -13,7 +13,7 @@
         <Grid
             Width="600"
             Height="500"
-            Background="{ThemeResource Back}"
+             Background="{ThemeResource PaneBack}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             CornerRadius="10">
@@ -129,7 +129,7 @@
                                     CornerRadius="2" 
                                     RelativePanel.RightOf="SignUpButton" 
                                     RelativePanel.Below="SampleText"    
-                                    Margin="105,5,5,5" 
+                                    Margin="5,5,5,5" 
                                     BorderBrush="Silver"
                                     BorderThickness="1" 
                                     Background="MediumSlateBlue"
