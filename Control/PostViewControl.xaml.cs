@@ -56,20 +56,22 @@ namespace Social.Control
         {
             this.InitializeComponent();
         }
-
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
 
             if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
             {
-                UserIds userIds = new UserIds();
-                userIds.PostId = _CurrentPost.PostId;
-                userIds.Userid = _CurrentUser.UserId;
-                userIds.UserName = _CurrentUser.UserName;
-               
+                
                 _PostManager.UnLikePost(_CurrentPost, _CurrentUser);
-                if (_LikedUser.Contains(userIds))
-                    _LikedUser.Remove(userIds);
+                foreach(var id in _LikedUser)
+                {
+                    if (id.Userid == _CurrentUser.UserId)
+                    {
+                        _LikedUser.Remove(id);
+                        break;
+                    }
+
+                }
                 LikeButton.IsChecked = false;
                 if (_CurrentPost.Likes == 0)
                 {
@@ -117,10 +119,6 @@ namespace Social.Control
                 CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
             }
         }
-    
-
-     
-
         private void PostDetails_Loaded(object sender, RoutedEventArgs e)
         {
             _PostComment = PostComments;
@@ -176,8 +174,5 @@ namespace Social.Control
 
             }
         }
-       
-
-       
     }
 }

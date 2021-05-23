@@ -24,12 +24,14 @@ namespace Social.Control
 {
     public sealed partial class SinglePostControl : UserControl
     {
+        string content;
+        string createdTime;
 
-        public static readonly DependencyProperty TitleProp = DependencyProperty.Register("Title", typeof(string), typeof(SinglePostControl), new PropertyMetadata(null));
-        public string Title
+        public static readonly DependencyProperty CreatedTimeProp = DependencyProperty.Register("CreatedString", typeof(string), typeof(SinglePostControl), new PropertyMetadata(null));
+        public string CreatedString
         {
-            get { return (string)GetValue(TitleProp); }
-            set { SetValue(TitleProp, value); }
+            get { return (string)GetValue(CreatedTimeProp); }
+            set { SetValue(CreatedTimeProp, value); }
         }
 
 
@@ -39,35 +41,17 @@ namespace Social.Control
             get { return (string)GetValue(ContentProp); }
             set => SetValue(ContentProp, value);
         }
-        public static readonly DependencyProperty TimeProp = DependencyProperty.Register("CreatedTime", typeof(string), typeof(SinglePostControl), new PropertyMetadata(null));
-        public string CreatedTime
-        {
-            get { return (string)GetValue(TimeProp); }
-            set { SetValue(TimeProp, value); }
-        }
 
         public SinglePostControl()
         {
             this.InitializeComponent();
         }
-
-        private async void StackPanel_Loaded(object sender, RoutedEventArgs e)
+        private void StackPanel_Loaded_1(object sender, RoutedEventArgs e)
         {
-            UserManager userManager = UserManager.GetInstance();
-            User CurrentUser = userManager.Current();
-            CurrentUser = userManager.FindUser(CurrentUser.UserId);
-            var bitmap = new BitmapImage();
-            var storageFile = await StorageFile.GetFileFromPathAsync(CurrentUser.ProfilePic);
-            using (IRandomAccessStream stream = await storageFile.OpenAsync(FileAccessMode.Read))
-            {
-                await bitmap.SetSourceAsync(stream);
-            }
-
-
-            Br.ImageSource = bitmap;
-            TitleCard.Text = Title;
-            ContentCard.Text = ContentString;
-            TimeCard.Text = CreatedTime;
+            content = ContentString;
+            createdTime = CreatedString;
+            ContentTB.Text = content;
+            CommentTimeTB.Text = createdTime;
         }
     }
 }

@@ -9,44 +9,57 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <StackPanel Loaded="StackPanel_Loaded">
-        <RelativePanel>
-            <Ellipse
-                                                               x:Name="Icon"
-                                                               HorizontalAlignment="Left"
-                                                               VerticalAlignment="Center"
-                                                               Margin="0,10,0,0"
-                                                               Width="30" 
-                                                               Height="30">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="Br" />
-                </Ellipse.Fill>
-            </Ellipse>
+    <StackPanel
+        Loaded="StackPanel_Loaded_1"
+        HorizontalAlignment="Left">
+        <TextBlock
+            x:Name="ContentTB"
+            TextWrapping="Wrap"
+            TextTrimming="Clip"
+            Foreground="{ThemeResource TextColor}"/>
+        <StackPanel
+            Orientation="Horizontal">
             <TextBlock
-                                                               x:Name="TitleCard"
-                                                               RelativePanel.RightOf="Icon"
-                                                               Width="320"
-                                                               TextTrimming="CharacterEllipsis"
-                                                              FontSize="18"
-                                                               Margin="8,10,0,0"/>
-            <TextBlock 
-                                                               x:Name="ContentCard"
-                                                               RelativePanel.Below="TitleCard"
-                                                               RelativePanel.RightOf="Icon"
-                                                               FontSize="15"
-                                                               TextWrapping="Wrap"
-                                                               TextTrimming="CharacterEllipsis"
-                                                               Height="28"
-                                                               Margin="10,1,3,1"
-                                                               Foreground="DimGray"/>
-            <StackPanel  RelativePanel.RightOf="TitleCard" Width="150" HorizontalAlignment="Right">
-                <TextBlock 
-                                                               x:Name="TimeCard"
-                                                               Margin="30,10,3,1"
-                                                               HorizontalAlignment="Right"
-                                                               TextTrimming="CharacterEllipsis"
-                                                               FontSize="10" />
-            </StackPanel>
-        </RelativePanel>
+                x:Name="CommentTimeTB"
+                Foreground="{ThemeResource TextColor}"
+                FontSize="12"
+                HorizontalAlignment="Stretch"/>
+        </StackPanel>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger  MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="ContentTB.Width"
+                            Value="700"/>
+                        <Setter
+                            Target="ContentTB.Margin"
+                            Value="30,2,30,2"/>
+                        <Setter
+                            Target="CommentTimeTB.Margin"
+                            Value="30,2,30,2"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter
+                            Target="ContentTB.Width"
+                            Value="400"/>
+                        <Setter
+                            Target="ContentTB.Margin"
+                            Value="5,2,5,2"/>
+                        <Setter
+                            Target="CommentTimeTB.Margin"
+                            Value="5,2,5,2"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </StackPanel>
 </UserControl>

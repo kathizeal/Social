@@ -58,10 +58,7 @@ namespace Social.FramePage
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
-
-
         }
-
         private void Change_Click(object sender, RoutedEventArgs e)
         {
             User newUser =_User;
@@ -74,7 +71,6 @@ namespace Social.FramePage
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
-            //Frame.Navigate(typeof(MainPage));
         }
     }
 }

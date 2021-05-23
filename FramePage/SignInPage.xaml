@@ -9,7 +9,7 @@
     
     
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Grid >
+    <Grid>
         <Image Style="{ThemeResource Ima}"/>
         <Grid 
             Width="600"
@@ -17,120 +17,88 @@
             Background="{ThemeResource PaneBack}"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
-            CornerRadius="10"           
-            >
+            CornerRadius="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="SignInPart"/>
             </Grid.ColumnDefinitions>
             <StackPanel
-                       Orientation="Vertical"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                      
-                       Margin="10,5,10,5" >
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="10,5,10,5" >
                 <TextBlock
-                          Text="SocioTalk" 
-                          FontSize="30" 
-                          FontWeight="Bold"                            
-                          Foreground="BlueViolet"                     
-                          Margin="5,5,5,5" FontFamily="Arial"/>
+                    Text="SocioTalk" 
+                    FontSize="30" 
+                    FontWeight="Bold"                            
+                    Foreground="BlueViolet"                     
+                    Margin="5,5,5,5" FontFamily="Arial"/>
                 <TextBox 
-                        x:Name="UserIdBlock"
-                        Width="240"
-                        PlaceholderText="User-Id" 
-                        FontSize="18"
-                        Background="{ThemeResource PrimaryColor}"
-                        TextChanging="UserIdBlock_TextChanging"
-                        HorizontalAlignment="Center"
-                        Margin="5"/>
+                    x:Name="UserIdBlock"
+                    Width="240"
+                    PlaceholderText="User-Id" 
+                    FontSize="18"
+                    Background="{ThemeResource PrimaryColor}"
+                    TextChanging="UserIdBlock_TextChanging"
+                    HorizontalAlignment="Center"
+                    Margin="5"/>
                 <PasswordBox
-                            x:Name="PasswordBlock"   
-                            Width="240" 
-                            Background="{ThemeResource PrimaryColor}"
-                            PlaceholderText=" Password"
-                            IsPasswordRevealButtonEnabled="True"
-                            PasswordRevealMode="Peek" 
-                            FontSize="18"   
-                            PasswordChanging="PasswordBlock_PasswordChanging"
-                            Margin="5"
-                            HorizontalAlignment="Center"/>
+                    x:Name="PasswordBlock"   
+                    Width="240" 
+                    Background="{ThemeResource PrimaryColor}"
+                    PlaceholderText=" Password"
+                    IsPasswordRevealButtonEnabled="True"
+                    PasswordRevealMode="Peek" 
+                    FontSize="18"   
+                    PasswordChanging="PasswordBlock_PasswordChanging"
+                    Margin="5"
+                    HorizontalAlignment="Center"/>
                 <Button 
-                        Content="Sign in" 
-                        Style="{ThemeResource Sign}"                                                   
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        HorizontalAlignment="Center" 
-                        CornerRadius="2" 
-                        Margin="5"  
-                        Foreground="{ThemeResource TextColor}"
-                        Width="240" 
-                        Background="MediumSlateBlue"
-                        Click="Button_Click"
-                        FontSize="20"/>
+                    Content="Sign in" 
+                    Style="{ThemeResource Sign}"                                                   
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center" 
+                    CornerRadius="2" 
+                    Margin="5"  
+                    Foreground="{ThemeResource TextColor}"
+                    Width="240" 
+                    Background="MediumSlateBlue"
+                    Click="Button_Click"
+                    FontSize="20"/>
                 <HyperlinkButton  
-                                x:Name="ForgotButton"
-                                Content="Forgot password" 
-                                Foreground="MediumSlateBlue"
-                                Visibility="Collapsed"
-                                FontSize="10" 
-                                Click="ForgotButton_Click"
-                                HorizontalAlignment="Center"/>
+                    x:Name="ForgotButton"
+                    Content="Forgot password" 
+                    Foreground="MediumSlateBlue"
+                    Visibility="Collapsed"
+                    FontSize="10" 
+                    Click="ForgotButton_Click"
+                    HorizontalAlignment="Center"/>
                 <TextBlock
-                           Text="_____________________________" 
-                           HorizontalAlignment="Center"
-                           FontSize="20"
-                           Width="240"
-                           Foreground="MediumTurquoise"/>
+                    Text="_____________________________" 
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    Width="240"
+                    Foreground="MediumTurquoise"/>
                 <HyperlinkButton
-                                x:Name="SignUpButton"                               
-                                Content="Click Here to Create a new Account"
-                                FontSize="14" 
-                                Foreground="{ThemeResource SystemAccentColorDark1}"
-                                HorizontalAlignment="Center"
-                                Click="SignUpButton_Click"  />
+                    x:Name="SignUpButton"                               
+                    Content="Click Here to Create a new Account"
+                    FontSize="14" 
+                    Foreground="{ThemeResource SystemAccentColorDark1}"
+                    HorizontalAlignment="Center"
+                    Click="SignUpButton_Click"  />
                 <HyperlinkButton 
-                        x:Name="DeleteAccount"
-                        Content="Delete Account"
-                        FontSize="14"
-                        Foreground="{ThemeResource SystemAccentColorDark1}"
-                        HorizontalAlignment="Center"
-                        Click="DeleteAccount_Click"/>
+                    x:Name="DeleteAccount"
+                    Content="Delete Account"
+                    Visibility="Collapsed"
+                    FontSize="14"
+                    Foreground="{ThemeResource SystemAccentColorDark1}"
+                    HorizontalAlignment="Center"
+                    Click="DeleteAccount_Click"/>
                 <TextBlock 
-                            x:Name="Warning"
-                            Visibility="Collapsed"
-                            Foreground="Red"
-                            HorizontalAlignment="Center"/>
+                    x:Name="Warning"
+                    Visibility="Collapsed"
+                    Foreground="Red"
+                    HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
-
-
-
-
-        <!--  <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="WindowStates">
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="InDisplay.(Margin)" Value="20"/>
-                        <Setter Target="IntroPart.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="SignInPart.(Grid.Row)" Value="1"/>
-                        <Setter Target="SignInPart.(Grid.ColumnSpan)" Value="2"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="WideState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800"/>                        
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="InDisplay.(Margin)" Value="200,200,200,200"/>
-                        <Setter Target="IntroPart.(Grid.Column)" Value="0"/>
-                        <Setter Target="SignInPart.(Grid.Column)" Value="1"/>
-                        <Setter Target="IntroPartStack.(Margin)" Value="0,100,0,100"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </Page>

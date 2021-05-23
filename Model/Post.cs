@@ -20,7 +20,6 @@ namespace Social.Model
         public Post()
         {
             ProfilePic = "ms-appx:///Assets/male-03.png";
-           
             PostId = DateTime.Now.Ticks;
             CreatedTime = DateTime.UtcNow;
             Likes = 0;
@@ -39,7 +38,6 @@ namespace Social.Model
         public string CreatedTimeString { get;set; }
         public int Likes { get; set; }
         public int CommentCount { get; set; }
-       
         private List<Comment> _Comments =new List<Comment>();
         [Ignore]
         public List<Comment> Comments { get { return _Comments; } set { _Comments = value;  } }
@@ -47,12 +45,6 @@ namespace Social.Model
          [Ignore]
         public List<long> LikedId { get { return _LikedId; }  set { _LikedId = value;  } }
 
-      /*  private ObservableCollection<Comment> _Comments = new ObservableCollection<Comment>();
-        [Ignore]
-        public ObservableCollection<Comment> Comments { get { return _Comments; } set { _Comments = value; OnPropertyChanged("Comments"); } }
-        private ObservableCollection<long> _LikedId = new ObservableCollection<long>();
-        [Ignore]
-        public ObservableCollection<long> LikedId { get { return _LikedId; } set { _LikedId = value; OnPropertyChanged("LikedId"); } }*/
 
     }
 }

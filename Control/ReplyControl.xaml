@@ -11,7 +11,6 @@
     d:DesignWidth="400">
 
     <StackPanel
-        
         Name="ReplyStack"
         Loaded="ReplyStack_Loaded"
         HorizontalAlignment="Left"
@@ -20,18 +19,17 @@
             Name="ReplyList"
             SelectionMode="None">
             <ListView.ItemTemplate >
-                <DataTemplate 
-                    x:DataType="data:Comment">
-                    <StackPanel
-                        x:Name="InsideReply">
+                <DataTemplate x:DataType="data:Comment">
+                    <StackPanel x:Name="InsideReply">
                         <StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Stretch">
                             <Ellipse
                                 x:Name="CommenterIcon"
                                 HorizontalAlignment="Left"
-                                Width="20" 
-                                Height="20">
+                                Margin="0,10,0,0"
+                                Width="30" 
+                                Height="30">
                                 <Ellipse.Fill>
                                     <ImageBrush  ImageSource ="{x:Bind ProfilePic}" />
                                 </Ellipse.Fill>
@@ -41,7 +39,7 @@
                                 HorizontalAlignment="Left"
                                 Text="{x:Bind CommenterName}"
                                 FontSize="14" 
-                                Margin="10,0,0,0"/>
+                                Margin="10,10,0,0"/>
                         </StackPanel>
                         <StackPanel>
                             <TextBlock
@@ -49,17 +47,16 @@
                                 Text="{x:Bind CommentContent}"
                                 TextWrapping="Wrap"
                                 TextTrimming="Clip"
-                                Margin="30,2,2,2"
+                                Margin="40,2,2,2"
                                 Foreground="{ThemeResource TextColor}"/>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock
                                     x:Name="CommentTimeTB"
                                     Text="{x:Bind CreatedTimeString}"
-                                    Margin="30,2,30,2"
+                                    Margin="40,2,30,2"
                                     Foreground="{ThemeResource TextColor}"
                                     FontSize="12"
                                     HorizontalAlignment="Stretch"/>
-                               
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -84,41 +81,36 @@
         </StackPanel>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState
-                            x:Name="WideState">
+                <VisualState x:Name="WideState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger
-                                        MinWindowWidth="800"/>
-
+                        <AdaptiveTrigger  MinWindowWidth="800"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter
-                                Target="ReplyStack.(HorizontalAlignment)"
-                                Value="left"/>
+                            Target="ReplyStack.(HorizontalAlignment)"
+                            Value="left"/>
                         <Setter
-                                Target="ReplyList.(Width)"
-                                Value="700"/>
+                            Target="ReplyList.(Width)"
+                            Value="700"/>
                         <Setter
-                                Target="CommentTextBox.(Width)"
-                                Value="650"/>
+                            Target="CommentTextBox.(Width)"
+                            Value="650"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState
-                            x:Name="NarrowState">
+                <VisualState  x:Name="NarrowState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger 
-                                        MinWindowWidth="0"/>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter
-                                Target="ReplyStack.(Width)"
-                                Value="Auto"/>
+                            Target="ReplyStack.(Width)"
+                            Value="Auto"/>
                         <Setter
-                                Target="ReplyList.(Width)"
-                                Value="320"/>
+                            Target="ReplyList.(Width)"
+                            Value="320"/>
                         <Setter
-                                Target="CommentTextBox.(Width)"
-                                Value="320"/>
+                            Target="CommentTextBox.(Width)"
+                             Value="320"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

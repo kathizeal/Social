@@ -41,6 +41,12 @@
                    Content="New Post" 
                    Tag="NewPost" 
                    Tapped="AddButton"/>
+               <NavigationViewItem 
+                   x:Name="Chat"
+                   Icon="Message" 
+                   Content="Chat" 
+                   Tag="Chat" 
+                   Tapped="ChatButton"/>
                <NavigationViewItem
                    x:Name="Dummy"
                    Content="Dummy"
@@ -51,6 +57,7 @@
            <NavigationView.PaneFooter>
                <NavigationViewItem
                    Icon="Delete"
+                   Visibility="Collapsed"
                    Content="Delete"
                    Tapped="DeleteRecord"/>
            </NavigationView.PaneFooter>
@@ -60,7 +67,7 @@
                    DisplayMode="Inline"
                    IsPaneOpen="True">
                    <SplitView.Pane>
-                       <ScrollViewer>
+                       <ScrollViewer >
                            <StackPanel
                                x:Name="List"
                                BorderBrush="Silver"
@@ -77,6 +84,52 @@
                                    Background="{ThemeResource PaneBack}" 
                                    CornerRadius="5">
                                    <ListView
+                                       x:Name="UserListView"
+                                       ItemsSource="{x:Bind UserList}"
+                                       ItemClick="UserListView_ItemClick" 
+                                       IsItemClickEnabled="True"
+                                       Visibility="Collapsed"
+                                       Foreground="{ThemeResource SystemAltMediumColor}">
+                                       <ListView.ItemTemplate>
+                                           <DataTemplate x:DataType="data:User">
+                                               <StackPanel>
+                                                   <StackPanel>
+                                                       <RelativePanel>
+                                                           <Ellipse
+                                                               x:Name="Icon"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               Margin="5,10,0,10"
+                                                               Width="40" 
+                                                               Height="40">
+                                                               <Ellipse.Fill>
+                                                                   <ImageBrush ImageSource ="{x:Bind ProfilePic}" />
+                                                                </Ellipse.Fill>
+                                                           </Ellipse>
+                                                           <TextBlock
+                                                               x:Name="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
+                                                               Text="{x:Bind UserName}"
+                                                               Width="150"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               FontSize="18"
+                                                               Margin="5,15,5,0"/>
+                                                           <StackPanel  RelativePanel.RightOf="TitleCard" Width="200" HorizontalAlignment="Right">
+                                                               <TextBlock
+                                                                    x:Name="TimeCard"
+                                                                    Margin="30,10,3,1"
+                                                                    HorizontalAlignment="Right"
+                                                                    Text="{x:Bind LogOutTimeString}"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="10" />
+                                                           </StackPanel>
+                                                       </RelativePanel>
+                                                   </StackPanel>
+                                               </StackPanel>
+                                           </DataTemplate>
+                                       </ListView.ItemTemplate>
+                                   </ListView>
+                                   <ListView
                                        x:Name="ClickList"
                                        ItemsSource="{x:Bind PostList}"
                                        ItemClick="ListView_ItemClick" 
@@ -91,7 +144,7 @@
                                                                x:Name="Icon"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
-                                                               Margin="0,10,0,0"
+                                                               Margin="0,13,0,0"
                                                                Width="40" 
                                                                Height="40">
                                                                <Ellipse.Fill>
@@ -117,16 +170,16 @@
                                                                Height="28"
                                                                Margin="10,1,3,1"
                                                                Foreground="DimGray"/>
-                                                            <StackPanel  RelativePanel.RightOf="TitleCard" Width="150" HorizontalAlignment="Right">
-                                                           <TextBlock 
-                                                               x:Name="TimeCard"
-                                                               Margin="30,10,3,1"
-                                                               HorizontalAlignment="Right"
-                                                               Text="{x:Bind CreatedTimeString}"
-                                                               TextTrimming="CharacterEllipsis"
-                                                               FontSize="10" />
-                                                            </StackPanel>
-                                                        </RelativePanel>
+                                                           <StackPanel  RelativePanel.RightOf="TitleCard" Width="150" HorizontalAlignment="Right">
+                                                               <TextBlock 
+                                                                    x:Name="TimeCard"
+                                                                    Margin="30,10,3,1"
+                                                                    HorizontalAlignment="Right"
+                                                                    Text="{x:Bind CreatedTimeString}"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="10" />
+                                                           </StackPanel>
+                                                       </RelativePanel>
                                                    </StackPanel>
                                                </StackPanel>
                                            </DataTemplate>
@@ -134,7 +187,7 @@
                                    </ListView>
                                </StackPanel>
                            </StackPanel>
-                       </ScrollViewer> 
+                       </ScrollViewer>
                    </SplitView.Pane>
                    <SplitView.Content>
                        <Grid x:Name="PostFrame" >
@@ -159,10 +212,8 @@
                            Target="MySpLitView.(OpenPaneLength)" 
                            Value="460"/>
                         <Setter
-                           Target="ListV.(Visibility)"
-                           Value="Visible"/>
-                      
-                           
+                           Target="Home.(Visibility)"
+                           Value="Collapsed"/>
                     </VisualState.Setters>
                </VisualState>
                <VisualState x:Name="WideState">

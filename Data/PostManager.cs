@@ -54,11 +54,6 @@ namespace Social.Data
             {
                foreach(var comment in commentquary)
                 {
-                    foreach(var reply in commentquary)
-                    {
-                        if (reply.ParentCommentId == comment.CommentId)
-                            comment.Reply.Add(reply);
-                    }
                     if (comment.PostId == user.PostId && comment.ParentCommentId==null)
                         user.Comments.Add(comment);
                 }
@@ -139,7 +134,6 @@ namespace Social.Data
                 }
 
             }
-            
             return _Posts;
         }
         public Post ViewPost(long postid)
@@ -165,7 +159,14 @@ namespace Social.Data
         }
         public List<Comment> ViewPostComment(Post post, long postid)
         {
-            return post.Comments.Where(comments => comments.PostId == postid).ToList();
+            List<Comment> PostComment = new List<Comment>();
+            var listComment = conn.Table<Comment>();
+            foreach(var comment in listComment)
+            {
+                if (comment.PostId == postid && comment.ParentCommentId == null)
+                    PostComment.Add(comment);
+            }
+            return PostComment;
         }
         public Comment GetComment(long CommentId)
         {
@@ -178,7 +179,6 @@ namespace Social.Data
             }
             return comment1;
         }
-       
         public ObservableCollection<Comment> GetReply(long ParentId)
         {
             var comments = conn.Table<Comment>();
@@ -190,12 +190,11 @@ namespace Social.Data
             }
             return replys;
         }
-       public void AddReply(Post post, Comment parentComment ,Comment comment)
+        public void AddReply(Post post, Comment parentComment ,Comment comment)
         {
             conn.Insert(comment);
             conn.Update(post);
         }
-       
         public void LikePost(Post post,User user)
         {
             if (!post.LikedId.Contains(user.UserId))
@@ -207,8 +206,6 @@ namespace Social.Data
                     Userid = user.UserId,
                     UserName = user.UserName,
                     Unique= DateTime.Now.Ticks
-
-
                 };
                 conn.Insert(userIds);
                 post.LikedId.Add(user.UserId);
@@ -230,8 +227,6 @@ namespace Social.Data
                     }
                 }
             }
-
-           
             conn.Update(post);
         }
         public void UpdateEdit(Post post)
@@ -270,8 +265,6 @@ namespace Social.Data
         }
         public ObservableCollection<Post> DateChange(ObservableCollection<Post> PostList)
         {
-           // TimeZoneInfo localZoneId = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-             //DateTime date= TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZoneId);
             DateTime date = DateTime.UtcNow;
             ObservableCollection<Post> posts = PostList;
            
@@ -346,11 +339,9 @@ namespace Social.Data
             return posts;
 
         }
-
         public ObservableCollection<Comment> DateChangeComment(ObservableCollection<Comment> CommentList)
         {
-            // TimeZoneInfo localZoneId = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-            //DateTime date= TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZoneId);
+           
             DateTime date = DateTime.UtcNow;
             ObservableCollection<Comment> posts = CommentList;
 
@@ -421,14 +412,11 @@ namespace Social.Data
                         post.CreatedTimeString = diff + " year ago";
                     }
                 }
-                if(post.Reply.Count!=0)
-                post.Reply = DateChangeComment(post.Reply);
             }
 
             return posts;
 
         }
-        
         public void UpdateProfile(User user,Profile profile)
         {
             string pic = "ms-appx:///Assets/" + user.UserName + ".jpg";

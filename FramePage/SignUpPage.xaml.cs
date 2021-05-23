@@ -26,7 +26,7 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class SignUpPage : Page
     {
-        UserManager _userManager = UserManager.GetInstance();
+        UserManager _UserManager = UserManager.GetInstance();
         string _Gender;
         DateTime _Birthday;
         public SignUpPage()
@@ -41,15 +41,13 @@ namespace Social.FramePage
                 Warning.Visibility = Visibility.Visible;
             else
             {
-                _userManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
+                _UserManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
                 Frame.Navigate(typeof(MainPage));
-                // MainPage.MyFrame.Navigate(typeof(MainPage));
             }
         }
         private void Dob_DateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
             _Birthday = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
-
         }
         private void GenderBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -60,7 +58,6 @@ namespace Social.FramePage
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
-            //Frame.Navigate(typeof(MainPage));
         }
     }
 }

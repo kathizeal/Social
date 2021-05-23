@@ -17,20 +17,18 @@ namespace Social.Model
         {
             this.UserId = DateTime.Now.Ticks;
             ProfilePic = "ms-appx:///Assets/male-01.png";
-           // image = new BitmapImage (new Uri(ProfilePic));
-         
         }
         public string ProfilePic { get; set; }
         public string UserName { get; set; }
         public string LastName { get; set; }
         [Ignore]
-        public BitmapImage image { get; set; }
+        public BitmapImage Images { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
         public string BirthDay { get; set; }
         public string Gender { get; set; }
-        //  [Ignore]
-        // public Image ProfilePicSource { get; set; }
+        public DateTime LogoutTime { get; set; }
+        public string LogOutTimeString { get; set; }
         [PrimaryKey]
         public long UserId { get; set; }
 

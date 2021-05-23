@@ -23,45 +23,8 @@ namespace Social.FramePage
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-   /* public sealed partial class CreatePostPage : Page
-    {
-        User CurrentUser;
-       
-        PostManager postManager = PostManager.GetInstance();
-        public CreatePostPage()
-        {
-            this.InitializeComponent();
-        }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-           
-            CurrentUser = (User)e.Parameter;
-            
-
-        }
-
-        private void CreateButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            postManager.AddPost(new Post(TitleBox.Text, ContenBox.Text, CurrentUser.UserName, CurrentUser.UserId));
-            // MainPage.MainFramePage.Navigate(typeof(PostPage));
-            //Frame.Navigate(typeof(PostPage));
-            
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            // MainPage.MainFramePage.Navigate(typeof(PostPage));
-            Frame.GoBack();
-            //Frame.Navigate(typeof(PostPage));
-        }
-    }*/
     public sealed partial class CreatePostPage : Page
     {
-
-       
         User _CurrentUser;
         PostManager _PostManager = PostManager.GetInstance();
         UserManager _UserManager = UserManager.GetInstance();
@@ -81,7 +44,6 @@ namespace Social.FramePage
                 TitleBox.PlaceholderText = "Not Should be empty";
                 ContentBox.PlaceholderText= "Not Should be empty";
             }
-                
             else
             {
                 
@@ -97,7 +59,6 @@ namespace Social.FramePage
                 this.Frame.Visibility = Visibility.Collapsed;
             }
         }
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Visibility = Visibility.Collapsed;

@@ -13,7 +13,6 @@ namespace Social.Model
         public Profile(string name,string imageFile)
         {
             Name = name;
-            //ImageFile = "ms-appx:///Avatar/" + name;
             ImageFile = imageFile;
         }
     }

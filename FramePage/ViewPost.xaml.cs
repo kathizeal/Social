@@ -63,22 +63,16 @@ namespace Social.FramePage
             TimeZoneInfo localZoneId = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
             time.Text = TimeZoneInfo.ConvertTimeFromUtc(_CurrentPost.CreatedTime, localZoneId).ToString("dd/MM/yyyy hh:mm tt");
             Createdby.Text = "Created By: " + _CurrentPost.PostCreatedByUserName;
-
-            
             Image img = new Image();
             img.Source = new BitmapImage(new Uri(_CurrentPost.ProfilePic));
             Icon.ImageSource = img.Source;
-           
-
             if (_CurrentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
-
             }
             else
             {
                 CommentStack.Visibility = Visibility.Visible;
-
             }
             if (_CurrentPost.Likes == 0)
             {
@@ -109,16 +103,16 @@ namespace Social.FramePage
 
             if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
             {
-               
-
-                UserIds userIds = new UserIds();
-                userIds.PostId = _CurrentPost.PostId;
-                userIds.Userid = _CurrentUser.UserId;
-                userIds.UserName = _CurrentUser.UserName;
-
                 _PostManager.UnLikePost(_CurrentPost, _CurrentUser);
-                if (_LikedUser.Contains(userIds))
-                    _LikedUser.Remove(userIds);
+                foreach (var id in _LikedUser)
+                {
+                    if (id.Userid == _CurrentUser.UserId)
+                    {
+                        _LikedUser.Remove(id);
+                        break;
+                    }
+
+                }
                 LikeButton.IsChecked = false;
                 if (_CurrentPost.Likes == 0)
                 {
@@ -174,17 +168,10 @@ namespace Social.FramePage
                 CommentTextBox.Text = "";
             }
         }
-     
-
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
         }
-
-       
-
-    
-
         private async void SampleDelete_Click(object sender, RoutedEventArgs e)
         {
             CommentList.SelectedItem = ((HyperlinkButton)sender).DataContext;

@@ -51,33 +51,43 @@ namespace Social.FramePage
         }
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-             base.OnNavigatedTo(e);
-             _CurrentUser = (User)e.Parameter;
-             UserNameBlock.Text = _CurrentUser.UserName;
-             LastNameBlock.Text = _CurrentUser.LastName;
-             UserIDBlock.Text = _CurrentUser.UserId.ToString();
-             EmailBlock.Text = _CurrentUser.Email;
-             BirthdayBlock.Text = _CurrentUser.BirthDay.ToString();
-             GenderBlock.Text = _CurrentUser.Gender;
-             _MyPost = new ObservableCollection<Post>(_PostManager.ViewMyPost(_CurrentUser.UserId));
+            base.OnNavigatedTo(e);
+            _CurrentUser = (User)e.Parameter;
+            UserNameBlock.Text = _CurrentUser.UserName;
+            LastNameBlock.Text = _CurrentUser.LastName;
+            UserIDBlock.Text = _CurrentUser.UserId.ToString();
+            EmailBlock.Text = _CurrentUser.Email;
+            BirthdayBlock.Text = _CurrentUser.BirthDay.ToString();
+            GenderBlock.Text = _CurrentUser.Gender;
+            _MyPost = new ObservableCollection<Post>(_PostManager.ViewMyPost(_CurrentUser.UserId));
             _MyPost = _PostManager.DateChange(_MyPost);
             if (_MyPost.Count == 0)
-                 NoPost.Visibility = Visibility.Visible;
-             else
+                NoPost.Visibility = Visibility.Visible;
+            else
                 NoPost.Visibility = Visibility.Collapsed;
-             StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-             StorageFolder assets = await appInstalledFolder.GetFolderAsync("Avatar");
-             IReadOnlyList<StorageFile> sortedItems = await assets.GetFilesAsync();
+            StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            StorageFolder assets = await appInstalledFolder.GetFolderAsync("Avatar");
+            IReadOnlyList<StorageFile> sortedItems = await assets.GetFilesAsync();
             Profiles = new ObservableCollection<Profile>();
-          foreach (var file in sortedItems)
-           {
-               Profiles.Add(new Profile(file.Name,file.Path));
-           }
-           MyAssets.ItemsSource = Profiles;
-          Image img = new Image();
-           img.Source = new BitmapImage(new Uri(_CurrentUser.ProfilePic));
-           br.ImageSource = img.Source;
-         }
+            foreach (var file in sortedItems)
+            {
+                Profiles.Add(new Profile(file.Name, file.Path));
+            }
+            MyAssets.ItemsSource = Profiles;
+            Image img = new Image();
+            if (_MyPost.Count != 0)
+            {
+                img.Source = new BitmapImage(new Uri(_MyPost[0].ProfilePic));
+                br.ImageSource = img.Source;
+            }
+            else
+            {
+                img.Source = new BitmapImage(new Uri(_UserManager.ProfilePic(_CurrentUser)));
+                br.ImageSource = img.Source;
+            }
+                    
+             
+        }
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             if (_Clicked == true)
@@ -87,7 +97,6 @@ namespace Social.FramePage
                 Frame.Navigate(typeof(EditPostPage), SelectedPost);
             }
         }
-
         private void MyPost_ItemClick(object sender, ItemClickEventArgs e)
         {
             _Post = (Post)e.ClickedItem;
@@ -100,12 +109,10 @@ namespace Social.FramePage
             ViewPost.Visibility = Visibility.Visible;
             PostContent.Text = _Post.PostContent;    
         }
-
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             if (_Clicked == true)
             {
-
                  MessageDialog showDialog = new MessageDialog("Do you want delete the post");
                  showDialog.Commands.Add(new UICommand("Yes")
                  {
@@ -123,10 +130,8 @@ namespace Social.FramePage
                    _PostManager.DeletePost(_Post);
                    _MyPost.Remove(_Post);
                  }
-        
             }
         }
-
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(PostPage), _CurrentUser);
@@ -165,7 +170,6 @@ namespace Social.FramePage
             GoAccount.Visibility = Visibility.Collapsed;
             GoBack.Visibility = Visibility.Visible;
         }
-
         private void ViewPost_Click(object sender, RoutedEventArgs e)
         {
             if (_Clicked == true)
@@ -178,9 +182,6 @@ namespace Social.FramePage
             _UserManager.SignOut();
             Frame.Navigate(typeof(MainPage));
         }
-
-     
-
         private void MyAssets_ItemClick(object sender, ItemClickEventArgs e)
         {
             Profile profile;
@@ -192,40 +193,6 @@ namespace Social.FramePage
 
 
         }
-
-       
-
-
-
-
-        /* private async void GoFile_Click(object sender, RoutedEventArgs e)
-         {
-
-              var picker = new Windows.Storage.Pickers.FileOpenPicker();
-              picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-              picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
-              picker.FileTypeFilter.Add(".jpg");
-              picker.FileTypeFilter.Add(".jpeg");
-              picker.FileTypeFilter.Add(".png");
-              Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
-              if (file != null)
-              {
-                 var bitmap = new BitmapImage();
-                 var stream = await file.OpenReadAsync();
-                 await bitmap.SetSourceAsync(stream);
-                // new Uri(_CurrentUser.ProfilePic)
-                 br.ImageSource = bitmap;
-                  // Application now has read/write access to the picked file
-
-                 // Frame.Navigate(typeof(AccountPage), _CurrentUser);
-                  this.SampleText.Text = "Picked photo: " + file.Path.Replace('\\', '/');
-              }
-              else
-              {
-                  this.SampleText.Text = "Operation cancelled.";
-              }
-
-         }*/
     }
 
 }

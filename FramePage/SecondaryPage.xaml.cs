@@ -34,23 +34,22 @@ namespace Social.FramePage
     public sealed partial class SecondaryPage : Page 
     {
       
-        Post  CurrentPost;
-        User CurrentUser;
-        PostManager _postManager = PostManager.GetInstance();
-        UserManager _userManager = UserManager.GetInstance();
+        Post  _CurrentPost;
+        User _CurrentUser;
+        PostManager _PostManager = PostManager.GetInstance();
+        UserManager _UserManager = UserManager.GetInstance();
         private ObservableCollection<Comment> _PostComments;
         public ObservableCollection<Comment> PostComments { get { return this._PostComments; }  }
         public SecondaryPage()
         {
             this.InitializeComponent();
-            CurrentUser = _userManager.Current();
+            _CurrentUser = _UserManager.Current();
 
         }
-       
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-           CurrentPost = (Post)e.Parameter;        
-           _PostComments = new ObservableCollection<Comment>(CurrentPost.Comments);
+           _CurrentPost = (Post)e.Parameter;        
+           _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
            
         }
     }

@@ -40,7 +40,6 @@ namespace Social.Control
         {
             this.InitializeComponent();
         }
-
         private void ReplyStack_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -56,7 +55,6 @@ namespace Social.Control
            
             
         }
-        
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(CommentTextBox.Text))
@@ -70,7 +68,6 @@ namespace Social.Control
                 newReply.ParentCommentId = _CurrentComment.CommentId;
                 _CurrentComment.CurrentReply = newReply;
                 _PostComment.Add(newReply);
-                _CurrentComment.Reply.Add(newReply);
                 _PostManager.AddReply(_CurrentPost, _CurrentComment, newReply);
                 _PostComment = _PostManager.DateChangeComment(_PostComment);
                 CommentTextBox.Text = "";

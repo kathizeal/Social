@@ -27,21 +27,24 @@ namespace Social.FramePage
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
-    /// 
     /// </summary>
    
    public sealed partial class PostPage : Page 
    {
         PostManager _PostManager = PostManager.GetInstance();
+        UserManager _UserManager = UserManager.GetInstance();
         User _CurrentUser;
-         SplitView splitView;
+        SplitView _SplitView;
         NavigationView _NavigationView;
         private ObservableCollection<Post> _PostList;
         public  ObservableCollection<Post> PostList
         {
             get { return _PostList; }
-
-       
+        }
+        private ObservableCollection<User> _UserList;
+        public ObservableCollection<User> UserList
+        {
+            get { return _UserList; }
         }
         void AddingPost(Post post)
         {
@@ -58,22 +61,29 @@ namespace Social.FramePage
             CreateHandler createHandler = CreateHandler.GetInstance();
             createHandler.OnUpdateStatus += new CreateHandler.StatusUpdateHandler(UpdateStatus);
             _NavigationView = NavViewPostPage;
-            splitView = MySpLitView;
+            _SplitView = MySpLitView;
             _PostList = new ObservableCollection<Post>(_PostManager.ViewAllPost());
             _PostList = _PostManager.DateChange(_PostList);
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
-          
-
+            _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
+            _UserList = _UserManager.DateChange(_UserList);
+           
+            ListV.Visibility = Visibility.Collapsed;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Home.Visibility = Visibility.Collapsed;
             UserManager userManager = UserManager.GetInstance();
-             _CurrentUser= userManager.Current();
+            _CurrentUser= userManager.Current();
             _CurrentUser = userManager.Find(_CurrentUser.UserId);
+            foreach (var user in _UserList)
+            {
+                user.ProfilePic = _UserManager.ProfilePic(user);
+            }
             MySpLitView.IsPaneOpen = true;
+          
         }       
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -89,6 +99,7 @@ namespace Social.FramePage
             else
             {
                 SecondFrame.Navigate(typeof(SecondaryPage), selectedPost);
+                ListV.Visibility = Visibility.Visible;
                 MySpLitView.IsPaneOpen = false;
             }
         }
@@ -101,7 +112,6 @@ namespace Social.FramePage
                     MySpLitView.IsPaneOpen = false;                    
                     this.Frame.Navigate(typeof(AccountPage),_CurrentUser);
                     break;
-
             }
           }
         private void NavViewPostPage_Loaded(object sender, RoutedEventArgs e)
@@ -110,18 +120,22 @@ namespace Social.FramePage
         }
         private void NavigationViewItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            MySpLitView.IsPaneOpen = !MySpLitView.IsPaneOpen;
+            UserListView.Visibility = Visibility.Visible;
+            MySpLitView.IsPaneOpen = true;
+            UserListView.Visibility = Visibility.Collapsed;
+            ClickList.Visibility = Visibility.Visible;
+            ListV.Visibility = Visibility.Collapsed;
             Dummy.IsSelected = true;
+            StackHeading.Text = "Feeds";
 
         }
         private void AddButton(object sender, TappedRoutedEventArgs e)
         {
-            
+            ClickList.SelectedItem = null;
             SecondFrame.Visibility = Visibility.Visible;
             SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
             Dummy.IsSelected = true;
             Add.IsSelected = false;
-
         }
         private void DeleteRecord(object sender, TappedRoutedEventArgs e)
         {
@@ -135,9 +149,36 @@ namespace Social.FramePage
             Dummy.IsSelected = true;
             Home.Visibility = Visibility.Collapsed;
             MySpLitView.IsPaneOpen = true;
-
         }
 
+        private void ChatButton(object sender, TappedRoutedEventArgs e)
+        {
+            UserListView.Visibility = Visibility.Visible;
+            ClickList.Visibility = Visibility.Collapsed;
+            ListV.Visibility = Visibility.Visible;
+            MySpLitView.IsPaneOpen = true;
+            StackHeading.Text = "People";
+        }
+
+        private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedUser = (User)e.ClickedItem;
+            ListV.Visibility = Visibility.Visible;
+            var bounds = Window.Current.Bounds;
+            double width = bounds.Width;
+            Home.Visibility = Visibility.Visible;
+            if (width > 800)
+            {
+                SecondFrame.Navigate(typeof(ChatPage), selectedUser);
+            }
+            else
+            {
+                SecondFrame.Navigate(typeof(ChatPage), selectedUser);
+                MySpLitView.IsPaneOpen = false;
+            }
+
+        }
+       
     }
 
 }   
