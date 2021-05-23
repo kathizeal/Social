@@ -31,6 +31,7 @@ namespace Social.Data
             conn = new SQLite.Net.SQLiteConnection(new
                SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), path);
             conn.CreateTable<User>();
+            conn.CreateTable<Chat>();
         }
 
 
@@ -127,7 +128,12 @@ namespace Social.Data
         }
         public void SignOut()
         {
+            _CurrentUser = Current();
+            _CurrentUser.LogoutTime = DateTime.UtcNow;
+            conn.Update(_CurrentUser);
             ApplicationData.Current.LocalSettings.Values["UserClass"] = null;
+           
+           
             _CurrentUser = null;
         }
         public string ProfilePic(User currentuser)
@@ -185,7 +191,9 @@ namespace Social.Data
         public void DeleteUserRecord()
         {
             conn.DropTable<User>();
+            conn.DropTable<Chat>();
             conn.CreateTable<User>();
+            conn.CreateTable<Chat>();
         }
         public Image UpateProfile(User user, Profile profile)
         {
@@ -197,7 +205,140 @@ namespace Social.Data
             return img;
            
         }
-       
+        public List<User> ALLUsersLists()
+        {
+            List<User> users = new List<User>();
+            var query = conn.Table<User>();
+            foreach (var user in query)
+            {
+                if (user.UserId != Current().UserId)
+                    users.Add(user);
+            }
+
+            return users;
+        }
+
+        public void  CreateChat(User Sender,User Receiever)
+        {
+            Chat chat = new Chat();
+            chat.SenderId = Sender.UserId;
+            chat.SenderName = Sender.UserName;
+            chat.RecieverId = Receiever.UserId;
+            chat.RecieverName = Receiever.UserName;
+            chat.ProfilePic = Sender.ProfilePic;
+            chat.Msg = "Hi " + Receiever.UserName;
+            conn.Insert(chat);
+        }
+        public bool CheckExist(User Sender, User Receiever)
+        {
+            var chats = conn.Table<Chat>();
+            foreach (var chat in chats)
+            {
+                if ((chat.SenderId == Sender.UserId && chat.RecieverId == Receiever.UserId) || (chat.SenderId == Receiever.UserId && chat.RecieverId == Sender.UserId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+
+        public ObservableCollection<Chat> Message(User Sender, User Receiever)
+        {
+            ObservableCollection<Chat> CurrentChat = new ObservableCollection<Chat>();
+            var chats = conn.Table<Chat>();
+            foreach(var chat in chats )
+            {
+                if((chat.SenderId==Sender.UserId&&chat.RecieverId==Receiever.UserId)||(chat.SenderId == Receiever.UserId && chat.RecieverId == Sender.UserId))
+                {
+                    CurrentChat.Add(chat);
+                }
+            }
+            return CurrentChat;
+        }
+         
+        public void AddChat(Chat chat)
+        {
+            conn.Insert(chat);
+        }
+        public ObservableCollection<User> DateChange(ObservableCollection<User> UserList)
+        {
+            // TimeZoneInfo localZoneId = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
+            //DateTime date= TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localZoneId);
+            DateTime date = DateTime.UtcNow;
+            ObservableCollection<User> Users = UserList;
+
+            foreach (var user in Users)
+            {
+                if (user.LogoutTime.Year == date.Year)
+                {
+                    if (user.LogoutTime.Month == date.Month)
+                    {
+                        if (user.LogoutTime.Date == date.Date)
+                        {
+                            if (user.LogoutTime.Hour == date.Hour)
+                            {
+                                if (user.LogoutTime.Minute == date.Minute)
+                                    user.LogOutTimeString = " Last seen just now";
+                                else
+                                {
+                                    int diff = date.Minute - user.LogoutTime.Minute >= 0 ? date.Minute - user.LogoutTime.Minute : user.LogoutTime.Minute - date.Minute;
+                                    if (diff == 1)
+                                        user.LogOutTimeString = "Last seen a minute ago";
+                                    else
+                                    {
+                                        user.LogOutTimeString = diff + "Last seen minutes ago";
+                                    }
+
+
+                                }
+                            }
+                            else
+                            {
+                                int diff = date.Hour - user.LogoutTime.Hour >= 0 ? date.Hour - user.LogoutTime.Hour : user.LogoutTime.Hour - date.Hour;
+                                if (diff == 1)
+                                    user.LogOutTimeString = "Last seen 1 hour ago";
+                                else
+                                    user.LogOutTimeString = diff + "Last seen hours ago";
+                            }
+                        }
+                        else
+                        {
+                            int diff = date.Day - user.LogoutTime.Day >= 0 ? date.Day - user.LogoutTime.Day : user.LogoutTime.Day - date.Day;
+                            if (diff == 1)
+                                user.LogOutTimeString = "Last seen Yesterday";
+                            else
+                            {
+                                user.LogOutTimeString = "Last seen " + user.LogoutTime.ToString("dd/MM/yyyy");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int diff = date.Month - user.LogoutTime.Month >= 0 ? date.Month - user.LogoutTime.Month : user.LogoutTime.Month - date.Month;
+                        if (diff == 1)
+                            user.LogOutTimeString = "Last seen 1 month ago";
+                        else
+                        {
+                            user.LogOutTimeString = diff + "Last seen month ago";
+                        }
+                    }
+                }
+                else
+                {
+                    int diff = date.Year - user.LogoutTime.Year >= 0 ? date.Year - user.LogoutTime.Year : user.LogoutTime.Year - date.Year;
+                    if (diff == 1)
+                        user.LogOutTimeString = "Last seen 1 year ago";
+                    else
+                    {
+                        user.LogOutTimeString = diff + "Last seen year ago";
+                    }
+                }
+
+            }
+            return Users;
+
+        }
 
 
 

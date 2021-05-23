@@ -38,9 +38,9 @@ namespace Social.Model
         public long PostId { get; set; }
         [Ignore]
         public Comment CurrentReply { get; set; }
-        private ObservableCollection<Comment> _Reply = new ObservableCollection<Comment>();
+       /* private ObservableCollection<Comment> _Reply = new ObservableCollection<Comment>();
         [Ignore]
-        public ObservableCollection<Comment> Reply { get { return _Reply; } set { _Reply = value; } }
+        public ObservableCollection<Comment> Reply { get { return _Reply; } set { _Reply = value; } }*/
        
 
     }

@@ -29,8 +29,8 @@ namespace Social.Model
         public string Email { get; set; }
         public string BirthDay { get; set; }
         public string Gender { get; set; }
-        //  [Ignore]
-        // public Image ProfilePicSource { get; set; }
+        public DateTime LogoutTime { get; set; }
+        public string LogOutTimeString { get; set; }
         [PrimaryKey]
         public long UserId { get; set; }
 

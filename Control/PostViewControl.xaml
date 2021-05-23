@@ -135,8 +135,8 @@
                                         <Ellipse 
                                                  x:Name="CommenterIcon"
                                                  HorizontalAlignment="Left"
-                                                 Width="20" 
-                                                 Height="20">
+                                                 Width="25" 
+                                                 Height="25">
                                             <Ellipse.Fill>
                                                 <ImageBrush
                                                            ImageSource ="{x:Bind ProfilePic}" />

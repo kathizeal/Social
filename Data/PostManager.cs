@@ -54,11 +54,11 @@ namespace Social.Data
             {
                foreach(var comment in commentquary)
                 {
-                    foreach(var reply in commentquary)
+                   /* foreach(var reply in commentquary)
                     {
                         if (reply.ParentCommentId == comment.CommentId)
                             comment.Reply.Add(reply);
-                    }
+                    }*/
                     if (comment.PostId == user.PostId && comment.ParentCommentId==null)
                         user.Comments.Add(comment);
                 }
@@ -421,8 +421,8 @@ namespace Social.Data
                         post.CreatedTimeString = diff + " year ago";
                     }
                 }
-                if(post.Reply.Count!=0)
-                post.Reply = DateChangeComment(post.Reply);
+               // if(post.Reply.Count!=0)
+               // post.Reply = DateChangeComment(post.Reply);
             }
 
             return posts;
