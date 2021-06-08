@@ -117,6 +117,8 @@ namespace Social.Data
             _CurrentUser.LogoutTime = DateTime.UtcNow;
             conn.Update(_CurrentUser);
             ApplicationData.Current.LocalSettings.Values["UserClass"] = null;
+           
+           
             _CurrentUser = null;
         }
         public string ProfilePic(User currentuser)
@@ -191,6 +193,18 @@ namespace Social.Data
           
             return img;
            
+        }
+        public List<User> ALLUsersLists()
+        {
+            List<User> users = new List<User>();
+            var query = conn.Table<User>();
+            foreach (var user in query)
+            {
+                if (user.UserId != Current().UserId)
+                    users.Add(user);
+            }
+
+            return users;
         }
         public List<User> ALLUsersLists()
         {

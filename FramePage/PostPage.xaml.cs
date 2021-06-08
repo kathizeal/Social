@@ -41,11 +41,6 @@ namespace Social.FramePage
         {
             get { return _PostList; }
         }
-        private ObservableCollection<User> _UserList;
-        public ObservableCollection<User> UserList
-        {
-            get { return _UserList; }
-        }
         void AddingPost(Post post)
         {
             _PostList.Add(post);
@@ -66,10 +61,8 @@ namespace Social.FramePage
             _PostList = _PostManager.DateChange(_PostList);
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
-            _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
-            _UserList = _UserManager.DateChange(_UserList);
-           
-            ListV.Visibility = Visibility.Collapsed;
+          
+
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -178,7 +171,7 @@ namespace Social.FramePage
             }
 
         }
-       
+
     }
 
 }   

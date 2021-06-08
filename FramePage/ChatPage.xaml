@@ -20,83 +20,83 @@
             CornerRadius="20"
             Height="500">
             <Grid.RowDefinitions>
+
                 <RowDefinition Height="10*"/>
+
                 <RowDefinition  Height="1*"/>
-            </Grid.RowDefinitions>
-            <Button 
-                x:Name="Starter"
-                Grid.Row="0"
-                Content="EnableChat"
-                HorizontalAlignment="Center"
-                Click="EnableEvent"/>
+
+        </Grid.RowDefinitions>
+    
+        <Button 
+           x:Name="Starter"
+            Grid.Row="0"
+           Content="EnableChat"
+            HorizontalAlignment="Center"
+            Click="EnableEvent"/>
             <ScrollViewer
                 x:Name="Chaat"
                 Grid.Row="0">
-                <ListView
-                    x:Name="ChatListView"
-                    IsItemClickEnabled="False"
-                    SelectionMode="None"
-                    ItemsSource="{x:Bind chatList}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="data:Chat">
-                            <StackPanel Orientation="Horizontal">
+                    <ListView
+                        x:Name="ChatListView"
+                        IsItemClickEnabled="False"
+                        SelectionMode="None"
+                        ItemsSource="{x:Bind chatList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Chat">
+                        <StackPanel Orientation="Horizontal">
                                 <StackPanel>
-                                    <Ellipse
-                                        x:Name="Icon"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Margin="2,2,2,2"
-                                        Width="30" 
-                                        Height="30">
-                                        <Ellipse.Fill>
-                                            <ImageBrush ImageSource ="{x:Bind ProfilePic}" />
-                                        </Ellipse.Fill>
-                                    </Ellipse>
+                            <Ellipse
+                                                               x:Name="Icon"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               Margin="2,2,2,2"
+                                                               Width="30" 
+                                                               Height="30">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource ="{x:Bind ProfilePic}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
                                     <TextBlock
-                                        Text="{Binding SenderName}"
-                                        HorizontalAlignment="Center"
-                                        Margin="5,1,2,1"/>    
+                                Text="{Binding SenderName}"
+                                HorizontalAlignment="Center"
                                     <TextBlock 
-                                        HorizontalAlignment="Center"
-                                        Text="{x:Bind CreatedTimeString}"
-                                        Margin="5,1,2,1"
-                                        FontSize="10"/>
+                                    HorizontalAlignment="Center"
+                                 Text="{x:Bind CreatedTimeString}"
                                 </StackPanel>
-                                <TextBlock 
-                                     Text="{x:Bind Msg}"
-                                     Margin="10,10,2,10"/>
+                                
+                            <TextBlock 
+                                Text="{x:Bind Msg}"
                             </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                        
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+
+
+            </ListView>
+                
             </ScrollViewer>
-            <RelativePanel
-                x:Name="Commands"
-                Grid.Row="1">
-                <StackPanel
-                    Orientation="Horizontal"
-                    RelativePanel.AlignBottomWithPanel="True" >
-                    <TextBox
-                        x:Name="CommentTextBox"
-                        PlaceholderText="Whats on your mind...."
-                        Foreground="White"
-                        Margin="8,6,2,6"
-                        TextWrapping="Wrap"
-                        CornerRadius="2"/>
-                    <Button
+                <TextBox
+                         x:Name="CommentTextBox"
+                         Foreground="White"
+                         Margin="8,6,2,6"
+                         TextWrapping="Wrap"
+                         CornerRadius="2"/>
+                <Button
                         x:Name="CommentButton"
                         Height="auto"
                         Width="95"
                         Style="{ThemeResource AccentButtonStyle}"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Content="Send"   
                         Click="CommentButton_Click"
                         CornerRadius="2"
                         Margin="1,6,1,6"/>
-                </StackPanel>
+
+            </StackPanel>
             </RelativePanel>
-        </Grid>
+
+    </Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Wide">
@@ -110,7 +110,9 @@
                         <Setter
                             Target="CommentTextBox.(Width)"
                             Value="350"/>
+
                     </VisualState.Setters>
+
                 </VisualState>
                 <VisualState x:Name="Narrow">
                     <VisualState.StateTriggers>
@@ -121,11 +123,14 @@
                            Target="ChatGrid.(Width)"
                            Value="440"/>
                         <Setter
-                           Target="CommentTextBox.(Width)"
-                           Value="300"/>
+                            Target="CommentTextBox.(Width)"
+                            Value="300"/>
+
                     </VisualState.Setters>
+
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
+   
 </Page>

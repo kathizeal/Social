@@ -39,11 +39,10 @@ namespace Social.FramePage
         {
             base.OnNavigatedTo(e);
             _AnotherUser = (User)e.Parameter;
+
             _CurrentUser = _UserManager.Current();
             _CurrentUser = _UserManager.Find(_CurrentUser.UserId);
             chatList = _UserManager.Message(_CurrentUser,_AnotherUser);
-            _Exist=_UserManager.CheckExist(_CurrentUser, _AnotherUser);
-            if(_Exist)
             {
                 Starter.Visibility = Visibility.Collapsed;
                 Chaat.Visibility = Visibility.Visible;
@@ -56,7 +55,10 @@ namespace Social.FramePage
                 Chaat.Visibility = Visibility.Collapsed;
                 Commands.Visibility = Visibility.Collapsed;
             }
+
+           
         }
+
         private void EnableEvent(object sender, RoutedEventArgs e)
         {
             _UserManager.CreateChat(_CurrentUser, _AnotherUser);
@@ -66,6 +68,7 @@ namespace Social.FramePage
             Chaat.Visibility = Visibility.Visible;
             Commands.Visibility = Visibility.Visible;
         }
+
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             Chat chat = new Chat();
@@ -76,6 +79,8 @@ namespace Social.FramePage
             chat.ProfilePic = _CurrentUser.ProfilePic;
             chat.Msg = CommentTextBox.Text;
             chatList.Add(chat);
+            
+           
             _UserManager.AddChat(chat);
             CommentTextBox.Text = "";
         }
