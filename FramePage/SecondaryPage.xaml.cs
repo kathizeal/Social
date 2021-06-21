@@ -20,6 +20,9 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 
 
 
@@ -51,6 +54,43 @@ namespace Social.FramePage
            _CurrentPost = (Post)e.Parameter;        
            _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
            
+        }
+        public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
+        {
+
+            SecondaryPage presenter;
+            public GetCurrentUserPresenterCallback(SecondaryPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetCurrentUserResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+
+
+                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    presenter.Control._CurrentUser = presenter._CurrentUser;
+                }
+                     );
+            }
+
+
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
         }
     }
 

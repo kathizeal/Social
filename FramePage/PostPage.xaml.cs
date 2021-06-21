@@ -19,6 +19,9 @@ using Social.FramePage;
 using Windows.Storage;
 using Newtonsoft.Json;
 using Windows.ApplicationModel.Core;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -46,24 +49,11 @@ namespace Social.FramePage
         {
             get { return _UserList; }
         }
-        void AddingPost(Post post)
-        {
-            _PostList.Add(post);
-            _PostList = _PostManager.DateChange(_PostList);
-        }
-        private void UpdateStatus(object sender, CustomEvent e)
-        {
-            AddingPost(e.Post);
-        }
         public PostPage()
         {
             this.InitializeComponent();
-            CreateHandler createHandler = CreateHandler.GetInstance();
-            createHandler.OnUpdateStatus += new CreateHandler.StatusUpdateHandler(UpdateStatus);
             _NavigationView = NavViewPostPage;
             _SplitView = MySpLitView;
-            _PostList = new ObservableCollection<Post>(_PostManager.ViewAllPost());
-            _PostList = _PostManager.DateChange(_PostList);
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
             _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
@@ -178,7 +168,53 @@ namespace Social.FramePage
             }
 
         }
-       
+        public class GetPostPresenterCallBack : IGetPostsPresenterCallback
+        {
+            PostPage presenter;
+            public GetPostPresenterCallBack(PostPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetPostsResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                    presenter._PostList = new ObservableCollection<Post>(response.Obj.Posts);
+                    presenter.ClickList.ItemsSource = presenter._PostList;
+                }
+                );
+            }
+
+
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var getPostRequest = new GetPostRequest();
+            GetPost getPost = new GetPost(getPostRequest, new GetPostPresenterCallBack(this));
+            getPost.Execute();
+            SocialNotification.PostAdded += HandlePostAdded;
+        }
+
+        private void Grid_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SocialNotification.PostAdded -= HandlePostAdded;
+        }
+        private async void HandlePostAdded(Post post)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+
+                _PostList.Add(post);
+            });
+        }
     }
 
 }   

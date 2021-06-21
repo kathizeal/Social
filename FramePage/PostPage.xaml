@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-   <Grid>
+   <Grid Loaded="Grid_Loaded" Unloaded="Grid_Unloaded">
        <NavigationView
            Name="NavViewPostPage"
            PaneDisplayMode="Left"
@@ -131,7 +131,7 @@
                                    </ListView>
                                    <ListView
                                        x:Name="ClickList"
-                                       ItemsSource="{x:Bind PostList}"
+                                       ItemsSource="{x:Bind _PostList,Mode=OneWay}"
                                        ItemClick="ListView_ItemClick" 
                                        IsItemClickEnabled="True"
                                        Foreground="{ThemeResource SystemAltMediumColor}">

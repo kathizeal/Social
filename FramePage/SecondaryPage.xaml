@@ -12,8 +12,8 @@
     <Page.Resources>
         <SolidColorBrush x:Key="BlueColor" Color="#FF30B3DD" />
     </Page.Resources>
-    <Grid>
-        <uc:PostViewControl
+    <Grid Loaded="Grid_Loaded">
+        <uc:PostViewControl x:Name="Control"
             _CurrentPost="{x:Bind _CurrentPost}"
             _CurrentUser="{x:Bind _CurrentUser}"
             PostComments="{x:Bind PostComments}"/>
