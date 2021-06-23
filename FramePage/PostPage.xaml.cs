@@ -197,6 +197,7 @@ namespace Social.FramePage
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
+
             var getPostRequest = new GetPostRequest();
             GetPost getPost = new GetPost(getPostRequest, new GetPostPresenterCallBack(this));
             getPost.Execute();

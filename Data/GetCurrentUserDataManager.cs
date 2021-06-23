@@ -13,8 +13,7 @@ namespace Social.Data
     {
         public void GetCurrentUser(ICallback<GetCurrentUserResponse> callback)
         {
-
-            callback.OnSuccess(new Response<GetCurrentUserResponse> { Obj = new GetCurrentUserResponse(GetCurrentUser()) });
+            callback.OnSuccess(new Response<GetCurrentUserResponse> { Obj = new GetCurrentUserResponse(GetCurrentUser())});
         }
 
     }

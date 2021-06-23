@@ -46,14 +46,18 @@ namespace Social.FramePage
         public SecondaryPage()
         {
             this.InitializeComponent();
-            _CurrentUser = _UserManager.Current();
+           
 
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-           _CurrentPost = (Post)e.Parameter;        
-           _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
-           
+           _CurrentPost = (Post)e.Parameter;
+           // _CurrentUser = _UserManager.Current();
+            _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
+
         }
         public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
         {
@@ -73,25 +77,16 @@ namespace Social.FramePage
             {
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-
-
-
-                    presenter._CurrentUser = response.Obj.CurrentUser;
+                 {
+                   presenter._CurrentUser = response.Obj.CurrentUser;
                     presenter.Control._CurrentUser = presenter._CurrentUser;
-                }
-                     );
+                 });
             }
 
 
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
-            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
-            getCurrentUser.Execute();
-        }
+      
     }
 
 

@@ -1,6 +1,8 @@
 ﻿using Social.Data;
+using Social.Domain;
 using Social.FramePage;
 using Social.Model;
+using Social.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,12 +30,15 @@ namespace Social.Control
 {
     public sealed partial class PostViewControl : UserControl 
     {
+        User CurrentUser;
         public static readonly DependencyProperty UserProperty = DependencyProperty.Register("_CurrentUser", typeof(User), typeof(PostViewControl), new PropertyMetadata(null));
         public User _CurrentUser
         {
             get { return (User)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
+        
+
         public static readonly DependencyProperty PostProperty = DependencyProperty.Register("_CurrentPost", typeof(Post), typeof(PostViewControl), new PropertyMetadata(null));
         public Post _CurrentPost
         {
@@ -121,10 +127,14 @@ namespace Social.Control
         }
         private void PostDetails_Loaded(object sender, RoutedEventArgs e)
         {
+          
             _PostComment = PostComments;
-            _PostComment=_PostManager.DateChangeComment(_PostComment);
+            CurrentUser = _CurrentUser;
             _LikedUser= new ObservableCollection<UserIds>(_PostManager.LikedUsers(_CurrentPost));
-            LikedUserList.ItemsSource = _LikedUser;
+             LikedUserList.ItemsSource = _LikedUser;
+            var getLikedUserRequest = new GetLikedUsersRequest(_CurrentPost);
+            GetLikedUsers getLikedUsers = new GetLikedUsers(getLikedUserRequest, new GetLikedUsersPresenterCallback(this));
+            getLikedUsers.Execute();
             if (_CurrentPost.Likes != 0)
             {
                 foreach (var i in _CurrentPost.LikedId)
@@ -172,6 +182,28 @@ namespace Social.Control
                 LikeCount.Visibility = Visibility.Visible;
                 LikeCount.Content = _CurrentPost.Likes;
 
+            }
+        }
+       
+        public class GetLikedUsersPresenterCallback : IGetLikedUsersPresenterCallback
+        {
+            PostViewControl presenter;
+            public GetLikedUsersPresenterCallback(PostViewControl view )
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetLikedUsersResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._LikedUser = new ObservableCollection<UserIds>(response.Obj.LikedUsers);
+                    presenter.LikedUserList.ItemsSource = presenter._LikedUser;
+                });
             }
         }
     }
