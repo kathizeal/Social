@@ -67,8 +67,11 @@ namespace Social.Control
 
             if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
             {
-                
-                _PostManager.UnLikePost(_CurrentPost, _CurrentUser);
+
+                // _PostManager.UnLikePost(_CurrentPost, _CurrentUser);
+                var UnLikePostRequest = new UnLikePostRequest(_CurrentPost, _CurrentUser);
+                UnLikePost unLikePost = new UnLikePost(UnLikePostRequest, new UnLikePostPresenterCallback(this));
+                unLikePost.Execute();
                 foreach(var id in _LikedUser)
                 {
                     if (id.Userid == _CurrentUser.UserId)
@@ -92,7 +95,10 @@ namespace Social.Control
                 userIds.PostId = _CurrentPost.PostId;
                 userIds.Userid = _CurrentUser.UserId;
                 userIds.UserName = _CurrentUser.UserName;
-                _PostManager.LikePost(_CurrentPost, _CurrentUser);
+                //_PostManager.LikePost(_CurrentPost, _CurrentUser);
+                var LikePostRequest = new LikePostRequest(_CurrentPost, _CurrentUser);
+                LikePost likePost = new LikePost(LikePostRequest, new LikePostPresenterCallback(this));
+                likePost.Execute();
                 _LikedUser.Add(userIds);
             }
             LikeCount.Content = _CurrentPost.Likes;
@@ -117,9 +123,12 @@ namespace Social.Control
                 newComment.CommentContent = CommentTextBox.Text;
                 newComment.CommenterName = _CurrentUser.UserName;
                 newComment.CommenterId = _CurrentUser.UserId;
-                _PostManager.AddComment(_CurrentPost, newComment);
-                _PostComment.Add(newComment);
-                _PostComment = _PostManager.DateChangeComment(_PostComment);
+              //  _PostManager.AddComment(_CurrentPost, newComment);
+                var AddCommentRequest = new AddCommentRequest(_CurrentPost, newComment);
+                AddComment addComment = new AddComment(AddCommentRequest, new AddCommentPresenterCallback(this));
+                addComment.Execute();
+               // _PostComment.Add(newComment);
+              //  _PostComment = _PostManager.DateChangeComment(_PostComment);
                 CommentStack.Visibility = Visibility.Visible;
                 CommentTextBox.Text = "";
                 CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
@@ -130,8 +139,6 @@ namespace Social.Control
           
             _PostComment = PostComments;
             CurrentUser = _CurrentUser;
-            _LikedUser= new ObservableCollection<UserIds>(_PostManager.LikedUsers(_CurrentPost));
-             LikedUserList.ItemsSource = _LikedUser;
             var getLikedUserRequest = new GetLikedUsersRequest(_CurrentPost);
             GetLikedUsers getLikedUsers = new GetLikedUsers(getLikedUserRequest, new GetLikedUsersPresenterCallback(this));
             getLikedUsers.Execute();
@@ -206,5 +213,67 @@ namespace Social.Control
                 });
             }
         }
+
+        public class LikePostPresenterCallback : ILikePostPresenterCallback
+        {
+            PostViewControl presenter;
+            public LikePostPresenterCallback(PostViewControl view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<LikePostResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                   
+                });
+            }
+        }
+        public class UnLikePostPresenterCallback : IUnLikePostPresenterCallback
+        {
+            PostViewControl presenter;
+            public UnLikePostPresenterCallback(PostViewControl view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<UnLikePostResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                });
+            }
+        }
+        public class AddCommentPresenterCallback : IAddCommentPresenterCallback
+        {
+            PostViewControl presenter;
+            public AddCommentPresenterCallback(PostViewControl view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<AddCommentResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._PostComment.Add(response.Obj.Comment);
+                });
+            }
+        }
+
     }
 }

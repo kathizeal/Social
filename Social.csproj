@@ -130,17 +130,23 @@
     </Compile>
     <Compile Include="CreateHandler.cs" />
     <Compile Include="CustomEvent.cs" />
+    <Compile Include="Data\AddCommentDataManager.cs" />
     <Compile Include="Data\AddPostDataManager.cs" />
     <Compile Include="Data\GetCurrentUserDataManager.cs" />
     <Compile Include="Data\GetLikedUserDataManager.cs" />
     <Compile Include="Data\GetPostDataManager.cs" />
     <Compile Include="Data\Handler\DBHandlers.cs" />
+    <Compile Include="Data\LikePostDataManager.cs" />
     <Compile Include="Data\PostManager.cs" />
+    <Compile Include="Data\UnLikePostDataManager.cs" />
     <Compile Include="Data\UserManager.cs" />
+    <Compile Include="Domain\AddComment.cs" />
     <Compile Include="Domain\AddPost.cs" />
     <Compile Include="Domain\GetCurrentUser.cs" />
     <Compile Include="Domain\GetLikedUsers.cs" />
     <Compile Include="Domain\GetPost.cs" />
+    <Compile Include="Domain\LikePost.cs" />
+    <Compile Include="Domain\UnLikePost.cs" />
     <Compile Include="FramePage\AccountPage.xaml.cs">
       <DependentUpon>AccountPage.xaml</DependentUpon>
     </Compile>

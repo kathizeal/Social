@@ -302,6 +302,117 @@ namespace Social.Data.Handler
             return userIds;
 
         }
+        public Post LikePost(Post post, User user)
+        {
+            if (!post.LikedId.Contains(user.UserId))
+            {
+                post.Likes++;
+                UserIds userIds = new UserIds
+                {
+                    PostId = post.PostId,
+                    Userid = user.UserId,
+                    UserName = user.UserName,
+                    Unique = DateTime.Now.Ticks
+                };
+                conn.Insert(userIds);
+                post.LikedId.Add(user.UserId);
+            }
+            conn.Update(post);
+            return post;
+        }
+        public Post UnLikePost(Post post, User user)
+        {
+            var ids = conn.Table<UserIds>();
+            foreach (var id in ids)
+            {
+                if (id.PostId == post.PostId)
+                {
+                    if (id.Userid == user.UserId)
+                    {
+                        post.Likes--;
+                        conn.Delete(id);
+                        post.LikedId.Remove(user.UserId);
+                    }
+                }
+            }
+            conn.Update(post);
+            return post;
+        }
+        public Comment AddComments(Post post, Comment comment)
+        {
+            DateTime date = DateTime.UtcNow;
+            if (comment.CreatedTime.Year == date.Year)
+            {
+                if (comment.CreatedTime.Month == date.Month)
+                {
+                    if (comment.CreatedTime.Date == date.Date)
+                    {
+                        if (comment.CreatedTime.Hour == date.Hour)
+                        {
+                            if (comment.CreatedTime.Minute == date.Minute)
+                                comment.CreatedTimeString = "          Just now";
+                            else
+                            {
+                                int diff = date.Minute - comment.CreatedTime.Minute >= 0 ? date.Minute - comment.CreatedTime.Minute : comment.CreatedTime.Minute - date.Minute;
+                                if (diff == 1)
+                                    comment.CreatedTimeString = "a minute ago";
+                                else
+                                {
+                                    comment.CreatedTimeString = diff + " minutes ago";
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            int diff = date.Hour - comment.CreatedTime.Hour >= 0 ? date.Hour - comment.CreatedTime.Hour : comment.CreatedTime.Hour - date.Hour;
+                            if (diff == 1)
+                                comment.CreatedTimeString = "1 hour ago";
+                            else
+                                comment.CreatedTimeString = diff + " hours ago";
+                        }
+                    }
+                    else
+                    {
+                        int diff = date.Day - comment.CreatedTime.Day >= 0 ? date.Day - comment.CreatedTime.Day : comment.CreatedTime.Day - date.Day;
+                        if (diff == 1)
+                           comment.CreatedTimeString = "Yesterday";
+                        else
+                        {
+                            comment.CreatedTimeString = comment.CreatedTime.ToString("dd/MM/yyyy");
+                        }
+                    }
+                }
+                else
+                {
+                    int diff = date.Month - comment.CreatedTime.Month >= 0 ? date.Month - comment.CreatedTime.Month : comment.CreatedTime.Month - date.Month;
+                    if (diff == 1)
+                        comment.CreatedTimeString = "1 month ago";
+                    else
+                    {
+                        comment.CreatedTimeString = diff + " month ago";
+                    }
+                }
+            }
+            else
+            {
+                int diff = date.Year - comment.CreatedTime.Year >= 0 ? date.Year - comment.CreatedTime.Year : comment.CreatedTime.Year - date.Year;
+                if (diff == 1)
+                    comment.CreatedTimeString = "1 year ago";
+                else
+                {
+                    comment.CreatedTimeString = diff + " year ago";
+                }
+            }
+
+
+            conn.Insert(comment);
+            post.Comments.Add(comment);
+            post.CommentCount = post.CommentCount + 1;
+            conn.Update(post);
+            return comment;
+        }
 
     }
 }
