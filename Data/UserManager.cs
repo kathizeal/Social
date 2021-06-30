@@ -204,7 +204,7 @@ namespace Social.Data
 
             return users;
         }
-        public void  CreateChat(User Sender,User Receiever)
+        public void CreateChat(User Sender,User Receiever)
         {
             Chat chat = new Chat();
             chat.SenderId = Sender.UserId;

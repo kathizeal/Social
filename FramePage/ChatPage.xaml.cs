@@ -1,5 +1,7 @@
 ﻿using Social.Data;
+using Social.Domain;
 using Social.Model;
+using Social.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,10 +42,13 @@ namespace Social.FramePage
         {
             base.OnNavigatedTo(e);
             _AnotherUser = (User)e.Parameter;
-            _CurrentUser = _UserManager.Current();
-            _CurrentUser = _UserManager.Find(_CurrentUser.UserId);
-            chatList = _UserManager.Message(_CurrentUser,_AnotherUser);
-            _Exist=_UserManager.CheckExist(_CurrentUser, _AnotherUser);
+            // _CurrentUser = _UserManager.Current();
+            // _CurrentUser = _UserManager.Find(_CurrentUser.UserId);
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
+          //  chatList = _UserManager.Message(_CurrentUser,_AnotherUser);
+           /* _Exist=_UserManager.CheckExist(_CurrentUser, _AnotherUser);
             if(_Exist)
             {
                 Starter.Visibility = Visibility.Collapsed;
@@ -55,7 +61,7 @@ namespace Social.FramePage
                 Starter.Visibility = Visibility.Visible;
                 Chaat.Visibility = Visibility.Collapsed;
                 Commands.Visibility = Visibility.Collapsed;
-            }
+            }*/
         }
         private void EnableEvent(object sender, RoutedEventArgs e)
         {
@@ -78,6 +84,101 @@ namespace Social.FramePage
             chatList.Add(chat);
             _UserManager.AddChat(chat);
             CommentTextBox.Text = "";
+        }
+        public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
+        {
+
+            ChatPage presenter;
+            public GetCurrentUserPresenterCallback(ChatPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetCurrentUserResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._CurrentUser = response.Obj.CurrentUser;
+
+                    var CheckExistRequest = new CheckExistRequest(presenter._CurrentUser, presenter._AnotherUser);
+                    CheckExist checkExist = new CheckExist(CheckExistRequest, new CheckExistPresenterCallback(presenter));
+                    checkExist.Execute();
+
+                });
+            }
+
+
+        }
+        public class GetMessagePresenterCallback : IGetMessagePresenterCallback
+        {
+
+            ChatPage presenter;
+            public GetMessagePresenterCallback(ChatPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetMessageResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter.chatList = new ObservableCollection<Chat>(response.Obj.Chats);
+
+                });
+            }
+
+
+        }
+        public class CheckExistPresenterCallback : ICheckExistPresenterCallback
+        {
+
+            ChatPage presenter;
+            public CheckExistPresenterCallback(ChatPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<CheckExistResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._Exist = response.Obj.Exist;
+                    if (presenter._Exist)
+                    {
+                        presenter.Starter.Visibility = Visibility.Collapsed;
+                        presenter.Chaat.Visibility = Visibility.Visible;
+                        presenter.Commands.Visibility = Visibility.Visible;
+
+                    }
+                    else
+                    {
+                        presenter.Starter.Visibility = Visibility.Visible;
+                        presenter.Chaat.Visibility = Visibility.Collapsed;
+                        presenter.Commands.Visibility = Visibility.Collapsed;
+                    }
+
+                });
+            }
+
+
         }
     }
 }

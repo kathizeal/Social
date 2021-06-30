@@ -133,10 +133,12 @@
     <Compile Include="Data\AddCommentDataManager.cs" />
     <Compile Include="Data\AddPostDataManager.cs" />
     <Compile Include="Data\AddReplyDataManager.cs" />
+    <Compile Include="Data\CheckExistDataManager.cs" />
     <Compile Include="Data\DeletePostDataManager.cs" />
     <Compile Include="Data\GetCommentDataManager.cs" />
     <Compile Include="Data\GetCurrentUserDataManager.cs" />
     <Compile Include="Data\GetLikedUserDataManager.cs" />
+    <Compile Include="Data\GetMessageDataManager.cs" />
     <Compile Include="Data\GetPostDataManager.cs" />
     <Compile Include="Data\GetProfileDataManager.cs" />
     <Compile Include="Data\GetReplyDataManager.cs" />
@@ -152,10 +154,12 @@
     <Compile Include="Domain\AddComment.cs" />
     <Compile Include="Domain\AddPost.cs" />
     <Compile Include="Domain\AddReply.cs" />
+    <Compile Include="Domain\CheckExist.cs" />
     <Compile Include="Domain\DeletePost.cs" />
     <Compile Include="Domain\GetComment.cs" />
     <Compile Include="Domain\GetCurrentUser.cs" />
     <Compile Include="Domain\GetLikedUsers.cs" />
+    <Compile Include="Domain\GetMessage.cs" />
     <Compile Include="Domain\GetPost.cs" />
     <Compile Include="Domain\GetProfilePic.cs" />
     <Compile Include="Domain\GetReply.cs" />

@@ -740,8 +740,6 @@ namespace Social.Data.Handler
         public string UpdateProfilePic(User user, Profile profile)
         {
             string pic = "ms-appx:///Assets/" + user.UserName + ".jpg";
-           // Image img = new Image();
-           // img.Source = new BitmapImage(new Uri(pic));
             foreach (var us in conn.Table<User>())
             {
                 if (us.UserId == user.UserId)
@@ -768,6 +766,31 @@ namespace Social.Data.Handler
 
             return pic;
 
+        }
+        public List<Chat> Message(User Sender, User Receiever)
+        {
+            List<Chat> CurrentChat = new List<Chat>();
+            var chats = conn.Table<Chat>();
+            foreach (var chat in chats)
+            {
+                if ((chat.SenderId == Sender.UserId && chat.RecieverId == Receiever.UserId) || (chat.SenderId == Receiever.UserId && chat.RecieverId == Sender.UserId))
+                {
+                    CurrentChat.Add(chat);
+                }
+            }
+            return CurrentChat;
+        }
+        public bool CheckExist(User Sender, User Receiever)
+        {
+            var chats = conn.Table<Chat>();
+            foreach (var chat in chats)
+            {
+                if ((chat.SenderId == Sender.UserId && chat.RecieverId == Receiever.UserId) || (chat.SenderId == Receiever.UserId && chat.RecieverId == Sender.UserId))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

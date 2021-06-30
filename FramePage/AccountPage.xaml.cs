@@ -297,8 +297,6 @@ namespace Social.FramePage
                 });
             }
         }
-
-
         public class DeletePostPresenterCallback : IDeletePostPresenterCallback
         {
             AccountPage presenter;
