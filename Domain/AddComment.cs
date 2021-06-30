@@ -20,7 +20,7 @@ namespace Social.Domain
         }
 
     }
-    public class AddCommentRequest
+    public  class AddCommentRequest
     {
         public Post Post;
         public Comment Comment;

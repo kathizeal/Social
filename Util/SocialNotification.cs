@@ -14,6 +14,11 @@ namespace Social.Util
         {
             PostAdded?.Invoke(post);
         }
+        public static event Action<Post> PostDeleted;
+        public static void NotifyPostDeleted(Post post)
+        {
+            PostDeleted?.Invoke(post);
+        }
 
     }
 } 

@@ -22,6 +22,9 @@ using Windows.ApplicationModel.Core;
 using Social.Domain;
 using Social.Util;
 using Windows.UI.Core;
+using Windows.UI.WindowManagement;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Hosting;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -56,24 +59,27 @@ namespace Social.FramePage
             _SplitView = MySpLitView;
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
-            _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
-            _UserList = _UserManager.DateChange(_UserList);
+           // _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
+           // _UserList = _UserManager.DateChange(_UserList);
            
             ListV.Visibility = Visibility.Collapsed;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            ListV.Visibility = Visibility.Collapsed;
             Home.Visibility = Visibility.Collapsed;
-            UserManager userManager = UserManager.GetInstance();
-            _CurrentUser= userManager.Current();
-            _CurrentUser = userManager.Find(_CurrentUser.UserId);
-            foreach (var user in _UserList)
+            //UserManager userManager = UserManager.GetInstance();
+            //_CurrentUser= userManager.Current();
+            //_CurrentUser = userManager.Find(_CurrentUser.UserId);
+            /*foreach (var user in _UserList)
             {
                 user.ProfilePic = _UserManager.ProfilePic(user);
-            }
+            }*/
+           
             MySpLitView.IsPaneOpen = true;
-          
+            ClickList.Visibility = Visibility.Visible;
+
         }       
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -126,12 +132,32 @@ namespace Social.FramePage
             SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
             Dummy.IsSelected = true;
             Add.IsSelected = false;
+            var bounds = Window.Current.Bounds;
+            double width = bounds.Width;
+            if (width > 800)
+            {
+                SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+            }
+            else
+            {
+                SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+                ListV.Visibility = Visibility.Visible;
+                MySpLitView.IsPaneOpen = false;
+            }
         }
-        private void DeleteRecord(object sender, TappedRoutedEventArgs e)
+        private async void DeleteRecord(object sender, TappedRoutedEventArgs e)
         {
-            PostManager postManager = PostManager.GetInstance();
-            postManager.DeleteRecord();
-            _PostList.Clear();
+            // PostManager postManager = PostManager.GetInstance();
+            // postManager.DeleteRecord();
+            // _PostList.Clear();
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(NewView));
+            NewView page = (NewView)appWindowContentFrame.Content;
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            page.MyAppWindow= appWindow;
+            await appWindow.TryShowAsync();
+
         }
         private void HomeButton(object sender, TappedRoutedEventArgs e)
         {
@@ -194,13 +220,75 @@ namespace Social.FramePage
 
 
         }
+        public class GetUsersListPresenterCallBack : IGetUsersListPresenterCallback
+        {
+            PostPage presenter;
+            public GetUsersListPresenterCallBack(PostPage view)
+            {
+                presenter = view;
+            }
 
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetUsersListResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                    presenter._UserList = new ObservableCollection<User>(response.Obj.Users);
+                    presenter.UserListView.ItemsSource = presenter._UserList;
+                     foreach (var user in presenter._UserList)
+                    {
+                      user.ProfilePic = presenter._UserManager.ProfilePic(user);
+                    }
+                }
+                );
+            }
+
+
+        }
+        public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
+        {
+
+            PostPage presenter;
+            public GetCurrentUserPresenterCallback(PostPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetCurrentUserResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    
+                });
+            }
+
+
+        }
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
 
             var getPostRequest = new GetPostRequest();
             GetPost getPost = new GetPost(getPostRequest, new GetPostPresenterCallBack(this));
             getPost.Execute();
+            var getUsersListRequest = new GetUsersListRequest();
+            GetUsersList getUsersList = new GetUsersList(getUsersListRequest, new GetUsersListPresenterCallBack(this));
+            getUsersList.Execute();
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
+
             SocialNotification.PostAdded += HandlePostAdded;
         }
 
@@ -214,7 +302,16 @@ namespace Social.FramePage
             {
 
                 _PostList.Add(post);
+                
+
             });
+        }
+
+        private void Dummy_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            PostManager postManager = PostManager.GetInstance();
+            postManager.DeleteRecord();
+           _PostList.Clear();
         }
     }
 

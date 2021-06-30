@@ -22,6 +22,9 @@ using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using Windows.UI.Popups;
 using Windows.Storage.Streams;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Social.FramePage
@@ -59,12 +62,9 @@ namespace Social.FramePage
             EmailBlock.Text = _CurrentUser.Email;
             BirthdayBlock.Text = _CurrentUser.BirthDay.ToString();
             GenderBlock.Text = _CurrentUser.Gender;
-            _MyPost = new ObservableCollection<Post>(_PostManager.ViewMyPost(_CurrentUser.UserId));
-            _MyPost = _PostManager.DateChange(_MyPost);
-            if (_MyPost.Count == 0)
-                NoPost.Visibility = Visibility.Visible;
-            else
-                NoPost.Visibility = Visibility.Collapsed;
+            var viewMyPostRequest = new ViewMyPostRequest(_CurrentUser.UserId);
+            ViewMyPost viewMyPost = new ViewMyPost(viewMyPostRequest, new ViewMyPostPresenterCallback(this));
+            viewMyPost.Execute();
             StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
             StorageFolder assets = await appInstalledFolder.GetFolderAsync("Avatar");
             IReadOnlyList<StorageFile> sortedItems = await assets.GetFilesAsync();
@@ -74,17 +74,21 @@ namespace Social.FramePage
                 Profiles.Add(new Profile(file.Name, file.Path));
             }
             MyAssets.ItemsSource = Profiles;
-            Image img = new Image();
+           /* Image img = new Image();
             if (_MyPost.Count != 0)
             {
-                img.Source = new BitmapImage(new Uri(_MyPost[0].ProfilePic));
+                //img.Source = new BitmapImage(new Uri(_MyPost[0].ProfilePic));
+                img.Source = new BitmapImage(new Uri(_UserManager.ProfilePic(_CurrentUser)));
                 br.ImageSource = img.Source;
             }
             else
             {
                 img.Source = new BitmapImage(new Uri(_UserManager.ProfilePic(_CurrentUser)));
                 br.ImageSource = img.Source;
-            }
+            }*/
+            var getProfilePicRequest = new GetProfilePicRequest(_CurrentUser);
+            GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(this));
+            getProfilePic.Execute();
                     
              
         }
@@ -92,7 +96,10 @@ namespace Social.FramePage
         {
             if (_Clicked == true)
             {
-                _PostManager.DeletePost(_Post);
+                //_PostManager.DeletePost(_Post);
+                var deletePostRequest = new DeletePostRequest(_Post);
+                DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                deletePost.Execute();
                 Post SelectedPost = _Post;
                 Frame.Navigate(typeof(EditPostPage), SelectedPost);
             }
@@ -127,8 +134,11 @@ namespace Social.FramePage
                  var result = await showDialog.ShowAsync();
                  if ((int)result.Id == 0)
                  {
-                   _PostManager.DeletePost(_Post);
-                   _MyPost.Remove(_Post);
+                    //_PostManager.DeletePost(_Post);
+                    var deletePostRequest = new DeletePostRequest(_Post);
+                    DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                    deletePost.Execute();
+                    _MyPost.Remove(_Post);
                  }
             }
         }
@@ -150,7 +160,10 @@ namespace Social.FramePage
         {
             if (_Clicked == true)
             {
-                _PostManager.DeletePost(_Post);
+                //_PostManager.DeletePost(_Post);
+                var deletePostRequest = new DeletePostRequest(_Post);
+                DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                deletePost.Execute();
                 Post selectedPost = _Post;
                 Frame.Navigate(typeof(EditPostPage), selectedPost);
             }
@@ -159,7 +172,10 @@ namespace Social.FramePage
         {
             if (_Clicked == true)
             {
-                _PostManager.DeletePost(_Post);
+               // _PostManager.DeletePost(_Post);
+                var deletePostRequest = new DeletePostRequest(_Post);
+                DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                deletePost.Execute();
             }
         }
         private void GoAccount_Click(object sender, RoutedEventArgs e)
@@ -186,12 +202,127 @@ namespace Social.FramePage
         {
             Profile profile;
             profile = (Profile)e.ClickedItem;
-            _UserManager.UpateProfile(_CurrentUser, profile);
-            _PostManager.UpdateProfile(_CurrentUser, profile);
-            br.ImageSource = _UserManager.UpateProfile(_CurrentUser, profile).Source;
+            // _UserManager.UpateProfile(_CurrentUser, profile);
+            // _PostManager.UpdateProfile(_CurrentUser, profile);
+            //  br.ImageSource = _UserManager.UpateProfile(_CurrentUser, profile).Source;
+            var updateProfileRequest = new UpdateProfileRequest(_CurrentUser, profile);
+            UpdateProfile updateProfile = new UpdateProfile(updateProfileRequest, new UpdateProfilePresenterCallback(this));
+            updateProfile.Execute();
             Frame.Navigate(typeof(AccountPage), _CurrentUser);
 
 
+        }
+        public class ViewMyPostPresenterCallback : IViewMyPostPresenterCallback
+        {
+            AccountPage presenter;
+
+            public ViewMyPostPresenterCallback(AccountPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<ViewMyPostResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                    presenter._MyPost = new ObservableCollection<Post>(response.Obj.Posts);
+                   // _MyPost = _PostManager.DateChange(_MyPost);
+                    if (presenter._MyPost.Count == 0)
+                        presenter.NoPost.Visibility = Visibility.Visible;
+                    else
+                        presenter.NoPost.Visibility = Visibility.Collapsed;
+                });
+            }
+        }
+        public class UpdateProfilePresenterCallback : IUpdateProfilePresenterCallback
+        {
+            AccountPage presenter;
+
+            public UpdateProfilePresenterCallback(AccountPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<UpdateProfileResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                    Image img = new Image();
+                    img.Source = new BitmapImage(new Uri(response.Obj.ProfilePic));
+                    presenter.br.ImageSource = img.Source;
+
+                });
+            }
+        }
+        public class GetProfilePicPresenterCallback : IGetProfilePicPresenterCallback
+        {
+            AccountPage presenter;
+
+            public GetProfilePicPresenterCallback(AccountPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetProfilePicResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (presenter._MyPost.Count != 0)
+                    {
+                        Image img = new Image();
+                        img.Source = new BitmapImage(new Uri(presenter._MyPost[0].ProfilePic));
+                        presenter.br.ImageSource = img.Source;
+                    }
+                    else
+                    {
+                        Image img = new Image();
+                        img.Source = new BitmapImage(new Uri(response.Obj.ProfilePic));
+                        presenter.br.ImageSource = img.Source;
+                    }
+
+                });
+            }
+        }
+
+
+        public class DeletePostPresenterCallback : IDeletePostPresenterCallback
+        {
+            AccountPage presenter;
+
+            public DeletePostPresenterCallback(AccountPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+          
+
+            public void OnSuccess(Response<DeletePostResponse> response)
+            {
+               
+            }
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 

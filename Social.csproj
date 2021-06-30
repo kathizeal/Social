@@ -132,21 +132,39 @@
     <Compile Include="CustomEvent.cs" />
     <Compile Include="Data\AddCommentDataManager.cs" />
     <Compile Include="Data\AddPostDataManager.cs" />
+    <Compile Include="Data\AddReplyDataManager.cs" />
+    <Compile Include="Data\DeletePostDataManager.cs" />
+    <Compile Include="Data\GetCommentDataManager.cs" />
     <Compile Include="Data\GetCurrentUserDataManager.cs" />
     <Compile Include="Data\GetLikedUserDataManager.cs" />
     <Compile Include="Data\GetPostDataManager.cs" />
+    <Compile Include="Data\GetProfileDataManager.cs" />
+    <Compile Include="Data\GetReplyDataManager.cs" />
+    <Compile Include="Data\GetUsersListDataManager.cs" />
     <Compile Include="Data\Handler\DBHandlers.cs" />
     <Compile Include="Data\LikePostDataManager.cs" />
     <Compile Include="Data\PostManager.cs" />
     <Compile Include="Data\UnLikePostDataManager.cs" />
+    <Compile Include="Data\UpdateProfileDataManager.cs" />
     <Compile Include="Data\UserManager.cs" />
+    <Compile Include="Data\ViewMyPostDataManager.cs" />
+    <Compile Include="Data\ViewPostDataManager.cs" />
     <Compile Include="Domain\AddComment.cs" />
     <Compile Include="Domain\AddPost.cs" />
+    <Compile Include="Domain\AddReply.cs" />
+    <Compile Include="Domain\DeletePost.cs" />
+    <Compile Include="Domain\GetComment.cs" />
     <Compile Include="Domain\GetCurrentUser.cs" />
     <Compile Include="Domain\GetLikedUsers.cs" />
     <Compile Include="Domain\GetPost.cs" />
+    <Compile Include="Domain\GetProfilePic.cs" />
+    <Compile Include="Domain\GetReply.cs" />
+    <Compile Include="Domain\GetUsersList.cs" />
     <Compile Include="Domain\LikePost.cs" />
     <Compile Include="Domain\UnLikePost.cs" />
+    <Compile Include="Domain\UpdateProfile.cs" />
+    <Compile Include="Domain\ViewMyPost.cs" />
+    <Compile Include="Domain\ViewPost.cs" />
     <Compile Include="FramePage\AccountPage.xaml.cs">
       <DependentUpon>AccountPage.xaml</DependentUpon>
     </Compile>
@@ -186,6 +204,9 @@
     <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserIds.cs" />
+    <Compile Include="NewView.xaml.cs">
+      <DependentUpon>NewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UseCase\UseCaseBase.cs" />
     <Compile Include="Util\CallBackBase.cs" />
@@ -338,6 +359,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resource\Dictionary1.xaml">
       <SubType>Designer</SubType>

@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="Social.NewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Social"
+    xmlns:data="using:Social.Model"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer>
+        <StackPanel
+            Loaded="StackPanel_Loaded"
+            Unloaded="StackPanel_Unloaded"
+            Margin="5" 
+            Padding="5" 
+            Background="{ThemeResource PaneBack}" 
+            CornerRadius="5">
+            <ListView
+                x:Name="ClickList"
+                ItemsSource="{x:Bind _PostList,Mode=OneWay}"
+                Foreground="{ThemeResource SystemAltMediumColor}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Post">
+                        <StackPanel>
+                            <StackPanel>
+                                <RelativePanel>
+                                    <Ellipse
+                                                               x:Name="Icon"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,13,0,0"
+                                                               Width="40" 
+                                                               Height="40">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource ="{x:Bind ProfilePic}" />
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <TextBlock
+                                                               x:Name="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
+                                                               Text="{x:Bind PostTitle}"
+                                                               Width="220"
+                                                               TextTrimming="CharacterEllipsis"
+                                                              FontSize="18"
+                                                               Margin="8,10,0,0"/>
+                                    <TextBlock 
+                                                               x:Name="ContentCard"
+                                                               RelativePanel.Below="TitleCard"
+                                                               RelativePanel.RightOf="Icon"
+                                                               Text="{x:Bind PostContent}"
+                                                               FontSize="15"
+                                                               TextWrapping="Wrap"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               Height="28"
+                                                               Margin="10,1,3,1"
+                                                               Foreground="DimGray"/>
+                                    <StackPanel  RelativePanel.RightOf="TitleCard" Width="150" HorizontalAlignment="Right">
+                                        <TextBlock 
+                                                                    x:Name="TimeCard"
+                                                                    Margin="30,10,3,1"
+                                                                    HorizontalAlignment="Right"
+                                                                    Text="{x:Bind CreatedTimeString}"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="10" />
+                                    </StackPanel>
+                                </RelativePanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </ScrollViewer>
+    
+</Page>

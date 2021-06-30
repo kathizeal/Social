@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Social.Data.Handler
 {
@@ -285,7 +287,6 @@ namespace Social.Data.Handler
         {
             object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
             var user = JsonConvert.DeserializeObject<User>(value.ToString());
-            //_CurrentUser = user;
             return user;
         }
         public List<UserIds> LikedUsers(Post post)
@@ -405,14 +406,368 @@ namespace Social.Data.Handler
                     comment.CreatedTimeString = diff + " year ago";
                 }
             }
-
-
             conn.Insert(comment);
             post.Comments.Add(comment);
             post.CommentCount = post.CommentCount + 1;
             conn.Update(post);
             return comment;
         }
+        public Comment GetComment(long CommentId)
+        {
+            var comments = conn.Table<Comment>();
+            Comment comment1 = new Comment();
+            foreach (var i in comments)
+            {
+                if (i.CommentId == CommentId)
+                    return i;
+            }
+            return comment1;
+        }
+        public List<Comment> GetReply(long ParentId)
+        {
+            var comments = conn.Table<Comment>();
+            List<Comment> replys = new List<Comment>();
+            foreach (var comment in comments)
+            {
+                if (comment.ParentCommentId == ParentId)
+                    replys.Add(comment);
+            }
+            return DateChangeComment(replys);
+        }
+        public Comment AddReply(Comment comment)
+        {
+            DateTime date = DateTime.UtcNow;
+            if (comment.CreatedTime.Year == date.Year)
+            {
+                if (comment.CreatedTime.Month == date.Month)
+                {
+                    if (comment.CreatedTime.Date == date.Date)
+                    {
+                        if (comment.CreatedTime.Hour == date.Hour)
+                        {
+                            if (comment.CreatedTime.Minute == date.Minute)
+                                comment.CreatedTimeString = "          Just now";
+                            else
+                            {
+                                int diff = date.Minute - comment.CreatedTime.Minute >= 0 ? date.Minute - comment.CreatedTime.Minute : comment.CreatedTime.Minute - date.Minute;
+                                if (diff == 1)
+                                    comment.CreatedTimeString = "a minute ago";
+                                else
+                                {
+                                    comment.CreatedTimeString = diff + " minutes ago";
+                                }
 
+
+                            }
+                        }
+                        else
+                        {
+                            int diff = date.Hour - comment.CreatedTime.Hour >= 0 ? date.Hour - comment.CreatedTime.Hour : comment.CreatedTime.Hour - date.Hour;
+                            if (diff == 1)
+                                comment.CreatedTimeString = "1 hour ago";
+                            else
+                                comment.CreatedTimeString = diff + " hours ago";
+                        }
+                    }
+                    else
+                    {
+                        int diff = date.Day - comment.CreatedTime.Day >= 0 ? date.Day - comment.CreatedTime.Day : comment.CreatedTime.Day - date.Day;
+                        if (diff == 1)
+                            comment.CreatedTimeString = "Yesterday";
+                        else
+                        {
+                            comment.CreatedTimeString = comment.CreatedTime.ToString("dd/MM/yyyy");
+                        }
+                    }
+                }
+                else
+                {
+                    int diff = date.Month - comment.CreatedTime.Month >= 0 ? date.Month - comment.CreatedTime.Month : comment.CreatedTime.Month - date.Month;
+                    if (diff == 1)
+                        comment.CreatedTimeString = "1 month ago";
+                    else
+                    {
+                        comment.CreatedTimeString = diff + " month ago";
+                    }
+                }
+            }
+            else
+            {
+                int diff = date.Year - comment.CreatedTime.Year >= 0 ? date.Year - comment.CreatedTime.Year : comment.CreatedTime.Year - date.Year;
+                if (diff == 1)
+                    comment.CreatedTimeString = "1 year ago";
+                else
+                {
+                    comment.CreatedTimeString = diff + " year ago";
+                }
+            }
+            conn.Insert(comment);
+            return comment;
+        }
+        public Post DeletePost(Post post)
+        {
+            conn.Delete(post);
+            return post;
+        }
+        public List<Post> ViewAllPost()
+        {
+            List<Post> _Posts = new List<Post>();
+            _Posts.Clear();
+            var query = conn.Table<Post>();
+            var commentquary = conn.Table<Comment>();
+            var likedidquery = conn.Table<UserIds>();
+            foreach (var user in query)
+            {
+                foreach (var comment in commentquary)
+                {
+                    if (comment.PostId == user.PostId && comment.ParentCommentId == null)
+                        user.Comments.Add(comment);
+                }
+                foreach (var ids in likedidquery)
+                {
+                    if (user.PostId == ids.PostId)
+                        user.LikedId.Add(ids.Userid);
+                }
+                _Posts.Add(user);
+            }
+            DateTime date = DateTime.UtcNow;
+
+            foreach (var post in _Posts)
+            {
+                if (post.CreatedTime.Year == date.Year)
+                {
+                    if (post.CreatedTime.Month == date.Month)
+                    {
+                        if (post.CreatedTime.Date == date.Date)
+                        {
+                            if (post.CreatedTime.Hour == date.Hour)
+                            {
+                                if (post.CreatedTime.Minute == date.Minute)
+                                    post.CreatedTimeString = "Just now";
+                                else
+                                {
+                                    int diff = date.Minute - post.CreatedTime.Minute >= 0 ? date.Minute - post.CreatedTime.Minute : post.CreatedTime.Minute - date.Minute;
+                                    if (diff == 1)
+                                        post.CreatedTimeString = "one minute ago";
+                                    else
+                                    {
+                                        post.CreatedTimeString = diff + " minutes ago";
+                                    }
+
+
+                                }
+                            }
+                            else
+                            {
+                                int diff = date.Hour - post.CreatedTime.Hour >= 0 ? date.Hour - post.CreatedTime.Hour : post.CreatedTime.Hour - date.Hour;
+                                if (diff == 1)
+                                    post.CreatedTimeString = "1 hour ago";
+                                else
+                                    post.CreatedTimeString = diff + " hours ago";
+                            }
+                        }
+                        else
+                        {
+                            int diff = date.Day - post.CreatedTime.Day >= 0 ? date.Day - post.CreatedTime.Day : post.CreatedTime.Day - date.Day;
+                            if (diff == 1)
+                                post.CreatedTimeString = "Yesterday";
+                            else
+                            {
+                                post.CreatedTimeString = post.CreatedTime.ToShortDateString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int diff = date.Month - post.CreatedTime.Month >= 0 ? date.Month - post.CreatedTime.Month : post.CreatedTime.Month - date.Month;
+                        if (diff == 1)
+                            post.CreatedTimeString = "1 month ago";
+                        else
+                        {
+                            post.CreatedTimeString = diff + " month ago";
+                        }
+                    }
+                }
+                else
+                {
+                    int diff = date.Year - post.CreatedTime.Year >= 0 ? date.Year - post.CreatedTime.Year : post.CreatedTime.Year - date.Year;
+                    if (diff == 1)
+                        post.CreatedTimeString = "1 year ago";
+                    else
+                    {
+                        post.CreatedTimeString = diff + " year ago";
+                    }
+                }
+
+            }
+            return _Posts;
+        }
+        public List<Post> ViewMyPost(long userid)
+        {
+            return ViewAllPost().Where(post => post.PostCreatedByUserId == userid).ToList();
+        }
+        public Post ViewPost(long postid)
+        {
+            var Posts = conn.Table<Post>();
+            foreach (var post in Posts)
+            {
+                if (post.PostId == postid)
+                    return post;
+            }
+            return ViewAllPost().Where(post => post.PostId == postid) as Post;
+        }
+        public User Current()
+        {
+            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
+            var user = JsonConvert.DeserializeObject<User>(value.ToString());
+           
+            return user;
+        }
+        public List<User> GetUsersLists()
+        {
+            List<User> users = new List<User>();
+            var query = conn.Table<User>();
+            foreach (var user in query)
+            {
+                if (user.UserId != Current().UserId)
+                    users.Add(user);
+            }
+
+            return DateChange(users);
+        }
+        public List<User> DateChange(List<User> UserList)
+        {
+            DateTime date = DateTime.UtcNow;
+            List<User> Users = UserList;
+            foreach (var user in Users)
+            {
+                if (user.LogoutTime.Year == date.Year)
+                {
+                    if (user.LogoutTime.Month == date.Month)
+                    {
+                        if (user.LogoutTime.Date == date.Date)
+                        {
+                            if (user.LogoutTime.Hour == date.Hour)
+                            {
+                                if (user.LogoutTime.Minute == date.Minute)
+                                    user.LogOutTimeString = " Last seen just now";
+                                else
+                                {
+                                    int diff = date.Minute - user.LogoutTime.Minute >= 0 ? date.Minute - user.LogoutTime.Minute : user.LogoutTime.Minute - date.Minute;
+                                    if (diff == 1)
+                                        user.LogOutTimeString = "Last seen a minute ago";
+                                    else
+                                    {
+                                        user.LogOutTimeString = "Last seen " + diff + " minutes ago";
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                int diff = date.Hour - user.LogoutTime.Hour >= 0 ? date.Hour - user.LogoutTime.Hour : user.LogoutTime.Hour - date.Hour;
+                                if (diff == 1)
+                                    user.LogOutTimeString = "Last seen 1 hour ago";
+                                else
+                                    user.LogOutTimeString = "Last seen " + diff + " hours ago";
+                            }
+                        }
+                        else
+                        {
+                            int diff = date.Day - user.LogoutTime.Day >= 0 ? date.Day - user.LogoutTime.Day : user.LogoutTime.Day - date.Day;
+                            if (diff == 1)
+                                user.LogOutTimeString = "Last seen Yesterday";
+                            else
+                            {
+                                user.LogOutTimeString = "Last seen " + user.LogoutTime.ToString("dd/MM/yyyy");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int diff = date.Month - user.LogoutTime.Month >= 0 ? date.Month - user.LogoutTime.Month : user.LogoutTime.Month - date.Month;
+                        if (diff == 1)
+                            user.LogOutTimeString = "Last seen 1 month ago";
+                        else
+                        {
+                            user.LogOutTimeString = "Last seen " + diff + " month ago";
+                        }
+                    }
+                }
+                else
+                {
+                    int diff = date.Year - user.LogoutTime.Year >= 0 ? date.Year - user.LogoutTime.Year : user.LogoutTime.Year - date.Year;
+                    if (diff == 1)
+                        user.LogOutTimeString = "Last seen 1 year ago";
+                    else
+                    {
+                        user.LogOutTimeString = "Last seen " + diff + " year ago";
+                    }
+                }
+
+            }
+            return Users;
+
+        }
+        public string GetProfilePic(User currentuser)
+        {
+           
+            var posts = ViewMyPost(currentuser.UserId);
+            if (posts.Count != 0)
+                return posts[0].ProfilePic;
+            else
+                return currentuser.ProfilePic;
+        }
+        public void Update(User user)
+        {
+            var _user = conn.Table<User>();
+            foreach (var i in _user)
+            {
+                if (i.UserId == user.UserId)
+                {
+                    i.ProfilePic = user.ProfilePic;
+                    i.UserName = user.UserName;
+                    i.BirthDay = user.BirthDay;
+                    i.LastName = user.LastName;
+                    i.Password = user.Password;
+                    i.Gender = user.Gender;
+                    i.Email = user.Email;
+                    i.UserId = user.UserId;
+                    conn.Update(i);
+                    break;
+                }
+            }
+        }
+        public string UpdateProfilePic(User user, Profile profile)
+        {
+            string pic = "ms-appx:///Assets/" + user.UserName + ".jpg";
+           // Image img = new Image();
+           // img.Source = new BitmapImage(new Uri(pic));
+            foreach (var us in conn.Table<User>())
+            {
+                if (us.UserId == user.UserId)
+                {
+                    us.ProfilePic = profile.ImageFile;
+                    Update(us);
+                }
+            }
+            user.ProfilePic = profile.ImageFile;
+            foreach (var post in ViewMyPost(user.UserId))
+            {
+                post.ProfilePic = profile.ImageFile;
+                var comments = conn.Table<Comment>();
+                foreach (var comment in comments)
+                {
+                    if (comment.PostId == post.PostId)
+                    {
+                        comment.ProfilePic = user.ProfilePic;
+                        conn.Update(comment);
+                    }
+                }
+                conn.Update(post);
+            }
+
+            return pic;
+
+        }
     }
 }

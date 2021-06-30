@@ -16,7 +16,7 @@
         </Style>
     </Page.Resources>
     
-    <Grid>
+    <Grid Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>

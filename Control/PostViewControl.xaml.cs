@@ -213,7 +213,6 @@ namespace Social.Control
                 });
             }
         }
-
         public class LikePostPresenterCallback : ILikePostPresenterCallback
         {
             PostViewControl presenter;
