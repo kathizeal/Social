@@ -65,8 +65,11 @@ namespace Social.FramePage
         }
         private void EnableEvent(object sender, RoutedEventArgs e)
         {
-            _UserManager.CreateChat(_CurrentUser, _AnotherUser);
-            chatList = _UserManager.Message(_CurrentUser, _AnotherUser);
+           //_UserManager.CreateChat(_CurrentUser, _AnotherUser);
+            var createChatRequest = new CreateChatRequest(_CurrentUser, _AnotherUser);
+            CreateChat createChat = new CreateChat(createChatRequest, new CreateChatPresenterCallback(this));
+            createChat.Execute();
+            //chatList = _UserManager.Message(_CurrentUser, _AnotherUser);
             ChatListView.ItemsSource = chatList;
             Starter.Visibility = Visibility.Collapsed;
             Chaat.Visibility = Visibility.Visible;
@@ -82,7 +85,10 @@ namespace Social.FramePage
             chat.ProfilePic = _CurrentUser.ProfilePic;
             chat.Msg = CommentTextBox.Text;
             chatList.Add(chat);
-            _UserManager.AddChat(chat);
+            //_UserManager.AddChat(chat);
+            var addChatRequest = new AddChatRequest(chat);
+            AddChat addChat = new AddChat(addChatRequest, new AddChatPresenterCallback(this));
+            addChat.Execute();
             CommentTextBox.Text = "";
         }
         public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
@@ -115,6 +121,60 @@ namespace Social.FramePage
 
 
         }
+        public class CreateChatPresenterCallback : ICreateChatPresenterCallback
+        {
+
+            ChatPage presenter;
+            public CreateChatPresenterCallback(ChatPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<CreateChatResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var getMessageRequest = new GetMessageRequest(presenter._CurrentUser, presenter._AnotherUser);
+                    GetMessage getMessage = new GetMessage(getMessageRequest, new GetMessagePresenterCallback(presenter));
+                    getMessage.Execute();
+
+                });
+            }
+
+
+        }
+        public class AddChatPresenterCallback : IAddChatPresenterCallback
+        {
+
+            ChatPage presenter;
+            public AddChatPresenterCallback(ChatPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<AddChatResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                   
+
+                });
+            }
+
+
+        }
         public class GetMessagePresenterCallback : IGetMessagePresenterCallback
         {
 
@@ -135,6 +195,8 @@ namespace Social.FramePage
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     presenter.chatList = new ObservableCollection<Chat>(response.Obj.Chats);
+                    presenter.ChatListView.ItemsSource = presenter.chatList;
+
 
                 });
             }
@@ -166,6 +228,9 @@ namespace Social.FramePage
                         presenter.Starter.Visibility = Visibility.Collapsed;
                         presenter.Chaat.Visibility = Visibility.Visible;
                         presenter.Commands.Visibility = Visibility.Visible;
+                        var getMessageRequest = new GetMessageRequest(presenter._CurrentUser, presenter._AnotherUser);
+                        GetMessage getMessage = new GetMessage(getMessageRequest, new GetMessagePresenterCallback(presenter));
+                        getMessage.Execute();
 
                     }
                     else

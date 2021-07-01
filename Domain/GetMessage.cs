@@ -37,17 +37,17 @@ namespace Social.Domain
 
     public class GetMessage : UseCaseBase<GetMessageResponse>
     {
-        GetMessageDataManager GetMessageDataManager;
+        GetMessageDataManager getMessageDataManager;
         public GetMessageRequest Request;
         public GetMessage(GetMessageRequest request, IGetMessagePresenterCallback callback) : base(callback)
         {
             Request = request;
-            GetMessageDataManager GetMessageDataManager = new GetMessageDataManager();
+            getMessageDataManager = new GetMessageDataManager();
         }
         protected override void Action()
         {
 
-            GetMessageDataManager.GetMessage(Request,new UseCaseCallback(this));
+           getMessageDataManager.GetMessage(Request,new UseCaseCallback(this));
 
         }
         public class UseCaseCallback : CallbackBase<GetMessageResponse>

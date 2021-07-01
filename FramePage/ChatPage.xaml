@@ -36,7 +36,7 @@
                     x:Name="ChatListView"
                     IsItemClickEnabled="False"
                     SelectionMode="None"
-                    ItemsSource="{x:Bind chatList}">
+                    ItemsSource="{x:Bind chatList,Mode=OneWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="data:Chat">
                             <StackPanel Orientation="Horizontal">

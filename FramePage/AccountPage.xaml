@@ -412,7 +412,7 @@
                         <ListView 
                             x:Name="My_Post"
                             MaxWidth="540"
-                            ItemsSource="{x:Bind MyPost}" 
+                            ItemsSource="{x:Bind MyPost,Mode=OneWay}" 
                             Grid.Column="1" 
                             ItemClick="MyPost_ItemClick" 
                             IsItemClickEnabled="True"

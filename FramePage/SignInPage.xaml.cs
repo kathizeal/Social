@@ -17,6 +17,9 @@ using Social.Model;
 using Social.Data;
 using Windows.Storage;
 using Newtonsoft.Json;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,15 +32,18 @@ namespace Social.FramePage
     {
         public UserManager _UserManager = UserManager.GetInstance();
         User _User;
+        List<User> UsersList;
         public SignInPage()
         {
             this.InitializeComponent();
+            var getAllUsersListRequest = new GetAllUsersListRequest();
+            GetAllUsersList getAllUsersList = new GetAllUsersList(getAllUsersListRequest, new GetAllUsersListPresenterCallBack(this));
+            getAllUsersList.Execute();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool found = false;
-            List<User> users = _UserManager.UsersLists();
-            foreach (var i in users.ToList())
+            foreach (var i in UsersList.ToList())
             {
                 if (UserIdBlock.Text == i.UserName)
                 {
@@ -45,8 +51,10 @@ namespace Social.FramePage
                     if (PasswordBlock.Password == i.Password)
                     {
                         
-                        _UserManager.SignedUser(i);
-                        MainPage mainPage = new MainPage();
+                        //_UserManager.SignedUser(i);
+                        var signedUserRequest = new SignedUserRequest(i);
+                        SignedUser signedUser = new SignedUser(signedUserRequest, new SignedUserPresenterCallBack(this));
+                        signedUser.Execute();
                         found = true;
                         this.Frame.Navigate(typeof(PostPage));
                     }
@@ -83,6 +91,58 @@ namespace Social.FramePage
         private void ForgotButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(PasswordChangePage), _User);
+        }
+        public class GetAllUsersListPresenterCallBack : IGetAllUsersListPresenterCallback
+        {
+            SignInPage presenter;
+            public GetAllUsersListPresenterCallBack(SignInPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetAllUsersListResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                    presenter.UsersList = response.Obj.Users;
+                    
+                }
+                );
+            }
+
+
+        }
+        public class SignedUserPresenterCallBack : ISignedUserPresenterCallback
+        {
+            SignInPage presenter;
+            public SignedUserPresenterCallBack(SignInPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<SignedUserResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                  
+
+                }
+                );
+            }
+
+
         }
     }
 }

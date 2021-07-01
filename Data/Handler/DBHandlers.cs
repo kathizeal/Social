@@ -792,5 +792,85 @@ namespace Social.Data.Handler
             }
             return false;
         }
+        public Chat CreateChat(User Sender, User Receiever)
+        {
+            Chat chat = new Chat();
+            chat.SenderId = Sender.UserId;
+            chat.SenderName = Sender.UserName;
+            chat.RecieverId = Receiever.UserId;
+            chat.RecieverName = Receiever.UserName;
+            chat.ProfilePic = Sender.ProfilePic;
+            chat.Msg = "Hi " + Receiever.UserName;
+            conn.Insert(chat);
+            return chat;
+        }
+        public Chat AddChat(Chat chat)
+        {
+            conn.Insert(chat);
+            return chat;
+        }
+        public User UpdateUser(User user)
+        {
+            User user1= new User();
+            var _user = conn.Table<User>();
+            foreach (var i in _user)
+            {
+                if (i.UserId == user.UserId)
+                {
+                    i.ProfilePic = user.ProfilePic;
+                    i.UserName = user.UserName;
+                    i.BirthDay = user.BirthDay;
+                    i.LastName = user.LastName;
+                    i.Password = user.Password;
+                    i.Gender = user.Gender;
+                    i.Email = user.Email;
+                    i.UserId = user.UserId;
+                    user1 = i;
+                    conn.Update(i);
+                    break;
+                }
+            }
+            return user1;
+        }
+        public List<User> GetAllUsersLists()
+        {
+            List<User> users = new List<User>();
+            var query = conn.Table<User>();
+            foreach (var user in query)
+            {
+                users.Add(user);
+            }
+            return users;
+        }
+        public User SignedUser(User user)
+        {
+            string json = JsonConvert.SerializeObject(user);
+            ApplicationData.Current.LocalSettings.Values["UserClass"] = json;
+            return user;
+
+        }
+        public User AddUser(string username, string lastname, string email, string password, string birthday, string gender)
+        {
+            DBHandlers.GetInstance();
+            User newUser = new User();
+            newUser.UserName = username;
+            newUser.BirthDay = birthday;
+            newUser.LastName = lastname;
+            newUser.Password = password;
+            newUser.Gender = gender;
+            newUser.Email = email;
+            conn.Insert(newUser);
+            return newUser;
+
+        }
+        public User SignOut(User user)
+        {
+            User _CurrentUser = user;
+            _CurrentUser.LogoutTime = DateTime.UtcNow;
+            conn.Update(_CurrentUser);
+            ApplicationData.Current.LocalSettings.Values["UserClass"] = null;
+            _CurrentUser = null;
+            return _CurrentUser;
+        }
     }
 }

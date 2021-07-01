@@ -1,5 +1,7 @@
 ﻿using Social.Data;
+using Social.Domain;
 using Social.Model;
+using Social.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -46,8 +49,11 @@ namespace Social.FramePage
         {
             _CurrentPost = (Post)e.Parameter;
             _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
-            _PostComments = _PostManager.DateChangeComment(_PostComments);
-            _LikedUser = new ObservableCollection<UserIds>(_PostManager.LikedUsers(_CurrentPost));
+            // _PostComments = _PostManager.DateChangeComment(_PostComments);
+            //_LikedUser = new ObservableCollection<UserIds>(_PostManager.LikedUsers(_CurrentPost));
+            var getLikedUserRequest = new GetLikedUsersRequest(_CurrentPost);
+            GetLikedUsers getLikedUsers = new GetLikedUsers(getLikedUserRequest, new GetLikedUsersPresenterCallback(this));
+            getLikedUsers.Execute();
             if (_CurrentPost.Likes != 0)
             {
                 foreach (var i in _CurrentPost.LikedId)
@@ -103,7 +109,10 @@ namespace Social.FramePage
 
             if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
             {
-                _PostManager.UnLikePost(_CurrentPost, _CurrentUser);
+                //_PostManager.UnLikePost(_CurrentPost, _CurrentUser);
+                var UnLikePostRequest = new UnLikePostRequest(_CurrentPost, _CurrentUser);
+                UnLikePost unLikePost = new UnLikePost(UnLikePostRequest, new UnLikePostPresenterCallback(this));
+                unLikePost.Execute();
                 foreach (var id in _LikedUser)
                 {
                     if (id.Userid == _CurrentUser.UserId)
@@ -126,7 +135,10 @@ namespace Social.FramePage
                 userIds.PostId = _CurrentPost.PostId;
                 userIds.Userid = _CurrentUser.UserId;
                 userIds.UserName = _CurrentUser.UserName;
-                _PostManager.LikePost(_CurrentPost, _CurrentUser);
+                //_PostManager.LikePost(_CurrentPost, _CurrentUser);
+                var LikePostRequest = new LikePostRequest(_CurrentPost, _CurrentUser);
+                LikePost likePost = new LikePost(LikePostRequest, new LikePostPresenterCallback(this));
+                likePost.Execute();
                 _LikedUser.Add(userIds);
 
             }
@@ -160,11 +172,14 @@ namespace Social.FramePage
                 newComment.CommentContent = CommentTextBox.Text;
                 newComment.CommenterName = _CurrentUser.UserName;
                 newComment.CommenterId = _CurrentUser.UserId;
-                _PostManager.AddComment(_CurrentPost, newComment);
+                //_PostManager.AddComment(_CurrentPost, newComment);
+                var AddCommentRequest = new AddCommentRequest(_CurrentPost, newComment);
+                AddComment addComment = new AddComment(AddCommentRequest, new AddCommentPresenterCallback(this));
+                addComment.Execute();
                 CommentStack.Visibility = Visibility.Visible;
                 CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
-                _PostComments.Add(newComment);
-                _PostComments = _PostManager.DateChangeComment(_PostComments);
+               // _PostComments.Add(newComment);
+                //_PostComments = _PostManager.DateChangeComment(_PostComments);
                 CommentTextBox.Text = "";
             }
         }
@@ -172,7 +187,7 @@ namespace Social.FramePage
         {
             Frame.GoBack();
         }
-        private async void SampleDelete_Click(object sender, RoutedEventArgs e)
+        /*private async void SampleDelete_Click(object sender, RoutedEventArgs e)
         {
             CommentList.SelectedItem = ((HyperlinkButton)sender).DataContext;
             MessageDialog showDialog = new MessageDialog("Do you want delete the Comment");
@@ -196,8 +211,89 @@ namespace Social.FramePage
                 CommentButton.Visibility = Visibility.Visible;
             }
             
+        }*/
+        public class GetLikedUsersPresenterCallback : IGetLikedUsersPresenterCallback
+        {
+            ViewPost presenter;
+            public GetLikedUsersPresenterCallback(ViewPost view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetLikedUsersResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._LikedUser = new ObservableCollection<UserIds>(response.Obj.LikedUsers);
+                    presenter.LikedUserList.ItemsSource = presenter._LikedUser;
+                });
+            }
+        }
+        public class LikePostPresenterCallback : ILikePostPresenterCallback
+        {
+            ViewPost presenter;
+            public LikePostPresenterCallback(ViewPost view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<LikePostResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                });
+            }
+        }
+        public class UnLikePostPresenterCallback : IUnLikePostPresenterCallback
+        {
+            ViewPost presenter;
+            public UnLikePostPresenterCallback(ViewPost view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<UnLikePostResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                });
+            }
+        }
+        public class AddCommentPresenterCallback : IAddCommentPresenterCallback
+        {
+            ViewPost presenter;
+            public AddCommentPresenterCallback(ViewPost view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<AddCommentResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._PostComments.Add(response.Obj.Comment);
+                });
+            }
         }
 
-        
+
     }
 }

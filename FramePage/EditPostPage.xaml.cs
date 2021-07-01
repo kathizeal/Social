@@ -16,6 +16,9 @@ using Social.Data;
 using Social.Model;
 using Newtonsoft.Json;
 using Windows.Storage;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -94,12 +97,18 @@ namespace Social.FramePage
             _NewPost = (Post)e.Parameter;
             TitleBox.Text = _NewPost.PostTitle;
             ContentBox.Text = _NewPost.PostContent;
-            UserManager userManager = UserManager.GetInstance();
-            _CurrentUser =userManager.Current();
+            // UserManager userManager = UserManager.GetInstance();
+            //_CurrentUser =userManager.Current();
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
         }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            postManager.AddPost(_EditingPost);
+           // postManager.AddPost(_EditingPost);
+            AddPostRequest addPostRequest = new AddPostRequest(_EditingPost);
+            AddPost addPost = new AddPost(addPostRequest, new AddPostPresenterCallback(this));
+            addPost.Execute();
             Frame.GoBack();
         }
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -113,8 +122,55 @@ namespace Social.FramePage
             _NewPost.PostTitle = TitleBox.Text;
             _NewPost.Likes = _EditingPost.Likes;
             _NewPost.LikedId = _EditingPost.LikedId;
-            postManager.UpdateEdit(_NewPost);
+            //postManager.UpdateEdit(_NewPost);
+            AddPostRequest addPostRequest = new AddPostRequest(_NewPost);
+            AddPost addPost = new AddPost(addPostRequest, new AddPostPresenterCallback(this));
+            addPost.Execute();
             Frame.GoBack();
+        }
+        public class GetCurrentUserPresenterCallback : IGetCurrentUserPresenterCallback
+        {
+
+            EditPostPage presenter;
+            public GetCurrentUserPresenterCallback(EditPostPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetCurrentUserResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    
+                });
+            }
+
+
+        }
+        public class AddPostPresenterCallback : IAddPostPresenterCallback
+        {
+            EditPostPage presenter;
+
+            public AddPostPresenterCallback(EditPostPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnSuccess(Response<AddPostResponse> response)
+            {
+
+            }
         }
     }
 }

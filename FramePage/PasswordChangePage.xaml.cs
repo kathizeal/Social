@@ -1,5 +1,7 @@
 ﻿using Social.Data;
+using Social.Domain;
 using Social.Model;
+using Social.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -64,13 +67,41 @@ namespace Social.FramePage
             User newUser =_User;
             newUser.UserId = _User.UserId;
             newUser.Password = PasswordBox.Password;
-            UserManager userManager = UserManager.GetInstance();
-            userManager.Update(newUser);
+            // UserManager userManager = UserManager.GetInstance();
+            // userManager.Update(newUser);
+            UpdateUserRequest updateUserRequest = new UpdateUserRequest(newUser);
+            UpdateUser updateUser = new UpdateUser(updateUserRequest, new UpdateUserPresenterCallback(this));
+            updateUser.Execute();
+
             Frame.Navigate(typeof(MainPage));
         }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
+        }
+        public class UpdateUserPresenterCallback : IUpdateUserPresenterCallback
+        {
+
+            PasswordChangePage presenter;
+            public UpdateUserPresenterCallback(PasswordChangePage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<UpdateUserResponse> response)
+            {
+
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                });
+            }
+
+
         }
     }
 }

@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Social.Model;
 using Social.Data;
+using Social.Domain;
+using Social.Util;
+using Windows.UI.Core;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,7 +29,7 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class SignUpPage : Page
     {
-        UserManager _UserManager = UserManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
         string _Gender;
         DateTime _Birthday;
         public SignUpPage()
@@ -41,7 +44,9 @@ namespace Social.FramePage
                 Warning.Visibility = Visibility.Visible;
             else
             {
-                _UserManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
+                //_UserManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
+                var addUserRequest = new AddUserRequest(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
+                AddUser addUser = new AddUser(addUserRequest, new AddUserPresenterCallBack(this));
                 Frame.Navigate(typeof(MainPage));
             }
         }
@@ -58,6 +63,32 @@ namespace Social.FramePage
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
+        }
+        public class AddUserPresenterCallBack : IAddUserPresenterCallback
+        {
+            SignUpPage presenter;
+            public AddUserPresenterCallBack(SignUpPage view)
+            {
+                presenter = view;
+            }
+
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<AddUserResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+
+
+                }
+                );
+            }
+
+
         }
     }
 }

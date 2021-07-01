@@ -49,7 +49,7 @@ namespace Social.FramePage
         public AccountPage()
         {
             this.InitializeComponent();
-          
+            
 
         }
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -196,6 +196,8 @@ namespace Social.FramePage
         private void SignOut_Click(object sender, RoutedEventArgs e)
         {
             _UserManager.SignOut();
+            var signOutRequest = new SignOutRequest(_CurrentUser);
+            SignOut signOut = new SignOut(signOutRequest, new SignOutPresenterCallback(this));
             Frame.Navigate(typeof(MainPage));
         }
         private void MyAssets_ItemClick(object sender, ItemClickEventArgs e)
@@ -211,6 +213,29 @@ namespace Social.FramePage
             Frame.Navigate(typeof(AccountPage), _CurrentUser);
 
 
+        }
+        public class SignOutPresenterCallback : ISignOutPresenterCallback
+        {
+            AccountPage presenter;
+
+            public SignOutPresenterCallback(AccountPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<SignOutResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+
+                
+
+                });
+            }
         }
         public class ViewMyPostPresenterCallback : IViewMyPostPresenterCallback
         {
@@ -231,6 +256,7 @@ namespace Social.FramePage
                 {
 
                     presenter._MyPost = new ObservableCollection<Post>(response.Obj.Posts);
+                    presenter.My_Post.ItemsSource = presenter._MyPost;
                    // _MyPost = _PostManager.DateChange(_MyPost);
                     if (presenter._MyPost.Count == 0)
                         presenter.NoPost.Visibility = Visibility.Visible;
@@ -260,7 +286,7 @@ namespace Social.FramePage
                     Image img = new Image();
                     img.Source = new BitmapImage(new Uri(response.Obj.ProfilePic));
                     presenter.br.ImageSource = img.Source;
-
+                    
                 });
             }
         }
