@@ -11,7 +11,7 @@ namespace Social.Data
 {
     public class SignOutDataManager : DBHandlers
     {
-        public void SignedUser(SignOutRequest request, ICallback<SignOutResponse> callback)
+        public void SignOut(SignOutRequest request, ICallback<SignOutResponse> callback)
         {
             callback.OnSuccess(new Response<SignOutResponse> { Obj = new SignOutResponse(SignOut(request.User)) });
         }

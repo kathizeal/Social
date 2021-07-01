@@ -198,7 +198,8 @@ namespace Social.FramePage
             //_UserManager.SignOut();
             var signOutRequest = new SignOutRequest(_CurrentUser);
             SignOut signOut = new SignOut(signOutRequest, new SignOutPresenterCallback(this));
-            Frame.Navigate(typeof(MainPage));
+            signOut.Execute();
+            
         }
         private void MyAssets_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -232,7 +233,7 @@ namespace Social.FramePage
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                
+                    presenter.Frame.Navigate(typeof(MainPage));
 
                 });
             }

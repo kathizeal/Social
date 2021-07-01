@@ -56,7 +56,7 @@ namespace Social.FramePage
                         SignedUser signedUser = new SignedUser(signedUserRequest, new SignedUserPresenterCallBack(this));
                         signedUser.Execute();
                         found = true;
-                        this.Frame.Navigate(typeof(PostPage));
+                        //this.Frame.Navigate(typeof(PostPage));
                     }
                     else
                     {
@@ -136,7 +136,7 @@ namespace Social.FramePage
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                  
+                    presenter.Frame.Navigate(typeof(PostPage));
 
                 }
                 );

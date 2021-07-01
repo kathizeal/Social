@@ -70,6 +70,9 @@ namespace Social.FramePage
             base.OnNavigatedTo(e);
             ListV.Visibility = Visibility.Collapsed;
             Home.Visibility = Visibility.Collapsed;
+            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
+            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
+            getCurrentUser.Execute();
             //UserManager userManager = UserManager.GetInstance();
             //_CurrentUser= userManager.Current();
             //_CurrentUser = userManager.Find(_CurrentUser.UserId);
@@ -77,7 +80,7 @@ namespace Social.FramePage
             {
                 user.ProfilePic = _UserManager.ProfilePic(user);
             }*/
-           
+
             MySpLitView.IsPaneOpen = true;
             ClickList.Visibility = Visibility.Visible;
 
@@ -289,9 +292,7 @@ namespace Social.FramePage
             var getUsersListRequest = new GetUsersListRequest();
             GetUsersList getUsersList = new GetUsersList(getUsersListRequest, new GetUsersListPresenterCallBack(this));
             getUsersList.Execute();
-            GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
-            GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
-            getCurrentUser.Execute();
+           
 
             SocialNotification.PostAdded += HandlePostAdded;
         }

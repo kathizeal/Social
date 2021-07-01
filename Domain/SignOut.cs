@@ -46,7 +46,7 @@ namespace Social.Domain
         protected override void Action()
         {
 
-            signOutDataManager.SignedUser(Request, new UseCaseCallback(this));
+            signOutDataManager.SignOut(Request, new UseCaseCallback(this));
 
         }
         public class UseCaseCallback : CallbackBase<SignOutResponse>

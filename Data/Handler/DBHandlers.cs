@@ -629,7 +629,7 @@ namespace Social.Data.Handler
             var query = conn.Table<User>();
             foreach (var user in query)
             {
-                if (user.UserId != Current().UserId)
+              //  if (user.UserId != Current().UserId)
                     users.Add(user);
             }
 
