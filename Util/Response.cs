@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 namespace Social.Util
 {
     public interface IResponse<O> { }
-
-
     public class Response<O>:IResponse<O>
     {
        public O Obj { get; set; } 

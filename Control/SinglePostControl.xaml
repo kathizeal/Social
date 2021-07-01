@@ -18,12 +18,13 @@
             TextTrimming="Clip"
             Foreground="{ThemeResource TextColor}"/>
         <StackPanel
+            HorizontalAlignment="Left"
             Orientation="Horizontal">
             <TextBlock
                 x:Name="CommentTimeTB"
                 Foreground="{ThemeResource TextColor}"
                 FontSize="12"
-                HorizontalAlignment="Stretch"/>
+                HorizontalAlignment="Left"/>
         </StackPanel>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

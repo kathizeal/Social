@@ -872,5 +872,13 @@ namespace Social.Data.Handler
             _CurrentUser = null;
             return _CurrentUser;
         }
+        public bool State()
+        {
+            object value = ApplicationData.Current.LocalSettings.Values["UserClass"];
+            if (value == null)
+                return false;
+            else
+                return true;
+        }
     }
 }

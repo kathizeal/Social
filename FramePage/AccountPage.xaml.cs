@@ -37,8 +37,8 @@ namespace Social.FramePage
     {
         Post _Post;
         User _CurrentUser;
-        UserManager _UserManager = UserManager.GetInstance();
-        PostManager _PostManager = PostManager.GetInstance();
+       // UserManager _UserManager = UserManager.GetInstance();
+        //PostManager _PostManager = PostManager.GetInstance();
         bool _Clicked = false;
         ObservableCollection<Profile> Profiles;
         private ObservableCollection<Post> _MyPost;
@@ -195,7 +195,7 @@ namespace Social.FramePage
         }
         private void SignOut_Click(object sender, RoutedEventArgs e)
         {
-            _UserManager.SignOut();
+            //_UserManager.SignOut();
             var signOutRequest = new SignOutRequest(_CurrentUser);
             SignOut signOut = new SignOut(signOutRequest, new SignOutPresenterCallback(this));
             Frame.Navigate(typeof(MainPage));

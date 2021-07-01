@@ -39,8 +39,8 @@ namespace Social.FramePage
       
         Post  _CurrentPost;
         User _CurrentUser;
-        PostManager _PostManager = PostManager.GetInstance();
-        UserManager _UserManager = UserManager.GetInstance();
+        //PostManager _PostManager = PostManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
         private ObservableCollection<Comment> _PostComments;
         public ObservableCollection<Comment> PostComments { get { return this._PostComments; }  }
         public SecondaryPage()

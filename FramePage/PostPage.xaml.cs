@@ -25,6 +25,7 @@ using Windows.UI.Core;
 using Windows.UI.WindowManagement;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media.Imaging;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -37,8 +38,8 @@ namespace Social.FramePage
    
    public sealed partial class PostPage : Page 
    {
-        PostManager _PostManager = PostManager.GetInstance();
-        UserManager _UserManager = UserManager.GetInstance();
+       // PostManager _PostManager = PostManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
         User _CurrentUser;
         SplitView _SplitView;
         NavigationView _NavigationView;
@@ -240,10 +241,13 @@ namespace Social.FramePage
 
                     presenter._UserList = new ObservableCollection<User>(response.Obj.Users);
                     presenter.UserListView.ItemsSource = presenter._UserList;
-                     foreach (var user in presenter._UserList)
+                    /* foreach (var user in presenter._UserList)
                     {
-                      user.ProfilePic = presenter._UserManager.ProfilePic(user);
-                    }
+                      //user.ProfilePic = presenter._UserManager.ProfilePic(user);
+                        var getProfilePicRequest = new GetProfilePicRequest(user);
+                        GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(presenter));
+                        getProfilePic.Execute();
+                    }*/
                 }
                 );
             }
@@ -312,6 +316,28 @@ namespace Social.FramePage
             PostManager postManager = PostManager.GetInstance();
             postManager.DeleteRecord();
            _PostList.Clear();
+        }
+        public class GetProfilePicPresenterCallback : IGetProfilePicPresenterCallback
+        {
+            PostPage presenter;
+
+            public GetProfilePicPresenterCallback(PostPage view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetProfilePicResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                   
+
+                });
+            }
         }
     }
 

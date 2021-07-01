@@ -51,8 +51,8 @@ namespace Social.Control
             get { return (ObservableCollection<Comment>)GetValue(PostCommentProp); }
             set { SetValue(PostCommentProp, value); }
         }
-        PostManager _PostManager = PostManager.GetInstance();
-        UserManager _UserManager = UserManager.GetInstance();
+      //  PostManager _PostManager = PostManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
         Comment _CurrentComment;
         private ObservableCollection<Comment> _PostComment;
         public ObservableCollection<Comment> PostComment { get { return this._PostComment; }  }
@@ -116,7 +116,10 @@ namespace Social.Control
             if (!string.IsNullOrWhiteSpace(CommentTextBox.Text))
             {
                 Comment newComment = new Comment();
-                _CurrentUser.ProfilePic = _UserManager.ProfilePic(_CurrentUser);
+                var getProfilePicRequest = new GetProfilePicRequest(_CurrentUser);
+                GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(this));
+                getProfilePic.Execute();
+                //CurrentUser.ProfilePic = _UserManager.ProfilePic(_CurrentUser);
                 newComment.ProfilePic = _CurrentUser.ProfilePic;
                 newComment.ParentCommentId = null;
                 newComment.PostId = _CurrentPost.PostId;
@@ -139,6 +142,9 @@ namespace Social.Control
           
             _PostComment = PostComments;
             CurrentUser = _CurrentUser;
+            var getProfilePicRequest = new GetProfilePicRequest(_CurrentUser);
+            GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(this));
+            getProfilePic.Execute();
             var getLikedUserRequest = new GetLikedUsersRequest(_CurrentPost);
             GetLikedUsers getLikedUsers = new GetLikedUsers(getLikedUserRequest, new GetLikedUsersPresenterCallback(this));
             getLikedUsers.Execute();
@@ -191,7 +197,28 @@ namespace Social.Control
 
             }
         }
-       
+        public class GetProfilePicPresenterCallback : IGetProfilePicPresenterCallback
+        {
+            PostViewControl presenter;
+
+            public GetProfilePicPresenterCallback(PostViewControl view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetProfilePicResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._CurrentUser.ProfilePic = response.Obj.ProfilePic;
+
+                });
+            }
+        }
         public class GetLikedUsersPresenterCallback : IGetLikedUsersPresenterCallback
         {
             PostViewControl presenter;

@@ -17,6 +17,9 @@ using Windows.UI.Xaml.Navigation;
 using Social.Model;
 using Social.Data;
 using System.Collections.ObjectModel;
+using Windows.UI.Core;
+using Social.Util;
+using Social.Domain;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -28,25 +31,54 @@ namespace Social
   
     public sealed partial class MainPage : Page
     {
-        UserManager _UserManager = UserManager.GetInstance();
-        PostManager _PostManager = PostManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
+        //PostManager _PostManager = PostManager.GetInstance();
         public MainPage()
         {
             this.InitializeComponent();
-            if (_UserManager.State() == false)
+            var stateRequest = new StateRequest();
+            State state = new State(stateRequest,new  StatePresenterCallBack(this));
+            state.Execute();
+           
+
+
+        }
+        public class StatePresenterCallBack : IStatePresenterCallback
+        {
+            MainPage presenter;
+            public StatePresenterCallBack(MainPage view)
             {
-                _UserManager.CreateTable();
-                MainFrame.Navigate(typeof(SignInPage));
+                presenter = view;
             }
-            else
+
+            public void OnFailed()
             {
-                _UserManager.CreateTable();
-                _PostManager.CreateTable();
-                MainFrame.Navigate(typeof(PostPage));
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<StateResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (response.Obj.State == false)
+                    {
+                        // _UserManager.CreateTable();
+                        presenter.MainFrame.Navigate(typeof(SignInPage));
+                    }
+                    else
+                    {
+                        //_UserManager.CreateTable();
+                        //_PostManager.CreateTable();
+                        presenter.MainFrame.Navigate(typeof(PostPage));
+                    }
+
+
+                }
+                );
             }
 
 
         }
-      
+
     }
 }

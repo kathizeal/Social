@@ -25,8 +25,8 @@ namespace Social.Control
 {
     public sealed partial class ReplyControl : UserControl
     {
-        PostManager _PostManager = PostManager.GetInstance();
-        UserManager _UserManager = UserManager.GetInstance();
+        //PostManager _PostManager = PostManager.GetInstance();
+        //UserManager _UserManager = UserManager.GetInstance();
         User _CurrentUser;
         Post _CurrentPost;
         Comment _CurrentComment;
@@ -199,12 +199,37 @@ namespace Social.Control
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     presenter._CurrentUser = response.Obj.CurrentUser;
-                    presenter._CurrentUser.ProfilePic = presenter._UserManager.ProfilePic(presenter._CurrentUser);
+                    var getProfilePicRequest = new GetProfilePicRequest(presenter._CurrentUser);
+                    GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(presenter));
+                    getProfilePic.Execute();
+                  //  presenter._CurrentUser.ProfilePic = presenter._UserManager.ProfilePic(presenter._CurrentUser);
 
                 });
             }
 
 
+        }
+        public class GetProfilePicPresenterCallback : IGetProfilePicPresenterCallback
+        {
+            ReplyControl presenter;
+
+            public GetProfilePicPresenterCallback(ReplyControl view)
+            {
+                presenter = view;
+            }
+            public void OnFailed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public async void OnSuccess(Response<GetProfilePicResponse> response)
+            {
+                await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    presenter._CurrentUser.ProfilePic = response.Obj.ProfilePic;
+
+                });
+            }
         }
     }
 }

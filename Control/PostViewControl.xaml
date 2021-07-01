@@ -135,6 +135,7 @@
                                         HorizontalAlignment="Left"
                                         Margin="10,2,0,2">
                                         <local:SinglePostControl
+                                            HorizontalAlignment="Left"
                                             CreatedString="{x:Bind CreatedTimeString}"
                                             ContentString="{x:Bind CommentContent}"/>
                                     </StackPanel>

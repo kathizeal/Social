@@ -152,6 +152,7 @@
     <Compile Include="Data\PostManager.cs" />
     <Compile Include="Data\SignedUserDataManager.cs" />
     <Compile Include="Data\SignOutDataManager.cs" />
+    <Compile Include="Data\StateDataManager.cs" />
     <Compile Include="Data\UnLikePostDataManager.cs" />
     <Compile Include="Data\UpdateProfileDataManager.cs" />
     <Compile Include="Data\UpdateUserDataManager.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Domain\LikePost.cs" />
     <Compile Include="Domain\SignedUser.cs" />
     <Compile Include="Domain\SignOut.cs" />
+    <Compile Include="Domain\State.cs" />
     <Compile Include="Domain\UnLikePost.cs" />
     <Compile Include="Domain\UpdateProfile.cs" />
     <Compile Include="Domain\UpdateUser.cs" />
