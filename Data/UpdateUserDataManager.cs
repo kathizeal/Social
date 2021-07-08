@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class UpdateUserDataManager:DBHandlers
+    public class UpdateUserDataManager:DataManagerBaseClass
     {
         public void UpdateUser(UpdateUserRequest request, ICallback<UpdateUserResponse> callback)
         {
-            callback.OnSuccess(new Response<UpdateUserResponse> { Obj = new UpdateUserResponse(UpdateUser(request.CurrentUser)) });
+            DBHandlers.UpdateUser(request.CurrentUser);
+            callback.OnSuccess(new Response<UpdateUserResponse> { Obj = new UpdateUserResponse() });
         }
     }
 }

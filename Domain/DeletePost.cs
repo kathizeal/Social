@@ -13,11 +13,13 @@ namespace Social.Domain
     public interface IDeletePostPresenterCallback : ICallback<DeletePostResponse> { }
     public sealed class DeletePostResponse
     {
+        /*
         public Post Post;
         public DeletePostResponse(Post post)
         {
             Post = post;
         }
+        */
 
     }
     public class DeletePostRequest
@@ -60,7 +62,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<DeletePostResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                //UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

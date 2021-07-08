@@ -30,9 +30,9 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class SignInPage : Page
     {
-        public UserManager _UserManager = UserManager.GetInstance();
-        User _User;
-        List<User> UsersList;
+        public UserManager UserManager = UserManager.GetInstance();
+        private User _user;
+        private List<User> _usersList;
         public SignInPage()
         {
             this.InitializeComponent();
@@ -43,11 +43,11 @@ namespace Social.FramePage
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool found = false;
-            foreach (var i in UsersList.ToList())
+            foreach (var i in _usersList.ToList())
             {
                 if (UserIdBlock.Text == i.UserName)
                 {
-                    _User = i;
+                    _user = i;
                     if (PasswordBlock.Password == i.Password)
                     {
                         
@@ -78,7 +78,7 @@ namespace Social.FramePage
         }
         private void DeleteAccount_Click(object sender, RoutedEventArgs e)
         {
-            _UserManager.DeleteUserRecord();
+            UserManager.DeleteUserRecord();
         }
         private void PasswordBlock_PasswordChanging(PasswordBox sender, PasswordBoxPasswordChangingEventArgs args)
         {
@@ -90,7 +90,7 @@ namespace Social.FramePage
         }
         private void ForgotButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PasswordChangePage), _User);
+            this.Frame.Navigate(typeof(PasswordChangePage), _user);
         }
         public class GetAllUsersListPresenterCallBack : IGetAllUsersListPresenterCallback
         {
@@ -110,7 +110,7 @@ namespace Social.FramePage
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                    presenter.UsersList = response.Obj.Users;
+                    presenter._usersList = response.Obj.Users;
                     
                 }
                 );

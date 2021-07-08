@@ -1,5 +1,6 @@
 ﻿using Social.Data.Handler;
 using Social.Domain;
+using Social.Model;
 using Social.Util;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class ViewMyPostDataManager:DBHandlers
+    public class ViewMyPostDataManager:DataManagerBaseClass
     {
         public void ViewMyPost(ViewMyPostRequest request, ICallback<ViewMyPostResponse> callback)
         {
-            callback.OnSuccess(new Response<ViewMyPostResponse> { Obj = new ViewMyPostResponse(ViewMyPost(request.UserId)) });
+            List<Post> posts= DBHandlers.ViewMyPost(request.UserId);
+            callback.OnSuccess(new Response<ViewMyPostResponse> { Obj = new ViewMyPostResponse(posts) });
         }
     }
 }

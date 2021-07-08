@@ -33,10 +33,10 @@ namespace Social
         {
             this.InitializeComponent();
         }
-        private ObservableCollection<Post> _PostList;
+        private ObservableCollection<Post> _postList;
         public ObservableCollection<Post> PostList
         {
-            get { return _PostList; }
+            get { return _postList; }
         }
 
         private void StackPanel_Loaded(object sender, RoutedEventArgs e)
@@ -44,15 +44,15 @@ namespace Social
             var getPostRequest = new GetPostRequest();
             GetPost getPost = new GetPost(getPostRequest, new GetPostPresenterCallBack(this));
             getPost.Execute();
-            SocialNotification.PostAdded += HandlePostAdded;
-            SocialNotification.PostDeleted += HandlePostDeleted;
+            RegisterNotification();
+            
         }
         private async void HandlePostAdded(Post post)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
 
-                _PostList.Add(post);
+                _postList.Add(post);
             });
         }
         private async void HandlePostDeleted(Post post)
@@ -60,7 +60,7 @@ namespace Social
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
 
-                _PostList.Remove(post);
+                _postList.Remove(post);
                 var getPostRequest = new GetPostRequest();
                 GetPost getPost = new GetPost(getPostRequest, new GetPostPresenterCallBack(this));
                 getPost.Execute();
@@ -68,6 +68,18 @@ namespace Social
         }
 
         private void StackPanel_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SocialNotification.PostAdded -= HandlePostAdded;
+           
+        }
+        private void RegisterNotification()
+        {
+            UnRegisterNotification();
+            SocialNotification.PostAdded += HandlePostAdded;
+            SocialNotification.PostDeleted += HandlePostDeleted;
+
+        }
+        private void UnRegisterNotification()
         {
             SocialNotification.PostAdded -= HandlePostAdded;
             SocialNotification.PostDeleted -= HandlePostDeleted;
@@ -90,8 +102,8 @@ namespace Social
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                    presenter._PostList = new ObservableCollection<Post>(response.Obj.Posts);
-                    presenter.ClickList.ItemsSource = presenter._PostList;
+                    presenter._postList = new ObservableCollection<Post>(response.Obj.Posts);
+                    presenter.ClickList.ItemsSource = presenter._postList;
                 }
                 );
             }

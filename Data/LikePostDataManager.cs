@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class LikePostDataManager:DBHandlers
+    public class LikePostDataManager:DataManagerBaseClass
     {
         public void LikePost(LikePostRequest request,ICallback<LikePostResponse> callback)
         {
-            callback.OnSuccess(new Response<LikePostResponse> { Obj = new LikePostResponse(LikePost(request.Post, request.User)) });
+            DBHandlers.LikePost(request.Post, request.User);
+            callback.OnSuccess(new Response<LikePostResponse> { Obj = new LikePostResponse() });
         }
     }
 }

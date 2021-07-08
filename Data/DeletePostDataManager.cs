@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    class DeletePostDataManager:DBHandlers
+    class DeletePostDataManager:DataManagerBaseClass
 
     {
         public void DeletePost(DeletePostRequest request, ICallback<DeletePostResponse> callback)
         {
-
-            callback.OnSuccess(new Response<DeletePostResponse> { Obj = new DeletePostResponse(DeletePost(request.Post)) });
+            DBHandlers.DeletePost(request.Post);
+            callback.OnSuccess(new Response<DeletePostResponse> { Obj = new DeletePostResponse() });
             SocialNotification.NotifyPostDeleted(request.Post);
         }
     }

@@ -14,8 +14,8 @@
     </Page.Resources>
     <Grid >
         <uc:PostViewControl x:Name="Control"
-            _CurrentPost="{x:Bind _CurrentPost}"
-            _CurrentUser="{x:Bind _CurrentUser}"
+            CurrentPost="{x:Bind _currentPost}"
+            CurrentUser="{x:Bind _currentUser}"
             PostComments="{x:Bind PostComments}"/>
     </Grid>
 </Page>

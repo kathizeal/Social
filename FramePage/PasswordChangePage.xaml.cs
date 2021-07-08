@@ -27,27 +27,27 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class PasswordChangePage : Page
     {
-        User _User;
+        private User _user;
         public PasswordChangePage()
         {
             this.InitializeComponent();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _User = (User)e.Parameter;
-            UserNameBox.Text = _User.UserName;
+            _user = (User)e.Parameter;
+            UserNameBox.Text = _user.UserName;
 
         }
         private void LastNameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (LastNameBox.Text != _User.LastName)
+            if (LastNameBox.Text != _user.LastName)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
         }
         private void EmailBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(EmailBox.Text!=_User.Email)
+            if(EmailBox.Text!=_user.Email)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
@@ -57,20 +57,20 @@ namespace Social.FramePage
             DateTime birthDay;
             birthDay = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
             string DOB = birthDay.ToShortDateString();
-            if (DOB!=_User.BirthDay)
+            if (DOB!=_user.BirthDay)
                 Warning.Visibility = Visibility.Visible;
             else
                 Warning.Visibility = Visibility.Collapsed;
         }
         private void Change_Click(object sender, RoutedEventArgs e)
         {
-            User newUser =_User;
-            newUser.UserId = _User.UserId;
+            User newUser =_user;
+            newUser.UserId = _user.UserId;
             newUser.Password = PasswordBox.Password;
             // UserManager userManager = UserManager.GetInstance();
             // userManager.Update(newUser);
             UpdateUserRequest updateUserRequest = new UpdateUserRequest(newUser);
-            UpdateUser updateUser = new UpdateUser(updateUserRequest, new UpdateUserPresenterCallback(this));
+            UpdateUser updateUser = new UpdateUser(updateUserRequest, null);
             updateUser.Execute();
 
             Frame.Navigate(typeof(MainPage));

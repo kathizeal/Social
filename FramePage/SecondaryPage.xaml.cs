@@ -37,12 +37,12 @@ namespace Social.FramePage
     public sealed partial class SecondaryPage : Page 
     {
       
-        Post  _CurrentPost;
-        User _CurrentUser;
+        private Post _currentPost;
+        private User _currentUser;
         //PostManager _PostManager = PostManager.GetInstance();
         //UserManager _UserManager = UserManager.GetInstance();
-        private ObservableCollection<Comment> _PostComments;
-        public ObservableCollection<Comment> PostComments { get { return this._PostComments; }  }
+        private ObservableCollection<Comment> _postComments;
+        public ObservableCollection<Comment> PostComments { get { return this._postComments; }  }
         public SecondaryPage()
         {
             this.InitializeComponent();
@@ -51,9 +51,9 @@ namespace Social.FramePage
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-           _CurrentPost = (Post)e.Parameter;
+           _currentPost = (Post)e.Parameter;
            // _CurrentUser = _UserManager.Current();
-            _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
+            _postComments = new ObservableCollection<Comment>(_currentPost.Comments);
             GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
             GetCurrentUser getCurrentUser = new GetCurrentUser(getCurrentUserRequest, new GetCurrentUserPresenterCallback(this));
             getCurrentUser.Execute();
@@ -77,10 +77,10 @@ namespace Social.FramePage
             {
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                 {
-                   presenter._CurrentUser = response.Obj.CurrentUser;
-                    presenter.Control._CurrentUser = presenter._CurrentUser;
-                 });
+                {
+                    presenter._currentUser = response.Obj.CurrentUser;
+                    presenter.Control.CurrentUser = presenter._currentUser;
+                });
             }
 
 

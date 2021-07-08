@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class AddChatDataManager:DBHandlers
+    public class AddChatDataManager:DataManagerBaseClass
     {
         public void AddChat(AddChatRequest request, ICallback<AddChatResponse> callback)
         {
-            callback.OnSuccess(new Response<AddChatResponse> { Obj = new AddChatResponse(AddChat(request.Chat)) });
+            DBHandlers.AddChat(request.Chat);
+
+            callback.OnSuccess(new Response<AddChatResponse> { Obj = new AddChatResponse() });
         }
     }
 }

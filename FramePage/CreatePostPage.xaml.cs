@@ -17,6 +17,7 @@ using Social.Data;
 using Social.Model;
 using Social.Domain;
 using Social.Util;
+using Windows.UI.WindowManagement;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,9 +28,10 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class CreatePostPage : Page
     {
-        User _CurrentUser;
-        PostManager _PostManager = PostManager.GetInstance();
-        UserManager _UserManager = UserManager.GetInstance();
+        private User _currentUser;
+        public AppWindow MyAppWindow { get; set; }
+        // PostManager _PostManager = PostManager.GetInstance();
+        // UserManager _UserManager = UserManager.GetInstance();
         public CreatePostPage()
         {
             this.InitializeComponent();
@@ -37,7 +39,7 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _CurrentUser = (User)e.Parameter;
+            _currentUser = (User)e.Parameter;
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
@@ -50,20 +52,22 @@ namespace Social.FramePage
             {
                 
                 Post newPost = new Post();
-                newPost.ProfilePic = _CurrentUser.ProfilePic;
+                newPost.ProfilePic = _currentUser.ProfilePic;
                 newPost.PostTitle = TitleBox.Text;
                 newPost.PostContent = ContentBox.Text;
-                newPost.PostCreatedByUserName = _CurrentUser.UserName;
-                newPost.PostCreatedByUserId = _CurrentUser.UserId;
+                newPost.PostCreatedByUserName = _currentUser.UserName;
+                newPost.PostCreatedByUserId = _currentUser.UserId;
                 AddPostRequest addPostRequest = new AddPostRequest(newPost);
-                AddPost addPost = new AddPost(addPostRequest, new AddPostPresenterCallback(this));
+                AddPost addPost = new AddPost(addPostRequest, null);
                 addPost.Execute();
-                this.Frame.Visibility = Visibility.Collapsed;
+                //this.Frame.Visibility = Visibility.Collapsed;
+                this.Frame.Navigate(typeof(SecondaryPage), newPost);
             }
         }
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private async void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Visibility = Visibility.Collapsed;
+            //this.Frame.Visibility = Visibility.Collapsed;
+             await MyAppWindow.CloseAsync();
         }
         public class AddPostPresenterCallback : IAddPostPresenterCallback
         {

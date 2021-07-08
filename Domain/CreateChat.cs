@@ -16,11 +16,13 @@ namespace Social.Domain
     }
     public sealed class CreateChatResponse
     {
+        /*
         public Chat Chat;
         public CreateChatResponse(Chat chat)
         {
             Chat = chat;
         }
+        */
     }
     public sealed class CreateChatRequest
     {
@@ -65,7 +67,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<CreateChatResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+              //  UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

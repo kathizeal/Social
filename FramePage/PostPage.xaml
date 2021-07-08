@@ -132,7 +132,7 @@
                                    </ListView>
                                    <ListView
                                        x:Name="ClickList"
-                                       ItemsSource="{x:Bind _PostList,Mode=OneWay}"
+                                       ItemsSource="{x:Bind _postList,Mode=OneWay}"
                                        ItemClick="ListView_ItemClick" 
                                        IsItemClickEnabled="True"
                                        Foreground="{ThemeResource SystemAltMediumColor}">

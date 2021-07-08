@@ -13,12 +13,12 @@ namespace Social.Domain
     public interface IAddReplyPresenterCallback : ICallback<AddReplyResponse> { }
     public sealed class AddReplyResponse
     {
-        public Comment Reply;
+      /*  public Comment Reply;
         public AddReplyResponse(Comment reply)
         {
             Reply = reply;
         }
-
+      */
     }
     public class AddReplyRequest
     {
@@ -63,7 +63,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<AddReplyResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                //UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

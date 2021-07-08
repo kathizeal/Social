@@ -137,6 +137,7 @@
     <Compile Include="Data\AddUserDataManager.cs" />
     <Compile Include="Data\CheckExistDataManager.cs" />
     <Compile Include="Data\CreateChatDataManager.cs" />
+    <Compile Include="Data\DataManagerBaseClass.cs" />
     <Compile Include="Data\DeletePostDataManager.cs" />
     <Compile Include="Data\GetAllUsersListDataManager.cs" />
     <Compile Include="Data\GetCommentDataManager.cs" />
@@ -400,7 +401,7 @@
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="SQLite.uwp">
-      <Version>3.36.0</Version>
+      <Version>3.35.5</Version>
     </PackageReference>
     <PackageReference Include="SQLiteNetExtensions">
       <Version>2.1.0</Version>

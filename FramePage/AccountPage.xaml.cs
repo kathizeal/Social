@@ -35,8 +35,8 @@ namespace Social.FramePage
     
     public sealed partial class AccountPage : Page
     {
-        Post _Post;
-        User _CurrentUser;
+        private Post _post;
+        private User _currentUser;
        // UserManager _UserManager = UserManager.GetInstance();
         //PostManager _PostManager = PostManager.GetInstance();
         bool _Clicked = false;
@@ -55,14 +55,14 @@ namespace Social.FramePage
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _CurrentUser = (User)e.Parameter;
-            UserNameBlock.Text = _CurrentUser.UserName;
-            LastNameBlock.Text = _CurrentUser.LastName;
-            UserIDBlock.Text = _CurrentUser.UserId.ToString();
-            EmailBlock.Text = _CurrentUser.Email;
-            BirthdayBlock.Text = _CurrentUser.BirthDay.ToString();
-            GenderBlock.Text = _CurrentUser.Gender;
-            var viewMyPostRequest = new ViewMyPostRequest(_CurrentUser.UserId);
+            _currentUser = (User)e.Parameter;
+            UserNameBlock.Text = _currentUser.UserName;
+            LastNameBlock.Text = _currentUser.LastName;
+            UserIDBlock.Text = _currentUser.UserId.ToString();
+            EmailBlock.Text = _currentUser.Email;
+            BirthdayBlock.Text = _currentUser.BirthDay.ToString();
+            GenderBlock.Text = _currentUser.Gender;
+            var viewMyPostRequest = new ViewMyPostRequest(_currentUser.UserId);
             ViewMyPost viewMyPost = new ViewMyPost(viewMyPostRequest, new ViewMyPostPresenterCallback(this));
             viewMyPost.Execute();
             StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
@@ -86,7 +86,7 @@ namespace Social.FramePage
                 img.Source = new BitmapImage(new Uri(_UserManager.ProfilePic(_CurrentUser)));
                 br.ImageSource = img.Source;
             }*/
-            var getProfilePicRequest = new GetProfilePicRequest(_CurrentUser);
+            var getProfilePicRequest = new GetProfilePicRequest(_currentUser);
             GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(this));
             getProfilePic.Execute();
                     
@@ -97,24 +97,24 @@ namespace Social.FramePage
             if (_Clicked == true)
             {
                 //_PostManager.DeletePost(_Post);
-                var deletePostRequest = new DeletePostRequest(_Post);
+                var deletePostRequest = new DeletePostRequest(_post);
                 DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
                 deletePost.Execute();
-                Post SelectedPost = _Post;
+                Post SelectedPost = _post;
                 Frame.Navigate(typeof(EditPostPage), SelectedPost);
             }
         }
         private void MyPost_ItemClick(object sender, ItemClickEventArgs e)
         {
-            _Post = (Post)e.ClickedItem;
+            _post = (Post)e.ClickedItem;
             _Clicked = true;
             var bounds = Window.Current.Bounds;
             double width = bounds.Width;
             if(width<800)
-                 Frame.Navigate(typeof(ViewPost), _Post);
+                 Frame.Navigate(typeof(ViewPost), _post);
             SampleText.Visibility = Visibility.Collapsed;
             ViewPost.Visibility = Visibility.Visible;
-            PostContent.Text = _Post.PostContent;    
+            PostContent.Text = _post.PostContent;    
         }
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
@@ -135,16 +135,16 @@ namespace Social.FramePage
                  if ((int)result.Id == 0)
                  {
                     //_PostManager.DeletePost(_Post);
-                    var deletePostRequest = new DeletePostRequest(_Post);
-                    DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                    var deletePostRequest = new DeletePostRequest(_post);
+                    DeletePost deletePost = new DeletePost(deletePostRequest,null);
                     deletePost.Execute();
-                    _MyPost.Remove(_Post);
+                    _MyPost.Remove(_post);
                  }
             }
         }
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(PostPage), _CurrentUser);
+            Frame.Navigate(typeof(PostPage), _currentUser);
         }
         private void View_Click(object sender, RoutedEventArgs e)
         {
@@ -161,10 +161,10 @@ namespace Social.FramePage
             if (_Clicked == true)
             {
                 //_PostManager.DeletePost(_Post);
-                var deletePostRequest = new DeletePostRequest(_Post);
-                DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                var deletePostRequest = new DeletePostRequest(_post);
+                DeletePost deletePost = new DeletePost(deletePostRequest, null);
                 deletePost.Execute();
-                Post selectedPost = _Post;
+                Post selectedPost = _post;
                 Frame.Navigate(typeof(EditPostPage), selectedPost);
             }
         }
@@ -173,8 +173,8 @@ namespace Social.FramePage
             if (_Clicked == true)
             {
                // _PostManager.DeletePost(_Post);
-                var deletePostRequest = new DeletePostRequest(_Post);
-                DeletePost deletePost = new DeletePost(deletePostRequest, new DeletePostPresenterCallback(this));
+                var deletePostRequest = new DeletePostRequest(_post);
+                DeletePost deletePost = new DeletePost(deletePostRequest, null);
                 deletePost.Execute();
             }
         }
@@ -190,13 +190,13 @@ namespace Social.FramePage
         {
             if (_Clicked == true)
             {
-                Frame.Navigate(typeof(ViewPost), _Post);
+                Frame.Navigate(typeof(ViewPost), _post);
             }
         }
         private void SignOut_Click(object sender, RoutedEventArgs e)
         {
             //_UserManager.SignOut();
-            var signOutRequest = new SignOutRequest(_CurrentUser);
+            var signOutRequest = new SignOutRequest(_currentUser);
             SignOut signOut = new SignOut(signOutRequest, new SignOutPresenterCallback(this));
             signOut.Execute();
             
@@ -208,10 +208,10 @@ namespace Social.FramePage
             // _UserManager.UpateProfile(_CurrentUser, profile);
             // _PostManager.UpdateProfile(_CurrentUser, profile);
             //  br.ImageSource = _UserManager.UpateProfile(_CurrentUser, profile).Source;
-            var updateProfileRequest = new UpdateProfileRequest(_CurrentUser, profile);
+            var updateProfileRequest = new UpdateProfileRequest(_currentUser, profile);
             UpdateProfile updateProfile = new UpdateProfile(updateProfileRequest, new UpdateProfilePresenterCallback(this));
             updateProfile.Execute();
-            Frame.Navigate(typeof(AccountPage), _CurrentUser);
+            Frame.Navigate(typeof(AccountPage), _currentUser);
 
 
         }

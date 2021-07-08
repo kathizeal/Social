@@ -13,11 +13,11 @@ namespace Social.Domain
     public interface IAddPostPresenterCallback : ICallback<AddPostResponse> { }
     public sealed class AddPostResponse
     {
-        public Post Post;
+        /*public Post Post;
         public AddPostResponse(Post post)
         {
             Post = post;
-        }
+        }*/
     
     }
     public class AddPostRequest
@@ -60,7 +60,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<AddPostResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+                
             }
         }
     }

@@ -40,13 +40,13 @@ namespace Social.FramePage
    {
        // PostManager _PostManager = PostManager.GetInstance();
         //UserManager _UserManager = UserManager.GetInstance();
-        User _CurrentUser;
-        SplitView _SplitView;
-        NavigationView _NavigationView;
-        private ObservableCollection<Post> _PostList;
+        private User _currentUser;
+        SplitView _splitView;
+        private NavigationView _navigationView;
+        private ObservableCollection<Post> _postList;
         public  ObservableCollection<Post> PostList
         {
-            get { return _PostList; }
+            get { return _postList; }
         }
         private ObservableCollection<User> _UserList;
         public ObservableCollection<User> UserList
@@ -56,8 +56,8 @@ namespace Social.FramePage
         public PostPage()
         {
             this.InitializeComponent();
-            _NavigationView = NavViewPostPage;
-            _SplitView = MySpLitView;
+            _navigationView = NavViewPostPage;
+            _splitView = MySpLitView;
             NavViewPostPage.IsBackButtonVisible = (NavigationViewBackButtonVisible)Visibility.Visible;
             NavViewPostPage.IsSettingsVisible = false;
            // _UserList = new ObservableCollection<User>(_UserManager.ALLUsersLists());
@@ -80,7 +80,6 @@ namespace Social.FramePage
             {
                 user.ProfilePic = _UserManager.ProfilePic(user);
             }*/
-
             MySpLitView.IsPaneOpen = true;
             ClickList.Visibility = Visibility.Visible;
 
@@ -110,7 +109,7 @@ namespace Social.FramePage
             {
                 case "Account":                   
                     MySpLitView.IsPaneOpen = false;                    
-                    this.Frame.Navigate(typeof(AccountPage),_CurrentUser);
+                    this.Frame.Navigate(typeof(AccountPage),_currentUser);
                     break;
             }
           }
@@ -129,25 +128,34 @@ namespace Social.FramePage
             StackHeading.Text = "Feeds";
 
         }
-        private void AddButton(object sender, TappedRoutedEventArgs e)
+        private async void AddButton(object sender, TappedRoutedEventArgs e)
         {
-            ClickList.SelectedItem = null;
+            /*ClickList.SelectedItem = null;
             SecondFrame.Visibility = Visibility.Visible;
-            SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+            SecondFrame.Navigate(typeof(CreatePostPage), _currentUser);
             Dummy.IsSelected = true;
             Add.IsSelected = false;
             var bounds = Window.Current.Bounds;
             double width = bounds.Width;
             if (width > 800)
             {
-                SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+                SecondFrame.Navigate(typeof(CreatePostPage), _currentUser);
             }
             else
             {
-                SecondFrame.Navigate(typeof(CreatePostPage), _CurrentUser);
+                SecondFrame.Navigate(typeof(CreatePostPage), _currentUser);
                 ListV.Visibility = Visibility.Visible;
                 MySpLitView.IsPaneOpen = false;
-            }
+            }*/
+            Dummy.IsSelected = true;
+            Add.IsSelected = false;
+            AppWindow appWindow = await AppWindow.TryCreateAsync();
+            Frame appWindowContentFrame = new Frame();
+            appWindowContentFrame.Navigate(typeof(CreatePostPage),_currentUser);
+            CreatePostPage page = (CreatePostPage)appWindowContentFrame.Content;
+            ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            page.MyAppWindow = appWindow;
+            await appWindow.TryShowAsync();
         }
         private async void DeleteRecord(object sender, TappedRoutedEventArgs e)
         {
@@ -216,8 +224,8 @@ namespace Social.FramePage
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                    presenter._PostList = new ObservableCollection<Post>(response.Obj.Posts);
-                    presenter.ClickList.ItemsSource = presenter._PostList;
+                    presenter._postList = new ObservableCollection<Post>(response.Obj.Posts);
+                    presenter.ClickList.ItemsSource = presenter._postList;
                 }
                 );
             }
@@ -244,13 +252,7 @@ namespace Social.FramePage
 
                     presenter._UserList = new ObservableCollection<User>(response.Obj.Users);
                     presenter.UserListView.ItemsSource = presenter._UserList;
-                    /* foreach (var user in presenter._UserList)
-                    {
-                      //user.ProfilePic = presenter._UserManager.ProfilePic(user);
-                        var getProfilePicRequest = new GetProfilePicRequest(user);
-                        GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(presenter));
-                        getProfilePic.Execute();
-                    }*/
+                    
                 }
                 );
             }
@@ -276,7 +278,7 @@ namespace Social.FramePage
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    presenter._currentUser = response.Obj.CurrentUser;
                     
                 });
             }
@@ -292,31 +294,36 @@ namespace Social.FramePage
             var getUsersListRequest = new GetUsersListRequest();
             GetUsersList getUsersList = new GetUsersList(getUsersListRequest, new GetUsersListPresenterCallBack(this));
             getUsersList.Execute();
-           
-
-            SocialNotification.PostAdded += HandlePostAdded;
+            RegisterNotification();
         }
 
         private void Grid_Unloaded(object sender, RoutedEventArgs e)
         {
-            SocialNotification.PostAdded -= HandlePostAdded;
+            UnRegisterNotification();
         }
         private async void HandlePostAdded(Post post)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-
-                _PostList.Add(post);
-                
-
+                _postList.Add(post);
             });
+        }
+        private void RegisterNotification()
+        {
+            UnRegisterNotification();
+            SocialNotification.PostAdded += HandlePostAdded;
+
+        }
+        private void UnRegisterNotification()
+        {
+            SocialNotification.PostAdded -= HandlePostAdded;
         }
 
         private void Dummy_Tapped(object sender, TappedRoutedEventArgs e)
         {
             PostManager postManager = PostManager.GetInstance();
             postManager.DeleteRecord();
-           _PostList.Clear();
+           _postList.Clear();
         }
         public class GetProfilePicPresenterCallback : IGetProfilePicPresenterCallback
         {
@@ -335,7 +342,6 @@ namespace Social.FramePage
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                   
 
                 });
             }

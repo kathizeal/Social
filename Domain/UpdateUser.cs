@@ -13,12 +13,12 @@ namespace Social.Domain
     public interface IUpdateUserPresenterCallback : ICallback<UpdateUserResponse> { }
     public sealed class UpdateUserResponse
     {
-        public User CurrentUser;
+      /*  public User CurrentUser;
         public UpdateUserResponse(User currentUser)
         {
             CurrentUser = currentUser;
         }
-
+      */
     }
     public class UpdateUserRequest
     {
@@ -59,7 +59,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<UpdateUserResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+               // UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

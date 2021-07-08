@@ -30,8 +30,8 @@ namespace Social.FramePage
     public sealed partial class SignUpPage : Page
     {
         //UserManager _UserManager = UserManager.GetInstance();
-        string _Gender;
-        DateTime _Birthday;
+        string Gender;
+        DateTime Birthday;
         public SignUpPage()
         {
             this.InitializeComponent();
@@ -39,25 +39,25 @@ namespace Social.FramePage
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
 
-            string DOB = _Birthday.ToString("dd/MM/yyyy");
+            string DOB = Birthday.ToString("dd/MM/yyyy");
             if (string.IsNullOrWhiteSpace(UserNameBox.Text) || string.IsNullOrWhiteSpace(LastNameBox.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(RePasswordBox.Password) || string.IsNullOrWhiteSpace(DOB))
                 Warning.Visibility = Visibility.Visible;
             else
             {
                 //_UserManager.AddUser(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
-                var addUserRequest = new AddUserRequest(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, _Gender);
-                AddUser addUser = new AddUser(addUserRequest, new AddUserPresenterCallBack(this));
+                var addUserRequest = new AddUserRequest(UserNameBox.Text, LastNameBox.Text, EmailBox.Text, PasswordBox.Password, DOB, Gender);
+                AddUser addUser = new AddUser(addUserRequest,null) ;
                 Frame.Navigate(typeof(MainPage));
             }
         }
         private void Dob_DateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
-            _Birthday = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
+            Birthday = new DateTime(args.NewDate.Year, args.NewDate.Month, args.NewDate.Day);
         }
         private void GenderBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var comboxBoxItem = e.AddedItems[0] as ComboBoxItem;
-            _Gender = comboxBoxItem.Content as string;
+            Gender = comboxBoxItem.Content as string;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

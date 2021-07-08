@@ -27,9 +27,9 @@ namespace Social.Control
     {
         //PostManager _PostManager = PostManager.GetInstance();
         //UserManager _UserManager = UserManager.GetInstance();
-        User _CurrentUser;
-        Post _CurrentPost;
-        Comment _CurrentComment;
+        private User _currentUser;
+        private Post _currentPost;
+        private Comment _currentComment;
 
         public static readonly DependencyProperty ParentIdProp = DependencyProperty.Register("ParentId", typeof(long), typeof(ReplyControl), new PropertyMetadata(null));
         public long ParentId
@@ -37,8 +37,8 @@ namespace Social.Control
             get { return (long)GetValue(ParentIdProp); }
             set { SetValue(ParentIdProp, value); }
         }
-        private ObservableCollection<Comment> _PostComment;
-        public ObservableCollection<Comment> PostComment { get { return this._PostComment; } }
+        private ObservableCollection<Comment> _postComment;
+        public ObservableCollection<Comment> PostComment { get { return this._postComment; } }
         public ReplyControl()
         {
             this.InitializeComponent();
@@ -71,17 +71,17 @@ namespace Social.Control
             if (!string.IsNullOrWhiteSpace(CommentTextBox.Text))
             {
                 Comment newReply = new Comment();
-                newReply.ProfilePic = _CurrentUser.ProfilePic;
-                newReply.PostId = _CurrentComment.PostId;
+                newReply.ProfilePic = _currentUser.ProfilePic;
+                newReply.PostId = _currentComment.PostId;
                 newReply.CommentContent = CommentTextBox.Text;
-                newReply.CommenterName = _CurrentUser.UserName;
-                newReply.CommenterId = _CurrentUser.UserId;
-                newReply.ParentCommentId = _CurrentComment.CommentId;
-                _CurrentComment.CurrentReply = newReply;
-                _PostComment.Add(newReply);
+                newReply.CommenterName = _currentUser.UserName;
+                newReply.CommenterId = _currentUser.UserId;
+                newReply.ParentCommentId = _currentComment.CommentId;
+                _currentComment.CurrentReply = newReply;
+                _postComment.Add(newReply);
                 // _PostManager.AddReply(_CurrentPost, _CurrentComment, newReply);
                 var addReplyRequest = new AddReplyRequest(newReply);
-                AddReply addReply = new AddReply(addReplyRequest, new AddReplyPresenterCallback(this));
+                AddReply addReply = new AddReply(addReplyRequest, null);
                 addReply.Execute();
                 //_PostComment = _PostManager.DateChangeComment(_PostComment);
                 CommentTextBox.Text = "";
@@ -104,7 +104,7 @@ namespace Social.Control
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentComment = response.Obj.Comment;
+                    presenter._currentComment = response.Obj.Comment;
                     var GetReplyRequest = new GetReplyRequest(response.Obj.Comment.CommentId);
                     GetReply getReply = new GetReply(GetReplyRequest, new GetReplyPresenterCallback(presenter));
                     getReply.Execute();
@@ -134,7 +134,7 @@ namespace Social.Control
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
 
-                    presenter._CurrentPost = response.Obj.Post;
+                    presenter._currentPost = response.Obj.Post;
                 });
             }
         }
@@ -154,8 +154,8 @@ namespace Social.Control
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._PostComment = new ObservableCollection<Comment>(response.Obj.Replys);
-                    presenter.ReplyList.ItemsSource = presenter._PostComment;
+                    presenter._postComment = new ObservableCollection<Comment>(response.Obj.Replys);
+                    presenter.ReplyList.ItemsSource = presenter._postComment;
                 });
             }
         }
@@ -198,8 +198,8 @@ namespace Social.Control
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentUser = response.Obj.CurrentUser;
-                    var getProfilePicRequest = new GetProfilePicRequest(presenter._CurrentUser);
+                    presenter._currentUser = response.Obj.CurrentUser;
+                    var getProfilePicRequest = new GetProfilePicRequest(presenter._currentUser);
                     GetProfilePic getProfilePic = new GetProfilePic(getProfilePicRequest, new GetProfilePicPresenterCallback(presenter));
                     getProfilePic.Execute();
                   //  presenter._CurrentUser.ProfilePic = presenter._UserManager.ProfilePic(presenter._CurrentUser);
@@ -226,7 +226,7 @@ namespace Social.Control
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentUser.ProfilePic = response.Obj.ProfilePic;
+                    presenter._currentUser.ProfilePic = response.Obj.ProfilePic;
 
                 });
             }

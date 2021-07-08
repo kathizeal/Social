@@ -13,13 +13,13 @@ namespace Social.Domain
     public interface IUnLikePostPresenterCallback : ICallback<UnLikePostResponse> { }
     public sealed class UnLikePostResponse
     {
-        public Post Post;
+       /* public Post Post;
         public UnLikePostResponse(Post post)
         {
             Post = post;
 
         }
-
+       */
     }
     public sealed class UnLikePostRequest
     {
@@ -63,7 +63,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<UnLikePostResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+               // UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

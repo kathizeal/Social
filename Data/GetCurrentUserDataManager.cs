@@ -1,5 +1,6 @@
 ﻿using Social.Data.Handler;
 using Social.Domain;
+using Social.Model;
 using Social.Util;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-   public class GetCurrentUserDataManager:DBHandlers
+   public class GetCurrentUserDataManager:DataManagerBaseClass
     {
         public void GetCurrentUser(ICallback<GetCurrentUserResponse> callback)
         {
-            callback.OnSuccess(new Response<GetCurrentUserResponse> { Obj = new GetCurrentUserResponse(GetCurrentUser())});
+            User user = DBHandlers.GetCurrentUser();
+            callback.OnSuccess(new Response<GetCurrentUserResponse> { Obj = new GetCurrentUserResponse(user)});
         }
 
     }

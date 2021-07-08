@@ -19,7 +19,7 @@ namespace Social.Domain
         public bool Exist;
         public CheckExistResponse(bool exist)
         {
-            Exist=exist;
+            Exist = exist;
         }
     }
     public sealed class CheckExistRequest

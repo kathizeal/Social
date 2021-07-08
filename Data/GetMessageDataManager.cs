@@ -1,5 +1,6 @@
 ﻿using Social.Data.Handler;
 using Social.Domain;
+using Social.Model;
 using Social.Util;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class GetMessageDataManager:DBHandlers
+    public class GetMessageDataManager:DataManagerBaseClass
     {
         public void GetMessage(GetMessageRequest request, ICallback<GetMessageResponse> callback)
         {
-            callback.OnSuccess(new Response<GetMessageResponse> { Obj = new GetMessageResponse(Message(request.CurrentUser,request.AnotherUser)) });
+            List<Chat> chats = DBHandlers.Message(request.CurrentUser, request.AnotherUser);
+            callback.OnSuccess(new Response<GetMessageResponse> { Obj = new GetMessageResponse(chats) });
         }
     }
 }

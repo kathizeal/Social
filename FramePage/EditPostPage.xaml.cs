@@ -82,10 +82,10 @@ namespace Social.FramePage
      }*/
     public sealed partial class EditPostPage : Page
     {
-        Post _NewPost;
-        Post _EditingPost;
-        User _CurrentUser;
-        PostManager postManager = PostManager.GetInstance();
+        private Post _newPost;
+        private Post _editingPost;
+        private User _currentUser;
+     //   PostManager postManager = PostManager.GetInstance();
         public EditPostPage()
         {
             this.InitializeComponent();
@@ -93,10 +93,10 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _EditingPost = (Post)e.Parameter;
-            _NewPost = (Post)e.Parameter;
-            TitleBox.Text = _NewPost.PostTitle;
-            ContentBox.Text = _NewPost.PostContent;
+            _editingPost = (Post)e.Parameter;
+            _newPost = (Post)e.Parameter;
+            TitleBox.Text = _newPost.PostTitle;
+            ContentBox.Text = _newPost.PostContent;
             // UserManager userManager = UserManager.GetInstance();
             //_CurrentUser =userManager.Current();
             GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
@@ -106,24 +106,24 @@ namespace Social.FramePage
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
            // postManager.AddPost(_EditingPost);
-            AddPostRequest addPostRequest = new AddPostRequest(_EditingPost);
+            AddPostRequest addPostRequest = new AddPostRequest(_editingPost);
             AddPost addPost = new AddPost(addPostRequest, new AddPostPresenterCallback(this));
             addPost.Execute();
             Frame.GoBack();
         }
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            _NewPost.Comments = _EditingPost.Comments;
-            _NewPost.PostCreatedByUserId = _EditingPost.PostCreatedByUserId;
-            _NewPost.PostCreatedByUserName = _EditingPost.PostCreatedByUserName;
-            _NewPost.PostId = _EditingPost.PostId;
-            _NewPost.CreatedTime = _EditingPost.CreatedTime;
-            _NewPost.PostContent = ContentBox.Text;
-            _NewPost.PostTitle = TitleBox.Text;
-            _NewPost.Likes = _EditingPost.Likes;
-            _NewPost.LikedId = _EditingPost.LikedId;
+            _newPost.Comments = _editingPost.Comments;
+            _newPost.PostCreatedByUserId = _editingPost.PostCreatedByUserId;
+            _newPost.PostCreatedByUserName = _editingPost.PostCreatedByUserName;
+            _newPost.PostId = _editingPost.PostId;
+            _newPost.CreatedTime = _editingPost.CreatedTime;
+            _newPost.PostContent = ContentBox.Text;
+            _newPost.PostTitle = TitleBox.Text;
+            _newPost.Likes = _editingPost.Likes;
+            _newPost.LikedId = _editingPost.LikedId;
             //postManager.UpdateEdit(_NewPost);
-            AddPostRequest addPostRequest = new AddPostRequest(_NewPost);
+            AddPostRequest addPostRequest = new AddPostRequest(_newPost);
             AddPost addPost = new AddPost(addPostRequest, new AddPostPresenterCallback(this));
             addPost.Execute();
             Frame.GoBack();
@@ -147,7 +147,7 @@ namespace Social.FramePage
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    presenter._currentUser = response.Obj.CurrentUser;
                     
                 });
             }

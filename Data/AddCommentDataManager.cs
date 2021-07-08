@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class AddCommentDataManager:DBHandlers
+    public class AddCommentDataManager:DataManagerBaseClass
     {
         public void AddComment(AddCommentRequest request, ICallback<AddCommentResponse> callback)
         {
-            callback.OnSuccess(new Response<AddCommentResponse> { Obj = new AddCommentResponse(AddComments(request.Post, request.Comment)) });
+            DBHandlers.AddComments(request.Post, request.Comment);
+            callback.OnSuccess(new Response<AddCommentResponse> { Obj = new AddCommentResponse() });
         }
     }
 }

@@ -30,49 +30,49 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class ViewPost : Page
     {
-        Post _CurrentPost;
-        User _CurrentUser;
-        Comment _CurrentComment;
+        private Post _currentPost;
+        private User _currentUser;
+        private Comment _CurrentComment;
         PostManager _PostManager = PostManager.GetInstance();
         UserManager _UserManager = UserManager.GetInstance();
-        private ObservableCollection<Comment> _PostComments;
-        public ObservableCollection<Comment> PostComments { get { return this._PostComments; } }
-        private ObservableCollection<UserIds> _LikedUser;
-        public ObservableCollection<UserIds> LikedUser { get { return this._LikedUser; } }
+        private ObservableCollection<Comment> _postComments;
+        public ObservableCollection<Comment> PostComments { get { return this._postComments; } }
+        private ObservableCollection<UserIds> _likedUser;
+        public ObservableCollection<UserIds> LikedUser { get { return this._likedUser; } }
         public ViewPost()
         {
             this.InitializeComponent();
-            _CurrentUser =_UserManager.Current();
+            _currentUser =_UserManager.Current();
           
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _CurrentPost = (Post)e.Parameter;
-            _PostComments = new ObservableCollection<Comment>(_CurrentPost.Comments);
+            _currentPost = (Post)e.Parameter;
+            _postComments = new ObservableCollection<Comment>(_currentPost.Comments);
             // _PostComments = _PostManager.DateChangeComment(_PostComments);
             //_LikedUser = new ObservableCollection<UserIds>(_PostManager.LikedUsers(_CurrentPost));
-            var getLikedUserRequest = new GetLikedUsersRequest(_CurrentPost);
+            var getLikedUserRequest = new GetLikedUsersRequest(_currentPost);
             GetLikedUsers getLikedUsers = new GetLikedUsers(getLikedUserRequest, new GetLikedUsersPresenterCallback(this));
             getLikedUsers.Execute();
-            if (_CurrentPost.Likes != 0)
+            if (_currentPost.Likes != 0)
             {
-                foreach (var i in _CurrentPost.LikedId)
+                foreach (var i in _currentPost.LikedId)
                 {
-                    if (i == _CurrentUser.UserId)
+                    if (i == _currentUser.UserId)
                         LikeButton.IsChecked = true;
 
                 }
             }
-            Content.Text = _CurrentPost.PostContent;
-            CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
-            Heading.Text = _CurrentPost.PostTitle;
+            Content.Text = _currentPost.PostContent;
+            CommentTB.Text = "Comments : " + _currentPost.CommentCount.ToString();
+            Heading.Text = _currentPost.PostTitle;
             TimeZoneInfo localZoneId = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfo.Local.Id);
-            time.Text = TimeZoneInfo.ConvertTimeFromUtc(_CurrentPost.CreatedTime, localZoneId).ToString("dd/MM/yyyy hh:mm tt");
-            Createdby.Text = "Created By: " + _CurrentPost.PostCreatedByUserName;
+            time.Text = TimeZoneInfo.ConvertTimeFromUtc(_currentPost.CreatedTime, localZoneId).ToString("dd/MM/yyyy hh:mm tt");
+            Createdby.Text = "Created By: " + _currentPost.PostCreatedByUserName;
             Image img = new Image();
-            img.Source = new BitmapImage(new Uri(_CurrentPost.ProfilePic));
+            img.Source = new BitmapImage(new Uri(_currentPost.ProfilePic));
             Icon.ImageSource = img.Source;
-            if (_CurrentPost.Comments.Count == 0)
+            if (_currentPost.Comments.Count == 0)
             {
                 CommentStack.Visibility = Visibility.Collapsed;
             }
@@ -80,7 +80,7 @@ namespace Social.FramePage
             {
                 CommentStack.Visibility = Visibility.Visible;
             }
-            if (_CurrentPost.Likes == 0)
+            if (_currentPost.Likes == 0)
             {
                 var bounds = Window.Current.Bounds;
                 double width = bounds.Width;
@@ -99,7 +99,7 @@ namespace Social.FramePage
                 else
                     CommentTextBox.Width = 300;
                 LikeCount.Visibility = Visibility.Visible;
-                LikeCount.Content = _CurrentPost.Likes;
+                LikeCount.Content = _currentPost.Likes;
 
             }
 
@@ -107,23 +107,23 @@ namespace Social.FramePage
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (_CurrentPost.LikedId.Contains(_CurrentUser.UserId))
+            if (_currentPost.LikedId.Contains(_currentUser.UserId))
             {
                 //_PostManager.UnLikePost(_CurrentPost, _CurrentUser);
-                var UnLikePostRequest = new UnLikePostRequest(_CurrentPost, _CurrentUser);
-                UnLikePost unLikePost = new UnLikePost(UnLikePostRequest, new UnLikePostPresenterCallback(this));
+                var UnLikePostRequest = new UnLikePostRequest(_currentPost, _currentUser);
+                UnLikePost unLikePost = new UnLikePost(UnLikePostRequest, null);
                 unLikePost.Execute();
-                foreach (var id in _LikedUser)
+                foreach (var id in _likedUser)
                 {
-                    if (id.Userid == _CurrentUser.UserId)
+                    if (id.Userid == _currentUser.UserId)
                     {
-                        _LikedUser.Remove(id);
+                        _likedUser.Remove(id);
                         break;
                     }
 
                 }
                 LikeButton.IsChecked = false;
-                if (_CurrentPost.Likes == 0)
+                if (_currentPost.Likes == 0)
                 {
                     CommentTextBox.Width = 700;
                     LikeCount.Visibility = Visibility.Collapsed;
@@ -132,24 +132,24 @@ namespace Social.FramePage
             else
             {
                 UserIds userIds = new UserIds();
-                userIds.PostId = _CurrentPost.PostId;
-                userIds.Userid = _CurrentUser.UserId;
-                userIds.UserName = _CurrentUser.UserName;
+                userIds.PostId = _currentPost.PostId;
+                userIds.Userid = _currentUser.UserId;
+                userIds.UserName = _currentUser.UserName;
                 //_PostManager.LikePost(_CurrentPost, _CurrentUser);
-                var LikePostRequest = new LikePostRequest(_CurrentPost, _CurrentUser);
-                LikePost likePost = new LikePost(LikePostRequest, new LikePostPresenterCallback(this));
+                var LikePostRequest = new LikePostRequest(_currentPost, _currentUser);
+                LikePost likePost = new LikePost(LikePostRequest, null);
                 likePost.Execute();
-                _LikedUser.Add(userIds);
+                _likedUser.Add(userIds);
 
             }
-            LikeCount.Content = _CurrentPost.Likes;
+            LikeCount.Content = _currentPost.Likes;
         }
         private void CommentList_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(CommentTextBox.Text))
             {
                 CommentButton.Visibility = Visibility.Collapsed;
-                CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
+                CommentTB.Text = "Comments : " + _currentPost.CommentCount.ToString();
                 CommentTextBox.Focus(FocusState.Programmatic);
                 _CurrentComment = (Comment)e.ClickedItem;
                 var bounds = Window.Current.Bounds;
@@ -165,20 +165,20 @@ namespace Social.FramePage
             if (!string.IsNullOrWhiteSpace(CommentTextBox.Text))
             {
                 Comment newComment = new Comment();
-                _CurrentUser.ProfilePic = _UserManager.ProfilePic(_CurrentUser);
-                newComment.ProfilePic = _CurrentUser.ProfilePic;
+                _currentUser.ProfilePic = _UserManager.ProfilePic(_currentUser);
+                newComment.ProfilePic = _currentUser.ProfilePic;
                 newComment.ParentCommentId = null;
-                newComment.PostId = _CurrentPost.PostId;
+                newComment.PostId = _currentPost.PostId;
                 newComment.CommentContent = CommentTextBox.Text;
-                newComment.CommenterName = _CurrentUser.UserName;
-                newComment.CommenterId = _CurrentUser.UserId;
+                newComment.CommenterName = _currentUser.UserName;
+                newComment.CommenterId = _currentUser.UserId;
                 //_PostManager.AddComment(_CurrentPost, newComment);
-                var AddCommentRequest = new AddCommentRequest(_CurrentPost, newComment);
-                AddComment addComment = new AddComment(AddCommentRequest, new AddCommentPresenterCallback(this));
+                var AddCommentRequest = new AddCommentRequest(_currentPost, newComment);
+                AddComment addComment = new AddComment(AddCommentRequest,null);
                 addComment.Execute();
                 CommentStack.Visibility = Visibility.Visible;
-                CommentTB.Text = "Comments : " + _CurrentPost.CommentCount.ToString();
-               // _PostComments.Add(newComment);
+                CommentTB.Text = "Comments : " + _currentPost.CommentCount.ToString();
+               _postComments.Add(newComment);
                 //_PostComments = _PostManager.DateChangeComment(_PostComments);
                 CommentTextBox.Text = "";
             }
@@ -228,8 +228,8 @@ namespace Social.FramePage
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._LikedUser = new ObservableCollection<UserIds>(response.Obj.LikedUsers);
-                    presenter.LikedUserList.ItemsSource = presenter._LikedUser;
+                    presenter._likedUser = new ObservableCollection<UserIds>(response.Obj.LikedUsers);
+                    presenter.LikedUserList.ItemsSource = presenter._likedUser;
                 });
             }
         }
@@ -289,7 +289,7 @@ namespace Social.FramePage
             {
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._PostComments.Add(response.Obj.Comment);
+                    //presenter._PostComments.Add(response.Obj.Comment);
                 });
             }
         }

@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class GetProfileDataManager : DBHandlers
+    public class GetProfileDataManager : DataManagerBaseClass
     {
         public void GetProfilePic(GetProfilePicRequest request, ICallback<GetProfilePicResponse> callback)
         {
-            callback.OnSuccess(new Response<GetProfilePicResponse> { Obj = new GetProfilePicResponse(GetProfilePic(request.User)) });
+            string profilePic =DBHandlers.GetProfilePic(request.User);
+            callback.OnSuccess(new Response<GetProfilePicResponse> { Obj = new GetProfilePicResponse(profilePic) });
         }
     }
 }

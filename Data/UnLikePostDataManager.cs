@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class UnLikePostDataManager:DBHandlers
+    public class UnLikePostDataManager:DataManagerBaseClass
     {
         public void UnLikePost(UnLikePostRequest request, ICallback<UnLikePostResponse> callback)
         {
-            callback.OnSuccess(new Response<UnLikePostResponse> { Obj = new UnLikePostResponse(UnLikePost(request.Post, request.User)) });
+            DBHandlers.UnLikePost(request.Post, request.User);
+            callback.OnSuccess(new Response<UnLikePostResponse> { Obj = new UnLikePostResponse() });
         }
     }
 }

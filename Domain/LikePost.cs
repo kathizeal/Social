@@ -13,12 +13,15 @@ namespace Social.Domain
     public interface ILikePostPresenterCallback:ICallback<LikePostResponse> { }
     public sealed class LikePostResponse
     {
+
+        /*
        public Post Post;
        public LikePostResponse(Post post)
         {
             Post = post;
            
         }
+        */
 
     }
     public sealed class LikePostRequest
@@ -63,7 +66,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<LikePostResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+              //  UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

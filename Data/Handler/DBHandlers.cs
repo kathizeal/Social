@@ -59,7 +59,7 @@ namespace Social.Data.Handler
             }
             return ChangePostDate(PostList);
         }
-        public Post AddorUpdatePost(Post post)
+        public void AddorUpdatePost(Post post)
         {
             DBHandlers.GetInstance();
             DateTime date = DateTime.UtcNow;
@@ -128,7 +128,7 @@ namespace Social.Data.Handler
                 }
             }
             conn.Insert(post);
-            return post;
+            //return post;
         }
         public List<Post> ChangePostDate(List<Post> posts)
         {
@@ -303,7 +303,7 @@ namespace Social.Data.Handler
             return userIds;
 
         }
-        public Post LikePost(Post post, User user)
+        public void LikePost(Post post, User user)
         {
             if (!post.LikedId.Contains(user.UserId))
             {
@@ -319,9 +319,9 @@ namespace Social.Data.Handler
                 post.LikedId.Add(user.UserId);
             }
             conn.Update(post);
-            return post;
+            
         }
-        public Post UnLikePost(Post post, User user)
+        public void UnLikePost(Post post, User user)
         {
             var ids = conn.Table<UserIds>();
             foreach (var id in ids)
@@ -337,9 +337,9 @@ namespace Social.Data.Handler
                 }
             }
             conn.Update(post);
-            return post;
+            
         }
-        public Comment AddComments(Post post, Comment comment)
+        public void AddComments(Post post, Comment comment)
         {
             DateTime date = DateTime.UtcNow;
             if (comment.CreatedTime.Year == date.Year)
@@ -410,7 +410,7 @@ namespace Social.Data.Handler
             post.Comments.Add(comment);
             post.CommentCount = post.CommentCount + 1;
             conn.Update(post);
-            return comment;
+            //return comment;
         }
         public Comment GetComment(long CommentId)
         {
@@ -434,7 +434,7 @@ namespace Social.Data.Handler
             }
             return DateChangeComment(replys);
         }
-        public Comment AddReply(Comment comment)
+        public void AddReply(Comment comment)
         {
             DateTime date = DateTime.UtcNow;
             if (comment.CreatedTime.Year == date.Year)
@@ -502,7 +502,7 @@ namespace Social.Data.Handler
                 }
             }
             conn.Insert(comment);
-            return comment;
+           // return comment;
         }
         public Post DeletePost(Post post)
         {
@@ -804,10 +804,10 @@ namespace Social.Data.Handler
             conn.Insert(chat);
             return chat;
         }
-        public Chat AddChat(Chat chat)
+        public void AddChat(Chat chat)
         {
             conn.Insert(chat);
-            return chat;
+            //return chat;
         }
         public User UpdateUser(User user)
         {

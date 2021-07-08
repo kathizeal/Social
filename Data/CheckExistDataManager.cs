@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class CheckExistDataManager:DBHandlers
+    public class CheckExistDataManager:DataManagerBaseClass
     {
         public void CheckExist(CheckExistRequest request, ICallback<CheckExistResponse> callback)
         {
-            callback.OnSuccess(new Response<CheckExistResponse> { Obj = new CheckExistResponse(CheckExist(request.CurrentUser,request.AnotherUser) )});
+            bool exist = DBHandlers.CheckExist(request.CurrentUser, request.AnotherUser);
+            callback.OnSuccess(new Response<CheckExistResponse> { Obj = new CheckExistResponse(exist)});
         }
     }
 }

@@ -16,11 +16,13 @@ namespace Social.Domain
     }
     public class AddUserResponse
     {
+        /*
         public User User;
         public AddUserResponse(User user)
         {
             User = user;
         }
+        */
     }
     public class AddUserRequest
     {
@@ -76,7 +78,7 @@ namespace Social.Domain
 
             public override void OnSuccess(Response<AddUserResponse> response)
             {
-                UseCase.PresenterCallback.OnSuccess(response);
+               // UseCase.PresenterCallback.OnSuccess(response);
             }
         }
     }

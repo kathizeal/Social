@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class StateDataManager:DBHandlers
+    public class StateDataManager:DataManagerBaseClass
     {
         public void State(ICallback<StateResponse> callback)
         {
-            callback.OnSuccess(new Response<StateResponse> { Obj = new StateResponse(State()) });
+            bool state = DBHandlers.State();
+            callback.OnSuccess(new Response<StateResponse> { Obj = new StateResponse(state) });
         }
     }
 }

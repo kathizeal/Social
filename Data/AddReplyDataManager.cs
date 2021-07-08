@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class AddReplyDataManager:DBHandlers
+    public class AddReplyDataManager:DataManagerBaseClass
     {
         public void AddReply(AddReplyRequest request, ICallback<AddReplyResponse> callback)
         {
-            callback.OnSuccess(new Response<AddReplyResponse> { Obj = new AddReplyResponse(AddReply(request.Reply)) });
+            DBHandlers.AddReply(request.Reply);
+            callback.OnSuccess(new Response<AddReplyResponse> { Obj = new AddReplyResponse() });
         }
     }
 }

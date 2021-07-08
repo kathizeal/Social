@@ -28,12 +28,12 @@ namespace Social.FramePage
     /// </summary>
     public sealed partial class ChatPage : Page
     {
-        User _CurrentUser;
-        User _AnotherUser;
+        User _currentUser;
+        User _anotherUser;
         bool _Exist;
-        UserManager _UserManager = UserManager.GetInstance();
-        PostManager _PostManager = PostManager.GetInstance();
-        ObservableCollection<Chat> chatList= new ObservableCollection<Chat>();
+       // UserManager _UserManager = UserManager.GetInstance();
+       // PostManager _PostManager = PostManager.GetInstance();
+        private ObservableCollection<Chat> _chatList= new ObservableCollection<Chat>();
         public ChatPage()
         {
             this.InitializeComponent();
@@ -41,7 +41,7 @@ namespace Social.FramePage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _AnotherUser = (User)e.Parameter;
+            _anotherUser = (User)e.Parameter;
             // _CurrentUser = _UserManager.Current();
             // _CurrentUser = _UserManager.Find(_CurrentUser.UserId);
             GetCurrentUserRequest getCurrentUserRequest = new GetCurrentUserRequest();
@@ -66,11 +66,11 @@ namespace Social.FramePage
         private void EnableEvent(object sender, RoutedEventArgs e)
         {
            //_UserManager.CreateChat(_CurrentUser, _AnotherUser);
-            var createChatRequest = new CreateChatRequest(_CurrentUser, _AnotherUser);
+            var createChatRequest = new CreateChatRequest(_currentUser, _anotherUser);
             CreateChat createChat = new CreateChat(createChatRequest, new CreateChatPresenterCallback(this));
             createChat.Execute();
             //chatList = _UserManager.Message(_CurrentUser, _AnotherUser);
-            ChatListView.ItemsSource = chatList;
+            ChatListView.ItemsSource = _chatList;
             Starter.Visibility = Visibility.Collapsed;
             Chaat.Visibility = Visibility.Visible;
             Commands.Visibility = Visibility.Visible;
@@ -78,16 +78,16 @@ namespace Social.FramePage
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             Chat chat = new Chat();
-            chat.SenderId = _CurrentUser.UserId;
-            chat.SenderName = _CurrentUser.UserName;
-            chat.RecieverId = _AnotherUser.UserId;
-            chat.RecieverName = _AnotherUser.UserName;
-            chat.ProfilePic = _CurrentUser.ProfilePic;
+            chat.SenderId = _currentUser.UserId;
+            chat.SenderName = _currentUser.UserName;
+            chat.RecieverId = _anotherUser.UserId;
+            chat.RecieverName = _anotherUser.UserName;
+            chat.ProfilePic = _currentUser.ProfilePic;
             chat.Msg = CommentTextBox.Text;
-            chatList.Add(chat);
+            _chatList.Add(chat);
             //_UserManager.AddChat(chat);
             var addChatRequest = new AddChatRequest(chat);
-            AddChat addChat = new AddChat(addChatRequest, new AddChatPresenterCallback(this));
+            AddChat addChat = new AddChat(addChatRequest, null);
             addChat.Execute();
             CommentTextBox.Text = "";
         }
@@ -110,9 +110,9 @@ namespace Social.FramePage
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter._CurrentUser = response.Obj.CurrentUser;
+                    presenter._currentUser = response.Obj.CurrentUser;
 
-                    var CheckExistRequest = new CheckExistRequest(presenter._CurrentUser, presenter._AnotherUser);
+                    var CheckExistRequest = new CheckExistRequest(presenter._currentUser, presenter._anotherUser);
                     CheckExist checkExist = new CheckExist(CheckExistRequest, new CheckExistPresenterCallback(presenter));
                     checkExist.Execute();
 
@@ -140,7 +140,7 @@ namespace Social.FramePage
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    var getMessageRequest = new GetMessageRequest(presenter._CurrentUser, presenter._AnotherUser);
+                    var getMessageRequest = new GetMessageRequest(presenter._currentUser, presenter._anotherUser);
                     GetMessage getMessage = new GetMessage(getMessageRequest, new GetMessagePresenterCallback(presenter));
                     getMessage.Execute();
 
@@ -194,8 +194,8 @@ namespace Social.FramePage
 
                 await presenter.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    presenter.chatList = new ObservableCollection<Chat>(response.Obj.Chats);
-                    presenter.ChatListView.ItemsSource = presenter.chatList;
+                    presenter._chatList = new ObservableCollection<Chat>(response.Obj.Chats);
+                    presenter.ChatListView.ItemsSource = presenter._chatList;
 
 
                 });
@@ -228,7 +228,7 @@ namespace Social.FramePage
                         presenter.Starter.Visibility = Visibility.Collapsed;
                         presenter.Chaat.Visibility = Visibility.Visible;
                         presenter.Commands.Visibility = Visibility.Visible;
-                        var getMessageRequest = new GetMessageRequest(presenter._CurrentUser, presenter._AnotherUser);
+                        var getMessageRequest = new GetMessageRequest(presenter._currentUser, presenter._anotherUser);
                         GetMessage getMessage = new GetMessage(getMessageRequest, new GetMessagePresenterCallback(presenter));
                         getMessage.Execute();
 

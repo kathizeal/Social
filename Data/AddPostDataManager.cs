@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class AddPostDataManager:DBHandlers
+    public class AddPostDataManager:DataManagerBaseClass
     {
         public void AddPost(AddPostRequest request,ICallback<AddPostResponse> callback)
         {
-
-            callback.OnSuccess(new Response<AddPostResponse> { Obj = new AddPostResponse(AddorUpdatePost(request.Post)) });
+            DBHandlers.AddorUpdatePost(request.Post);
+            callback.OnSuccess(new Response<AddPostResponse> { Obj = new AddPostResponse() });
             SocialNotification.NotifyPostAdded(request.Post);
         }
     }

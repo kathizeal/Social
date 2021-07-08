@@ -12,13 +12,13 @@ using Social.Util;
 
 namespace Social.Data
 {
-    public class GetPostDataManager:DBHandlers
+    public class GetPostDataManager:DataManagerBaseClass
     {
         
         public void GetPosts(ICallback<GetPostsResponse> callback)
         {
-
-          callback.OnSuccess(new Response<GetPostsResponse> { Obj = new GetPostsResponse(GetPosts()) });
+            List<Post> posts = DBHandlers.GetPosts();
+          callback.OnSuccess(new Response<GetPostsResponse> { Obj = new GetPostsResponse(posts) });
         }
 
 

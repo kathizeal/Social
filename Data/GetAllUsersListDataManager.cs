@@ -1,5 +1,6 @@
 ﻿using Social.Data.Handler;
 using Social.Domain;
+using Social.Model;
 using Social.Util;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class GetAllUsersListDataManager : DBHandlers
+    public class GetAllUsersListDataManager : DataManagerBaseClass
     {
         public void GetAllUsersList(ICallback<GetAllUsersListResponse> callback)
         {
-            callback.OnSuccess(new Response<GetAllUsersListResponse> { Obj = new GetAllUsersListResponse(GetAllUsersLists()) });
+            List<User> allUsers = DBHandlers.GetAllUsersLists();
+            callback.OnSuccess(new Response<GetAllUsersListResponse> { Obj = new GetAllUsersListResponse(allUsers) });
         }
     }
 }

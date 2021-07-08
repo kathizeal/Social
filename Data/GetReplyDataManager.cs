@@ -1,5 +1,6 @@
 ﻿using Social.Data.Handler;
 using Social.Domain;
+using Social.Model;
 using Social.Util;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Social.Data
 {
-    public class GetReplyDataManager:DBHandlers
+    public class GetReplyDataManager:DataManagerBaseClass
     {
         public void GetReply(GetReplyRequest request, ICallback<GetReplyResponse> callback)
         {
-            callback.OnSuccess(new Response<GetReplyResponse> { Obj = new GetReplyResponse(GetReply(request.ParentId)) });
+            List<Comment> replys = DBHandlers.GetReply(request.ParentId);
+            callback.OnSuccess(new Response<GetReplyResponse> { Obj = new GetReplyResponse(replys) });
         }
     }
 }
